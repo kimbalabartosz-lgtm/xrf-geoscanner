@@ -6,24 +6,30 @@ import {
   PolymorphInfo,
   TechnicalAlloyMatch,
   ToleranceConfig,
-  ToleranceMode
+  ToleranceMode,
+  MatrixInclusion,
+  IsomorphicSubstitution
 } from '@/types';
 import { MINERALS_DATABASE } from '@/data/minerals';
 import { getAtomicMass, isLightElement } from '@/data/elements';
 
 export const DEFAULT_TOLERANCE_CONFIG: ToleranceConfig = {
-  mode: 'adaptive',
-  fixedValue: 2.0
+  mode: 'field',
+  fixedValue: 4.0
 };
 
 /**
  * Oblicza dopuszczalny margines błędu (+- %) dla danego stężenia pierwiastka:
- * - Tryb adaptacyjny (domyślny geochemiczny):
- *   > 40% masy -> ±3.0% (składnik główny, efekty matrycy i chropowatości)
- *   5% do 40% -> ±2.0% (składnik średni)
- *   0% do 5%   -> ±1.0% (śladowy / pierwiastek obcy - bardzo ostra selekcja zanieczyszczeń)
- * - Tryb stały:
- *   Wartość wybrana suwakiem (np. 1.0%, 2.0%, 3.0%, 4.0%, 5.0%)
+ * - Tryb terenowy geologiczny ('field' - zalecany):
+ *   > 40% masy -> ±4.0% (składnik główny, efekty chropowatości powierzchni skały)
+ *   5% do 40% -> ±3.0% (składnik średni)
+ *   0% do 5%   -> ±2.0% (śladowy / zanieczyszczenia polowe)
+ * - Tryb adaptacyjny laboratoryjny ('adaptive' - dla monokryształów):
+ *   > 40% masy -> ±3.0%
+ *   5% do 40% -> ±2.0%
+ *   0% do 5%   -> ±1.0%
+ * - Tryb stały ('fixed'):
+ *   Wartość wybrana suwakiem (np. 1.0%, 2.0%, 3.0%, 4.0%, 5.0%, 6.0%, 8.0%)
  */
 export function getElementTolerance(
   concentrationPercent: number,
@@ -37,6 +43,18 @@ export function getElementTolerance(
   }
 
   const c = Math.max(0, concentrationPercent);
+
+  if (config.mode === 'field') {
+    if (c > 40.0) {
+      return { tolerance: 4.0, tierLabel: `>40% (±4.0%)` };
+    }
+    if (c >= 5.0) {
+      return { tolerance: 3.0, tierLabel: `5-40% (±3.0%)` };
+    }
+    return { tolerance: 2.0, tierLabel: `<5% (±2.0%)` };
+  }
+
+  // mode === 'adaptive'
   if (c > 40.0) {
     return { tolerance: 3.0, tierLabel: `>40% (±3.0%)` };
   }
@@ -45,6 +63,18 @@ export function getElementTolerance(
   }
   return { tolerance: 1.0, tierLabel: `<5% (±1.0%)` };
 }
+
+/**
+ * Powszechne domieszki skały macierzystej (matrycy) w naturalnych próbkach geologicznych
+ */
+const FIELD_MATRIX_ELEMENTS: Record<string, { maxPercent: number; source: string }> = {
+  Si: { maxPercent: 12.0, source: 'Kwarc / krzemionka skały macierzystej (SiO₂)' },
+  Ca: { maxPercent: 10.0, source: 'Kalcyt / dolomit skały węglanowej (CaCO₃)' },
+  Fe: { maxPercent: 8.0, source: 'Tlenki / wodorotlenki żelaza (hematyt, getyt, limonite, gossan)' },
+  Al: { maxPercent: 6.0, source: 'Minerały ilaste / skała płonna' },
+  Mg: { maxPercent: 5.0, source: 'Krzemiany lub węglany magnezowe matrycy' },
+  K: { maxPercent: 4.0, source: 'Skalenie potasowe skały macierzystej' }
+};
 
 /**
  * Wykrywa powszechne stopy przemysłowe i próbki kalibracyjne XRF (np. stal SS-316),
@@ -124,26 +154,47 @@ export function detectTechnicalAlloy(
 /**
  * Normalizuje wykryte pierwiastki do 100% widzialnej masy XRF
  * Odrzuca pierwiastki lekkie (Z < 11: H, Li, Be, B, C, N, O, F)
+ * Prawidłowo traktuje tlenki: w tlenkach tlen jest stechiometrycznie związany,
+ * więc nie jest liczony jako brakujące pierwiastki lekkie!
  */
 export function normalizeSampleElements(
   elements: DetectedElement[]
 ): {
   normalized: Record<string, number>;
+  rawMap: Record<string, number>;
   rawTotal: number;
   visibleTotal: number;
   sampleLightPercent: number;
+  isOxideConverted: boolean;
 } {
+  const isOxideConverted = elements.some((e) => e.isOxideConverted || e.symbol.toUpperCase() === 'LOI');
+  const loiElement = elements.find((e) => e.symbol.toUpperCase() === 'LOI');
+
   const visibleElements = elements.filter(
-    (e) => e.value > 0 && !isLightElement(e.symbol)
+    (e) => e.value > 0 && !isLightElement(e.symbol) && e.symbol.toUpperCase() !== 'LOI'
   );
+
+  const rawMap: Record<string, number> = {};
+  elements.forEach((e) => {
+    if (e.value > 0 && e.symbol.toUpperCase() !== 'LOI') {
+      rawMap[e.symbol] = Number(e.value);
+    }
+  });
 
   const rawTotal = elements.reduce((sum, e) => sum + (Number(e.value) || 0), 0);
   const visibleTotal = visibleElements.reduce((sum, e) => sum + (Number(e.value) || 0), 0);
 
-  // Szacowany bilans pierwiastków lekkich (jeśli suma surowa < 100%)
-  const sampleLightPercent = rawTotal > 0 && rawTotal < 99.0
-    ? Number((100 - rawTotal).toFixed(2))
-    : 0;
+  // W trybie tlenkowym (Mining Oxides) tlen jest stechiometrycznie związany w tlenkach (SiO2, Al2O3, CaO itd.).
+  // Tlenki to związki pierwiastków Z >= 11 z tlenem, a nie brakujące pierwiastki lekkie!
+  // Jedynym prawdziwym udziałem pierwiastków lekkich w analizie tlenkowej jest LOI (Loss on Ignition), jeśli podano.
+  let sampleLightPercent = 0;
+  if (isOxideConverted) {
+    sampleLightPercent = loiElement ? Number(loiElement.value.toFixed(2)) : 0;
+  } else {
+    sampleLightPercent = loiElement
+      ? Number(loiElement.value.toFixed(2))
+      : (rawTotal > 0 && rawTotal < 95.0 ? Number((100 - rawTotal).toFixed(2)) : 0);
+  }
 
   const normalized: Record<string, number> = {};
 
@@ -153,18 +204,18 @@ export function normalizeSampleElements(
     });
   }
 
-  return { normalized, rawTotal, visibleTotal, sampleLightPercent };
+  return { normalized, rawMap, rawTotal, visibleTotal, sampleLightPercent, isOxideConverted };
 }
 
 /**
  * Oblicza liczby moli n = m / M dla widzialnych pierwiastków
  */
 export function calculateMoles(
-  normalizedWeights: Record<string, number>
+  weights: Record<string, number>
 ): Record<string, number> {
   const moles: Record<string, number> = {};
 
-  for (const [sym, weight] of Object.entries(normalizedWeights)) {
+  for (const [sym, weight] of Object.entries(weights)) {
     const mass = getAtomicMass(sym);
     if (mass > 0) {
       moles[sym] = weight / mass;
@@ -176,7 +227,6 @@ export function calculateMoles(
 
 /**
  * Generuje unikalny odcisk stechiometryczny minerału, aby wykrywać polimorfy
- * (minerały o identycznym składzie chemicznym, np. Piryt i Markasyt, Kalcyt i Aragonit)
  */
 function getStoichiometryFingerprint(min: MineralDefinition): string {
   return Object.entries(min.totalWeightPercent)
@@ -187,17 +237,20 @@ function getStoichiometryFingerprint(min: MineralDefinition): string {
 
 /**
  * Główny algorytm porównujący próbkę ze wszystkimi minerałami w bazie.
- * Uwzględnia:
- * - Widełki tolerancji +-2.0%
- * - Bilans pierwiastków lekkich
- * - Automatyczne wykrywanie polimorfów i łączenie ich w pary "Nazwa X / Nazwa Y (albo to, albo to)"
+ * Obsługuje:
+ * 1. Pomiary bezwzględne XRF (np. Turkus: Al 19.82%, P 15.24%, Cu 7.85%)
+ * 2. Pomiary znormalizowane do 100% (stopy, minerały bezwodny)
+ * 3. Przeliczone tlenki (Mining Oxides) - nie nalicza fałszywych 53% błędu Z<11
+ * 4. Powszechne domieszki skały macierzystej (matryca kwarcowa Si, kalcytowa Ca, tlenki żelaza Fe)
+ * 5. Podstawienia izomorficzne (np. Fe3+ za Al3+ w turkusie)
+ * 6. Automatyczne wykrywanie polimorfów i stopów technicznych
  */
 export function identifyMinerals(
   detectedElements: DetectedElement[],
   toleranceConfig: ToleranceConfig = DEFAULT_TOLERANCE_CONFIG,
   database: MineralDefinition[] = MINERALS_DATABASE
 ): MatchScore[] {
-  const { normalized: sampleNorm, visibleTotal, sampleLightPercent } =
+  const { normalized: sampleNorm, rawMap: sampleRaw, rawTotal, visibleTotal, sampleLightPercent, isOxideConverted } =
     normalizeSampleElements(detectedElements);
 
   if (visibleTotal <= 0 || Object.keys(sampleNorm).length === 0) {
@@ -212,7 +265,6 @@ export function identifyMinerals(
     const fg = getStoichiometryFingerprint(min);
     const existing = fingerprintGroups.get(fg) || [];
 
-    // Deduplikacja po rdzennej nazwie (np. unikaj dublowania "Markasyt / Markasyt")
     const baseName = min.namePl.split('(')[0].trim().toLowerCase();
     const alreadyPresent = existing.some(
       (ex) => ex.namePl.split('(')[0].trim().toLowerCase() === baseName
@@ -226,40 +278,106 @@ export function identifyMinerals(
   // 2. Oblicz dopasowanie dla każdego minerału
   const rawResults: MatchScore[] = database.map((mineral) => {
     const minVisible = mineral.xrfVisibleWeightPercent;
+    const diagSymbols = Object.keys(minVisible);
+
+    // Sprawdź czy próbka jest mierzona bezwzględnie (np. spektrometr podał Al: 19.82%, P: 15.24%, Cu: 7.85%)
+    // W takim trybie zmierzone wartości odpowiadają bezpośrednio mineral.totalWeightPercent
+    const isDirectMassCandidate =
+      rawTotal < 92.0 &&
+      diagSymbols.length > 0 &&
+      diagSymbols.every((sym) => {
+        const s = sampleRaw[sym] || 0;
+        const theoTotal = mineral.totalWeightPercent[sym] || 0;
+        return s > 0 && theoTotal > 0 && Math.abs(s - theoTotal) <= 8.0;
+      });
+
+    // Wybór zestawu wartości próbki i wzorca do porównania:
+    // Wzorzec wzorcowy: jeśli kandydat na masę bezpośrednią, porównujemy do totalWeightPercent
+    const useDirectMass = isDirectMassCandidate;
+
+    const sampleToCompare: Record<string, number> = useDirectMass ? sampleRaw : sampleNorm;
+    const mineralToCompare: Record<string, number> = useDirectMass ? mineral.totalWeightPercent : minVisible;
+
+    // Wszystkie pierwiastki do porównania
     const allSymbols = Array.from(
-      new Set([...Object.keys(sampleNorm), ...Object.keys(minVisible)])
+      new Set([...Object.keys(sampleToCompare), ...Object.keys(mineralToCompare)])
     );
 
     let sumSquaredDiff = 0;
-    let dotProduct = 0;
-    let normSample = 0;
-    let normMineral = 0;
-    let elementsWithinToleranceCount = 0;
-    let totalComparedCount = 0;
+    let diagElementsWithinTolerance = 0;
+    let diagTotalCompared = 0;
+    let maxElementDifference = 0;
+    let maxDiffSymbol = '';
+    let totalExcessError = 0;
 
+    const matrixInclusions: MatrixInclusion[] = [];
+    const isomorphicSubstitutions: IsomorphicSubstitution[] = [];
     const elementComparison: ElementComparisonResult[] = [];
 
+    // Sprawdź specjalne podstawienie izomorficzne Fe za Al w turkusie (seria turkus - chalcosyderyt)
+    let hasFeForAlSubstitution = false;
+    if (mineral.id.includes('turquoise') && sampleToCompare['Fe'] && sampleToCompare['Fe'] > 0 && sampleToCompare['Fe'] <= 5.0) {
+      hasFeForAlSubstitution = true;
+      isomorphicSubstitutions.push({
+        substitutedElement: 'Fe',
+        targetElement: 'Al',
+        percent: sampleToCompare['Fe'],
+        seriesName: 'Szereg turkus – chalcosyderyt (podstawienie Fe³⁺ za Al³⁺)'
+      });
+    }
+
     allSymbols.forEach((sym) => {
-      const sVal = sampleNorm[sym] || 0;
-      const mVal = minVisible[sym] || 0;
+      // Ignorujemy pierwiastki lekkie w porównaniu bezpośrednim metali
+      if (isLightElement(sym)) return;
+
+      const sVal = sampleToCompare[sym] || 0;
+      const mVal = mineralToCompare[sym] || 0;
       const diff = Math.abs(sVal - mVal);
 
-      sumSquaredDiff += Math.pow(sVal - mVal, 2);
-      dotProduct += sVal * mVal;
-      normSample += Math.pow(sVal, 2);
-      normMineral += Math.pow(mVal, 2);
+      // Sprawdź czy to pierwiastek diagnostyczny minerału
+      const isDiagnostic = (mineralToCompare[sym] || 0) > 0;
 
-      // Oblicz dynamiczną widełkę tolerancji dla danego pierwiastka (adaptacyjną lub stałą)
+      // Oblicz dynamiczną widełkę tolerancji
       const refConcentration = Math.max(sVal, mVal);
       const { tolerance: tolPct, tierLabel } = getElementTolerance(refConcentration, toleranceConfig);
 
       const toleranceMin = Math.max(0, mVal - tolPct);
       const toleranceMax = Math.min(100, mVal + tolPct);
-      const withinTolerance = diff <= tolPct;
+
+      let withinTolerance = diff <= tolPct;
+
+      // Obsługa matrycy geologicznej w trybie polowym ('field')
+      let isMatrixComponent = false;
+      if (toleranceConfig.mode === 'field' && !isDiagnostic && sVal > 0) {
+        if (sym === 'Fe' && hasFeForAlSubstitution) {
+          withinTolerance = true;
+        } else if (FIELD_MATRIX_ELEMENTS[sym] && sVal <= FIELD_MATRIX_ELEMENTS[sym].maxPercent) {
+          withinTolerance = true;
+          isMatrixComponent = true;
+          matrixInclusions.push({
+            symbol: sym,
+            percent: sVal,
+            mineralSource: FIELD_MATRIX_ELEMENTS[sym].source
+          });
+        }
+      }
 
       if (sVal > 0 || mVal > 0) {
-        totalComparedCount++;
-        if (withinTolerance) elementsWithinToleranceCount++;
+        if (isDiagnostic) {
+          diagTotalCompared++;
+          if (withinTolerance) diagElementsWithinTolerance++;
+          sumSquaredDiff += Math.pow(diff, 2);
+        } else if (!isMatrixComponent && !(sym === 'Fe' && hasFeForAlSubstitution)) {
+          sumSquaredDiff += Math.pow(diff, 2);
+        }
+
+        if (!withinTolerance) {
+          totalExcessError += (diff - tolPct);
+          if (diff > maxElementDifference) {
+            maxElementDifference = diff;
+            maxDiffSymbol = sym;
+          }
+        }
 
         elementComparison.push({
           symbol: sym,
@@ -270,35 +388,20 @@ export function identifyMinerals(
           toleranceMin: Number(toleranceMin.toFixed(2)),
           toleranceMax: Number(toleranceMax.toFixed(2)),
           appliedTolerance: tolPct,
-          tierLabel
+          tierLabel: isMatrixComponent ? `${tierLabel} [Matryca]` : tierLabel
         });
-      }
-    });
-
-    const allElementsWithin2Percent =
-      totalComparedCount > 0 && elementsWithinToleranceCount === totalComparedCount;
-
-    let maxElementDifference = 0;
-    let maxDiffSymbol = '';
-    let totalExcessError = 0;
-
-    elementComparison.forEach((ec) => {
-      if (ec.difference > maxElementDifference) {
-        maxElementDifference = ec.difference;
-        maxDiffSymbol = ec.symbol;
-      }
-      if (!ec.withinTolerance) {
-        totalExcessError += (ec.difference - ec.appliedTolerance);
       }
     });
 
     const euclideanDist = Math.sqrt(sumSquaredDiff);
 
-    // Weryfikacja bilansu pierwiastków lekkich z dynamiczną tolerancją
+    // Sprawdzenie bilansu pierwiastków lekkich:
+    // W trybie tlenkowym (isOxideConverted) tlen nie jest brakującym pierwiastkiem lekkim!
     const { tolerance: lightTol } = getElementTolerance(mineral.lightElementsPercent, toleranceConfig);
     const lightDiff = Math.abs(sampleLightPercent - mineral.lightElementsPercent);
-    const lightWithinTolerance = sampleLightPercent === 0 || lightDiff <= lightTol;
-    if (sampleLightPercent > 0 && !lightWithinTolerance) {
+    const lightWithinTolerance = isOxideConverted || sampleLightPercent === 0 || lightDiff <= (lightTol + 3.0);
+
+    if (!isOxideConverted && sampleLightPercent > 0 && !lightWithinTolerance) {
       const excessLight = lightDiff - lightTol;
       if (excessLight > maxElementDifference) {
         maxElementDifference = lightDiff;
@@ -307,35 +410,37 @@ export function identifyMinerals(
       totalExcessError += excessLight;
     }
 
-    // Minerał jest zweryfikowany TYLKO wtedy, gdy każdy pierwiastek mieści się w wyznaczonych widełkach
-    const isVerified = allElementsWithin2Percent && lightWithinTolerance;
+    // Minerał jest zweryfikowany, gdy wszystkie składniki diagnostyczne mieszczą się w tolerancji
+    // oraz nie ma niewyjaśnionych obcych pierwiastków poza matrycą
+    const allDiagWithinTolerance = diagTotalCompared > 0 && diagElementsWithinTolerance === diagTotalCompared;
+    const isVerified = allDiagWithinTolerance && lightWithinTolerance && totalExcessError === 0;
 
-    // Punktacja oparta na ścisłej tolerancji błędu:
+    // Punktacja
     let score = 0;
     let confidenceTier: MatchScore['confidenceTier'] = 'unlikely';
 
     if (isVerified) {
-      // IDEALNA ZGODNOŚĆ: Wszystkie pierwiastki mieszczą się w wyznaczonych widełkach
-      score = Math.max(92.0, 99.8 - euclideanDist * 2.0);
+      score = Math.max(90.0, 99.8 - euclideanDist * 1.5);
       confidenceTier = 'high';
     } else {
-      // Skład przekracza limit w którymkolwiek kierunku
-      if (maxElementDifference > 15 || totalExcessError > 20) {
+      if (allDiagWithinTolerance && totalExcessError <= 6.0) {
+        score = Math.max(68.0, 88.0 - totalExcessError * 3.0);
+        confidenceTier = 'medium';
+      } else if (maxElementDifference > 15 || totalExcessError > 20) {
         score = Math.max(5.0, Math.min(25.0, 35 - maxElementDifference * 0.8));
         confidenceTier = 'unlikely';
       } else if (maxElementDifference > 6 || totalExcessError > 10) {
-        score = Math.max(15.0, Math.min(42.0, 52 - maxElementDifference * 1.8));
+        score = Math.max(15.0, Math.min(45.0, 55 - maxElementDifference * 1.8));
         confidenceTier = 'unlikely';
-      } else if (maxElementDifference > 1.0) {
-        score = Math.max(45.0, Math.min(65.0, 75 - maxElementDifference * 4.0));
+      } else {
+        score = Math.max(48.0, Math.min(68.0, 78 - maxElementDifference * 3.0));
         confidenceTier = 'low';
       }
     }
 
-    // Weryfikacja stosunków molowych (obliczana jako dodatkowa informacja)
+    // Stosunki molowe
     const molarRatioDetails: MatchScore['molarRatioDetails'] = [];
-
-    if (mineral.keyMolarRatios && isVerified) {
+    if (mineral.keyMolarRatios && (isVerified || confidenceTier === 'medium')) {
       for (const [ratioKey, theoRatio] of Object.entries(mineral.keyMolarRatios)) {
         const [elA, elB] = ratioKey.split('/');
         const molesA = sampleMoles[elA];
@@ -355,18 +460,25 @@ export function identifyMinerals(
       }
     }
 
-    // Normalizacja do zakresu [0, 99.8%]
     score = Math.max(0, Math.min(99.8, score));
 
-    // Generowanie zwięzłego wyjaśnienia analitycznego
+    // Generowanie zwięzłego opisu analitycznego
     let explanation = '';
     if (isVerified) {
-      explanation = `Zweryfikowano! Wszystkie wykryte pierwiastki mieszczą się w dopuszczalnym marginesie błędu od wzorca ${mineral.namePl}!`;
+      explanation = `Zweryfikowano! Wszystkie wykryte pierwiastki diagnostyczne mieszczą się w dopuszczalnym marginesie błędu od wzorca ${mineral.namePl}!`;
+      if (matrixInclusions.length > 0) {
+        const matStr = matrixInclusions.map((m) => `${m.symbol} (${m.percent}% - ${m.mineralSource})`).join(', ');
+        explanation += ` Wykryto zgodną domieszkę matrycy skały macierzystej: ${matStr}.`;
+      }
+      if (isomorphicSubstitutions.length > 0) {
+        const isoStr = isomorphicSubstitutions.map((i) => `${i.seriesName} (${i.substitutedElement}: ${i.percent}%)`).join(', ');
+        explanation += ` Wykryto naturalne podstawienie izomorficzne: ${isoStr}.`;
+      }
     } else {
       explanation = `Nie można zweryfikować jako ${mineral.namePl}: odchylenie składu przekracza dopuszczalny limit (największa różnica na ${maxDiffSymbol}: ${maxElementDifference.toFixed(1)}%). Minerał odrzucony.`;
     }
 
-    if (mineral.lightElementsPercent > 0) {
+    if (mineral.lightElementsPercent > 0 && !isOxideConverted) {
       const lightBreakdownStr = Object.entries(mineral.lightElementsBreakdown)
         .map(([sym, pct]) => `${sym}: ${pct}%`)
         .join(', ');
@@ -377,16 +489,20 @@ export function identifyMinerals(
       mineral,
       score: Number(score.toFixed(1)),
       confidenceTier,
-      allElementsWithin2Percent,
+      allElementsWithin2Percent: isVerified,
       isVerified,
       maxElementDifference: Number(maxElementDifference.toFixed(2)),
-      maxDiffSymbol,
+      maxDiffSymbol: maxDiffSymbol || 'Brak',
       appliedToleranceConfig: toleranceConfig,
       molarRatioDetails,
+      matrixInclusions: matrixInclusions.length > 0 ? matrixInclusions : undefined,
+      isomorphicSubstitutions: isomorphicSubstitutions.length > 0 ? isomorphicSubstitutions : undefined,
+      isDirectMassMatch: useDirectMass,
+      isOxideMode: isOxideConverted,
       elementComparison: elementComparison.sort((a, b) => b.samplePercent - a.samplePercent),
       lightElementInfo: {
         sampleLightPercent,
-        theoreticalLightPercent: mineral.lightElementsPercent,
+        theoreticalLightPercent: isOxideConverted ? 0 : mineral.lightElementsPercent,
         difference: Number(lightDiff.toFixed(2)),
         withinTolerance: lightWithinTolerance
       },
@@ -400,7 +516,7 @@ export function identifyMinerals(
   // Sortuj od najwyższego dopasowania
   const sorted = rawResults.sort((a, b) => b.score - a.score);
 
-  // 3. Przypisz informacje o polimorfach i stopach
+  // Przypisz informacje o polimorfach i stopach
   sorted.forEach((match) => {
     match.technicalAlloyHint = technicalAlloyHint;
 

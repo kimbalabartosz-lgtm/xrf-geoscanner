@@ -9,6 +9,18 @@ export interface SamplePreset {
 
 export const SAMPLE_PRESETS: SamplePreset[] = [
   {
+    id: 'turquoise-field-sample',
+    name: 'Turkus naturalny (ze skałą macierzystą)',
+    description: 'Odczyt spektrometru ze zdjęcia: Al 19.82%, P 15.24%, Cu 7.85%, Si 3.45% (kwarc matrycy), Fe 2.10% (podstawienie Fe za Al)',
+    elements: [
+      { id: '1', symbol: 'Al', value: 19.82, errorMargin: 0.15 },
+      { id: '2', symbol: 'P', value: 15.24, errorMargin: 0.12 },
+      { id: '3', symbol: 'Cu', value: 7.85, errorMargin: 0.08 },
+      { id: '4', symbol: 'Si', value: 3.45, errorMargin: 0.08 },
+      { id: '5', symbol: 'Fe', value: 2.10, errorMargin: 0.05 }
+    ]
+  },
+  {
     id: 'mining-oxides-sample',
     name: 'Mining Oxides (Tryb tlenkowy geologiczny)',
     description: 'Przeliczone tlenki skał magmowych/ilastych: SiO₂ 64.6%, Al₂O₃ 14.4%, Fe₂O₃ 5.5%, CaO 2.7%, K₂O 2.6%, MgO 1.8%, LOI 7.2%',

@@ -60,11 +60,11 @@ export interface MineralDefinition {
   notes?: string;
 }
 
-export type ToleranceMode = 'adaptive' | 'fixed';
+export type ToleranceMode = 'field' | 'adaptive' | 'fixed';
 
 export interface ToleranceConfig {
-  mode: ToleranceMode; // 'adaptive' | 'fixed'
-  fixedValue: number; // 1.0, 2.0, 3.0, 4.0, 5.0%
+  mode: ToleranceMode; // 'field' (terenowy geologiczny) | 'adaptive' (ścisły laboratoryjny) | 'fixed' (suwak)
+  fixedValue: number; // 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0%
 }
 
 export interface ElementComparisonResult {
@@ -105,6 +105,19 @@ export interface TechnicalAlloyMatch {
   description: string;
 }
 
+export interface MatrixInclusion {
+  symbol: string;
+  percent: number;
+  mineralSource: string; // np. "Kwarc / Krzemionka (SiO₂)", "Kalcyt / Skała węglanowa (CaCO₃)", "Tlenki żelaza / Gossan"
+}
+
+export interface IsomorphicSubstitution {
+  substitutedElement: string; // np. "Fe"
+  targetElement: string; // np. "Al"
+  percent: number;
+  seriesName: string; // np. "Szereg turkus - chalcosyderyt"
+}
+
 export interface MatchScore {
   mineral: MineralDefinition;
   score: number; // 0 - 100%
@@ -116,6 +129,10 @@ export interface MatchScore {
   appliedToleranceConfig?: ToleranceConfig; // Konfiguracja tolerancji użyta do obliczeń
   polymorphInfo?: PolymorphInfo;
   technicalAlloyHint?: TechnicalAlloyMatch | null;
+  matrixInclusions?: MatrixInclusion[];
+  isomorphicSubstitutions?: IsomorphicSubstitution[];
+  isDirectMassMatch?: boolean;
+  isOxideMode?: boolean;
   molarRatioDetails: {
     ratioName: string;
     sampleRatio: number;

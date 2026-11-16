@@ -128,7 +128,7 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
       </div>
 
       {/* ========================================================================= */}
-      {/* PANEL KONTROLI TOLERANCJI BŁĘDU (ADAPTACYJNA vs SUWAK 1-5%)               */}
+      {/* PANEL KONTROLI TOLERANCJI BŁĘDU (TERENOWY vs ADAPTACYJNY vs SUWAK 1-8%)   */}
       {/* ========================================================================= */}
       <div className="p-4 rounded-lg bg-[#faf8f3] border-2 border-stone-700 mb-4 shadow-inner space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -140,9 +140,13 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
           </div>
 
           <div className="font-mono text-xs">
-            {toleranceConfig.mode === 'adaptive' ? (
+            {toleranceConfig.mode === 'field' ? (
               <span className="stamp-green text-[10px] py-0.5 px-2">
-                Tryb adaptacyjny geochemiczny (Zalecany)
+                Tryb terenowy geologiczny (Zalecany)
+              </span>
+            ) : toleranceConfig.mode === 'adaptive' ? (
+              <span className="stamp-blue text-[10px] py-0.5 px-2">
+                Ścisły laboratoryjny (Monokryształ)
               </span>
             ) : (
               <span className="stamp-amber text-[10px] py-0.5 px-2">
@@ -156,28 +160,42 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
         <div className="flex flex-wrap items-center gap-2 pt-1">
           <button
             type="button"
+            onClick={() => onToleranceConfigChange({ mode: 'field', fixedValue: 4.0 })}
+            className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border-2 ${
+              toleranceConfig.mode === 'field'
+                ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-[2px_2px_0px_rgba(0,0,0,0.3)]'
+                : 'bg-[#ffffff] text-stone-800 border-stone-400 hover:border-stone-800'
+            }`}
+            title="Uwzględnia naturalne domieszki skały macierzystej (Si z kwarcu, Ca z kalcytu, Fe) oraz podstawienia izomorficzne (np. Fe za Al w turkusie)"
+          >
+            ★ Terenowy geologiczny (Matryca & Podstawienia)
+          </button>
+
+          <button
+            type="button"
             onClick={() => onToleranceConfigChange({ mode: 'adaptive', fixedValue: 2.0 })}
             className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border-2 ${
               toleranceConfig.mode === 'adaptive'
                 ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-[2px_2px_0px_rgba(0,0,0,0.3)]'
                 : 'bg-[#ffffff] text-stone-800 border-stone-400 hover:border-stone-800'
             }`}
+            title="Dla czystych minerałów syntetycznych lub monokryształów bez skały macierzystej"
           >
-            ★ Adaptacyjny: &gt;40% (±3%), 5–40% (±2%), &lt;5% (±1%)
+            Laboratoryjny: &gt;40% (±3%), 5–40% (±2%), &lt;5% (±1%)
           </button>
 
           <span className="text-stone-400 font-mono text-xs hidden sm:inline">|</span>
 
           <span className="text-xs font-mono text-stone-600 font-semibold mr-1">
-            Stałe widełki:
+            Stałe:
           </span>
 
-          {[1.0, 2.0, 3.0, 4.0, 5.0].map((val) => (
+          {[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0].map((val) => (
             <button
               key={val}
               type="button"
               onClick={() => onToleranceConfigChange({ mode: 'fixed', fixedValue: val })}
-              className={`px-2.5 py-1 rounded text-xs font-mono font-bold transition-all border-2 ${
+              className={`px-2 py-1 rounded text-xs font-mono font-bold transition-all border-2 ${
                 toleranceConfig.mode === 'fixed' && toleranceConfig.fixedValue === val
                   ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-[1px_1px_0px_rgba(0,0,0,0.3)]'
                   : 'bg-[#ffffff] text-stone-700 border-stone-300 hover:border-stone-800'
@@ -197,7 +215,7 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
             <input
               type="range"
               min="0.5"
-              max="5.0"
+              max="8.0"
               step="0.5"
               value={toleranceConfig.fixedValue}
               onChange={(e) =>
@@ -209,17 +227,36 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
               className="w-full h-2 bg-stone-300 rounded-lg cursor-pointer"
             />
             <span className="text-xs font-mono text-stone-500 whitespace-nowrap">
-              [Zakres: ±0.5% – ±5.0%]
+              [Zakres: ±0.5% – ±8.0%]
             </span>
           </div>
         )}
 
         <p className="text-[11px] text-stone-600 font-serif italic pt-1">
-          {toleranceConfig.mode === 'adaptive'
-            ? 'Reguła geochemiczna: Składniki główne (>40%) mają rozrzut polowy do ±3.0%, natomiast dla śladów i pierwiastków obcych (<5%) limit zawęża się do ±1.0%, natychmiast wyłapując niepożądane domieszki.'
-            : `Zastosowano sztywny margines błędu ±${toleranceConfig.fixedValue}% w obie strony dla każdego porównywanego pierwiastka.`}
+          {toleranceConfig.mode === 'field'
+            ? 'Tryb terenowy geologiczny: Bada stechiometrię fazy głównej, dopuszczając naturalne domieszki skały macierzystej (matryca: kwarc Si ≤12%, kalcyt Ca ≤10%, tlenki żelaza Fe ≤8%) oraz powszechne podstawienia kationowe (np. Fe³⁺ za Al³⁺ w turkusie).'
+            : toleranceConfig.mode === 'adaptive'
+            ? 'Reguła laboratoryjna: Ostra selekcja dla czystych minerałów (>40% ±3.0%, 5-40% ±2.0%, <5% ±1.0%). Wymaga braku domieszek matrycy.'
+            : `Zastosowano stały margines błędu ±${toleranceConfig.fixedValue}% w obie strony dla każdego porównywanego pierwiastka.`}
         </p>
       </div>
+
+      {/* INFORMACJA O TRYBIE TLENKOWYM / PRZELICZONYCH TLENKACH */}
+      {elements.some((e) => e.isOxideConverted || e.symbol.toUpperCase() === 'LOI') && (
+        <div className="mb-4 p-3 rounded border-2 border-amber-600 bg-amber-50/70 text-xs font-mono text-amber-950 flex items-start gap-2">
+          <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+          <div className="space-y-0.5">
+            <span className="font-bold block uppercase tracking-wide">
+              Tryb tlenkowy (Mining Oxides XRF):
+            </span>
+            <p className="font-serif text-[11px] text-amber-900 leading-relaxed">
+              Wykryto stężenia przeliczone ze stechiometrii tlenków (SiO₂, Al₂O₃, Fe₂O₃, CaO itd.). 
+              Tlen jest stechiometrycznie związany w strukturze tlenkowej i <b>nie jest traktowany jako brakujące pierwiastki lekkie</b>.
+              Jedyną fazą lotną/lekką braną pod uwagę jest ewentualne <b>LOI (Loss on Ignition)</b>.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Szybkie dodawanie pierwiastków */}
       <div className="mb-4">

@@ -161,8 +161,10 @@ export default function Home() {
       const matches = identifyMinerals(detectedElements, newConfig);
       setResults(matches);
       showNotification(
-        newConfig.mode === 'adaptive'
-          ? 'Zastosowano adaptacyjne widełki stężeniowe (>40%: ±3%, 5-40%: ±2%, <5%: ±1%)'
+        newConfig.mode === 'field'
+          ? 'Zastosowano tryb terenowy geologiczny (uwzględnia matrycę i podstawienia)'
+          : newConfig.mode === 'adaptive'
+          ? 'Zastosowano tryb laboratoryjny (>40%: ±3%, 5-40%: ±2%, <5%: ±1%)'
           : `Zastosowano stały margines błędu ±${newConfig.fixedValue}%`,
         'info'
       );

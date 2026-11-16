@@ -158,7 +158,20 @@ const NOISE_WORDS = [
   'GRADE',
   'MATCH',
   'MODEL',
-  'CALIBRATION'
+  'CALIBRATION',
+  'MINERALS',
+  'GEMS',
+  'TEST-MINERALS',
+  'NATURAL',
+  'PHOSPHATE',
+  'READY',
+  'BACK',
+  'OPTIONS',
+  'DATE',
+  'TIME',
+  'BATTERY',
+  'MINERAL',
+  'GEM'
 ];
 
 /**
@@ -166,6 +179,8 @@ const NOISE_WORDS = [
  * - usuwa nawiasy, procenty i separatory: "Fe(%)" -> "Fe", "or%" -> "Cr", "M0%" -> "Mn"
  * - sprawdza tabelę typowych pomyłek OCR
  * - weryfikuje istnienie w układzie okresowym (ELEMENTS)
+ * - ODRZUCA pierwiastki lekkie (Z < 11: H, He, Li, Be, B, C, N, O, F), ponieważ spektrometry
+ *   ręczne XRF fizycznie ich nie wykrywają (pojawienie się "O" czy "C" w OCR to na 100% szum z menu/daty)
  */
 export function normalizeElementSymbol(raw: string): string | null {
   // Usuń nawiasy, procenty, spacje i separatory
@@ -174,28 +189,38 @@ export function normalizeElementSymbol(raw: string): string | null {
 
   const upper = clean.toUpperCase();
 
-  // Sprawdź czy to nie słowo szumowe (np. "TEST", "USER")
+  // Sprawdź czy to nie słowo szumowe (np. "TEST", "USER", "OPTIONS", "NATURAL")
   if (NOISE_WORDS.includes(upper)) {
     return null;
   }
 
   // 1. Sprawdź mapę literówek OCR
   if (OCR_TYPO_MAP[clean]) {
-    return OCR_TYPO_MAP[clean];
+    const sym = OCR_TYPO_MAP[clean];
+    if (ELEMENTS[sym] && !ELEMENTS[sym].isLightElement) return sym;
   }
   if (OCR_TYPO_MAP[upper]) {
-    return OCR_TYPO_MAP[upper];
+    const sym = OCR_TYPO_MAP[upper];
+    if (ELEMENTS[sym] && !ELEMENTS[sym].isLightElement) return sym;
   }
 
   // 2. Standardowa wielkość (np. "fe" -> "Fe", "AL" -> "Al", "CR" -> "Cr")
   const titleCase = clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
   if (ELEMENTS[titleCase]) {
+    // Spektrometry ręczne XRF NIE wykrywają pierwiastków Z < 11 (O, C, N, H itd.)
+    // Wszelkie "O 11%" pochodzą ze złego odczytu daty (np. 11/16/26) lub ikonek
+    if (ELEMENTS[titleCase].isLightElement) {
+      return null;
+    }
     return titleCase;
   }
 
-  // 3. Pojedyncza wielka litera (np. "K", "S", "P", "W", "V", "U", "Y", "B", "C", "N", "O", "F")
+  // 3. Pojedyncza wielka litera (np. "K", "S", "P", "W", "V", "U", "Y")
   const singleUpper = clean.charAt(0).toUpperCase();
   if (clean.length === 1 && ELEMENTS[singleUpper]) {
+    if (ELEMENTS[singleUpper].isLightElement) {
+      return null;
+    }
     return singleUpper;
   }
 
@@ -317,6 +342,13 @@ export function parseXrfOcrText(rawText: string): DetectedElement[] {
 
     // Specjalna obsługa LOI (Loss on Ignition - straty prażenia / pierwiastki lekkie H2O + CO2)
     if (cleanSymUpper === 'LOI') {
+      resultsMap.set('LOI', {
+        id: `elem-LOI-${lineIdx}`,
+        symbol: 'LOI',
+        value: finalValue,
+        errorMargin: errStr ? parseFloat(errStr.replace(',', '.')) : undefined,
+        rawDetectedSymbol: 'LOI'
+      });
       return;
     }
 

@@ -63,6 +63,18 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
       if (topMatch.polymorphInfo?.isPolymorph) {
         report += `*Wskazówka rozstrzygnięcia polimorfów*: ${topMatch.polymorphInfo.distinctionTip}\n\n`;
       }
+      if (topMatch.isomorphicSubstitutions && topMatch.isomorphicSubstitutions.length > 0) {
+        topMatch.isomorphicSubstitutions.forEach((iso) => {
+          report += `*Podstawienie izomorficzne*: ${iso.seriesName} (${iso.substitutedElement}: ${iso.percent}% za ${iso.targetElement})\n`;
+        });
+        report += `\n`;
+      }
+      if (topMatch.matrixInclusions && topMatch.matrixInclusions.length > 0) {
+        topMatch.matrixInclusions.forEach((mat) => {
+          report += `*Domieszka matrycy skały*: ${mat.symbol}: ${mat.percent}% (${mat.mineralSource})\n`;
+        });
+        report += `\n`;
+      }
     } else {
       report += `[STATUS]: ODRZUCONY // BRAK MINERAŁU W BAZIE\n`;
       report += `Żaden z 1022 minerałów makroskopowych nie odpowiada próbce w zadanych widełkach błędu.\n`;
@@ -336,6 +348,35 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* DOMIESZKI MATRYCY SKAŁY MACIERZYSTEJ I PODSTAWIENIA IZOMORFICZNE */}
+          {((topMatch.matrixInclusions && topMatch.matrixInclusions.length > 0) ||
+            (topMatch.isomorphicSubstitutions && topMatch.isomorphicSubstitutions.length > 0)) && (
+            <div className="p-3.5 rounded border-2 border-stone-800 bg-[#faf8f3] space-y-2 text-xs font-mono">
+              <div className="flex items-center gap-2 font-black uppercase text-stone-900 tracking-wide">
+                <Layers className="w-4 h-4 text-stone-700" />
+                <span>Naturalny kontekst geologiczny próbki:</span>
+              </div>
+
+              {topMatch.isomorphicSubstitutions?.map((iso, i) => (
+                <div key={i} className="flex items-start gap-2 text-emerald-950 bg-emerald-50/80 p-2 rounded border border-emerald-700">
+                  <Sparkles className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
+                  <div>
+                    <b>Podstawienie izomorficzne:</b> {iso.seriesName} — wykryto <b>{iso.substitutedElement}: {iso.percent}%</b> zastępujące {iso.targetElement} w sieci krystalicznej.
+                  </div>
+                </div>
+              ))}
+
+              {topMatch.matrixInclusions?.map((mat, i) => (
+                <div key={i} className="flex items-start gap-2 text-stone-900 bg-stone-100 p-2 rounded border border-stone-400">
+                  <span className="stamp-blue text-[10px] py-0.5 px-1.5 shrink-0">Matryca</span>
+                  <div>
+                    <b>Domieszka skały macierzystej:</b> pierwiastek <b>{mat.symbol}: {mat.percent}%</b> ({mat.mineralSource}).
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
