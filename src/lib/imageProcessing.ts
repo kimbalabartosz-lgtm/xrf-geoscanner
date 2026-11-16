@@ -3,7 +3,7 @@ import { PreprocessingOptions } from '@/types';
 /**
  * Oblicza optymalny próg binaryzacji metodą Otsu (automatyczny threshold)
  */
-function calculateOtsuThreshold(grayData: Uint8ClampedArray): number {
+export function calculateOtsuThreshold(grayData: Uint8ClampedArray): number {
   const histogram = new Array(256).fill(0);
   const totalPixels = grayData.length / 4;
 
@@ -44,30 +44,22 @@ function calculateOtsuThreshold(grayData: Uint8ClampedArray): number {
 }
 
 /**
- * Przetwarza obraz w Canvasie:
- * - Inteligentne przeskalowanie (Super-Resolution x1.5-x2.5 dla małych zdjęć, by nie gubić kropek dziesiętnych)
- * - Obrót (90, 180, 270 deg)
- * - Skala szarości (luminancja ITU-R BT.601)
- * - Podbicie kontrastu i jasności
- * - Opcjonalny thresholding (binaryzacja czarno-biała)
+ * Rysuje obraz na Canvasie z inteligentnym skalowaniem Super-Resolution:
+ * Jeśli obraz ma mniej niż 1600px na dłuższym boku, skaluje go dwuliniowo x1.5-x2.5,
+ * dzięki czemu 1-pikselowe kropki dziesiętne stają się wyraźnymi punktami.
  */
-export function preprocessImage(
+function createScaledRotatedCanvas(
   imageSource: HTMLImageElement | HTMLCanvasElement,
-  options: PreprocessingOptions
-): { canvas: HTMLCanvasElement; dataUrl: string } {
+  rotation: number = 0
+): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) throw new Error('Nie udało się utworzyć kontekstu 2D Canvas');
-
-  const { rotation, contrast, brightness, threshold, grayscale, invert } = options;
 
   const isRotated = rotation === 90 || rotation === 270;
   const originalWidth = imageSource.width;
   const originalHeight = imageSource.height;
 
-  // Przeskalowanie rozdzielczości (Super-Resolution dla małych zrzutów ekranu i zdjęć z telefonu):
-  // Gdy obraz ma mniej niż 1600px na dłuższym boku, kropki w ułamkach (np. 10.38) mają zaledwie 1px
-  // i giną w OCR. Skalowanie dwuliniowe x1.5-x2.5 powiększa kropki do stabilnych plamek 4-9px.
   let scale = 1;
   const maxDim = Math.max(originalWidth, originalHeight);
   if (maxDim < 1600 && maxDim > 0) {
@@ -83,7 +75,6 @@ export function preprocessImage(
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
 
-  // Transformacja obrotu i skali
   ctx.save();
   ctx.translate(canvas.width / 2, canvas.height / 2);
   ctx.rotate((rotation * Math.PI) / 180);
@@ -97,7 +88,112 @@ export function preprocessImage(
   );
   ctx.restore();
 
-  // Pobierz dane pikseli do manipulacji
+  return { canvas, ctx };
+}
+
+/**
+ * AUTOMATYCZNE PRZETWARZANIE OBRAZU (Auto-Levels + Auto-Invert + Super-Resolution):
+ * 1. Automatycznie wykrywa ciemne tło (tryb ciemny ekranu) i odwraca kolory.
+ * 2. Analizuje histogram luminancji i dynamicznie rozciąga poziomy (Auto-Levels 2% - 98%).
+ *    Dzięki temu tekst staje się głęboko czarny, a tło czysto białe bez niszczenia antyaliasingu
+ *    i bez zjadania pojedynczych kropek dziesiętnych.
+ * 3. Opcjonalnie binaryzuje metodą Otsu (gdy mode === 'auto-otsu').
+ */
+export function autoPreprocessImage(
+  imageSource: HTMLImageElement | HTMLCanvasElement,
+  mode: 'auto-levels' | 'auto-otsu' = 'auto-levels',
+  rotation: number = 0
+): { canvas: HTMLCanvasElement; dataUrl: string; isInverted: boolean } {
+  const { canvas, ctx } = createScaledRotatedCanvas(imageSource, rotation);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+  const totalPixels = data.length / 4;
+
+  const histogram = new Array(256).fill(0);
+  let totalLuminance = 0;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
+    histogram[gray]++;
+    totalLuminance += gray;
+  }
+
+  const meanLuminance = totalLuminance / totalPixels;
+  // Jeśli średnia jasność jest poniżej 120, ekran ma ciemne tło (jasne litery na czerni)
+  const shouldInvert = meanLuminance < 120;
+
+  // Znajdź 1.5-ty i 98.5-ty percentyl jasności do rozciągnięcia poziomów
+  const lowCutoff = Math.floor(totalPixels * 0.015);
+  const highCutoff = Math.floor(totalPixels * 0.985);
+
+  let accumulated = 0;
+  let minVal = 0;
+  let maxVal = 255;
+
+  for (let i = 0; i < 256; i++) {
+    accumulated += histogram[i];
+    if (accumulated >= lowCutoff && minVal === 0) {
+      minVal = i;
+    }
+    if (accumulated >= highCutoff) {
+      maxVal = i;
+      break;
+    }
+  }
+
+  if (maxVal <= minVal + 10) {
+    minVal = 0;
+    maxVal = 255;
+  }
+
+  const range = maxVal - minVal;
+
+  // Krok 1: Konwersja na skalę szarości + Auto-Levels
+  for (let i = 0; i < data.length; i += 4) {
+    let gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+    if (shouldInvert) {
+      gray = 255 - gray;
+    }
+
+    // Rozciągnij dynamicznie zakres do [0, 255]
+    let normalized = Math.round(((gray - minVal) / range) * 255);
+    normalized = Math.max(0, Math.min(255, normalized));
+
+    data[i] = normalized;
+    data[i + 1] = normalized;
+    data[i + 2] = normalized;
+  }
+
+  // Krok 2: Opcjonalne Otsu jeśli wybrano tryb 'auto-otsu'
+  if (mode === 'auto-otsu') {
+    const otsuThresh = calculateOtsuThreshold(data);
+    for (let i = 0; i < data.length; i += 4) {
+      const val = data[i] >= otsuThresh ? 255 : 0;
+      data[i] = val;
+      data[i + 1] = val;
+      data[i + 2] = val;
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+
+  return {
+    canvas,
+    dataUrl: canvas.toDataURL('image/png'),
+    isInverted: shouldInvert
+  };
+}
+
+/**
+ * Przetwarza obraz w Canvasie na podstawie ręcznych suwaków użytkownika
+ */
+export function preprocessImage(
+  imageSource: HTMLImageElement | HTMLCanvasElement,
+  options: PreprocessingOptions
+): { canvas: HTMLCanvasElement; dataUrl: string } {
+  const { rotation, contrast, brightness, threshold, grayscale, invert } = options;
+  const { canvas, ctx } = createScaledRotatedCanvas(imageSource, rotation);
+
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
 
@@ -106,38 +202,33 @@ export function preprocessImage(
   const contrastFactor = (259 * (c + 255)) / (255 * (259 - c));
   const b = Math.max(-100, Math.min(100, brightness));
 
-  // Krok 1: Skala szarości + Jasność + Kontrast
+  // Skala szarości + Jasność + Kontrast
   for (let i = 0; i < data.length; i += 4) {
     let r = data[i];
     let g = data[i + 1];
     let bVal = data[i + 2];
 
     if (grayscale || threshold > 0) {
-      // Skala szarości luminancji ITU-R BT.601
       const gray = 0.299 * r + 0.587 * g + 0.114 * bVal;
       r = gray;
       g = gray;
       bVal = gray;
     }
 
-    // Jasność
     r += b;
     g += b;
     bVal += b;
 
-    // Kontrast
     r = contrastFactor * (r - 128) + 128;
     g = contrastFactor * (g - 128) + 128;
     bVal = contrastFactor * (bVal - 128) + 128;
 
-    // Obcięcie do [0, 255]
     data[i] = Math.max(0, Math.min(255, r));
     data[i + 1] = Math.max(0, Math.min(255, g));
     data[i + 2] = Math.max(0, Math.min(255, bVal));
   }
 
-  // Krok 2: Thresholding (opcjonalna binaryzacja czarno-biała)
-  // Gdy threshold === 0, zachowujemy gładki grayscale z podbitym kontrastem (idealny dla LSTM OCR)
+  // Thresholding
   if (threshold > 0) {
     const finalThreshold = threshold === 1 ? calculateOtsuThreshold(data) : threshold;
 

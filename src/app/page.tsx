@@ -11,8 +11,9 @@ import { DetectedElement, MatchScore } from '@/types';
 import { SamplePreset } from '@/data/samplePresets';
 import { recognizeTextFromImage, OcrProgress } from '@/lib/ocr';
 import { parseXrfOcrText } from '@/lib/regexParser';
+import { autoPreprocessImage } from '@/lib/imageProcessing';
 import { identifyMinerals } from '@/lib/mineralMatcher';
-import { Microscope, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Sparkles, Loader2, RefreshCw } from 'lucide-react';
 
 export default function Home() {
   const [originalImage, setOriginalImage] = useState<string>('');
@@ -22,6 +23,7 @@ export default function Home() {
   const [detectedElements, setDetectedElements] = useState<DetectedElement[]>([]);
   const [results, setResults] = useState<MatchScore[]>([]);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
+  const [showAdvancedManual, setShowAdvancedManual] = useState<boolean>(false);
 
   // Obsługa wklejania ze schowka (Ctrl+V)
   useEffect(() => {
@@ -38,7 +40,8 @@ export default function Home() {
               const dataUrl = event.target?.result as string;
               if (dataUrl) {
                 setOriginalImage(dataUrl);
-                showNotification('Wklejono zdjęcie ze schowka!', 'success');
+                showNotification('Wklejono zdjęcie ze schowka! Uruchamiam automatyczną ekstrakcję...', 'info');
+                runAutoScanPipeline(dataUrl);
               }
             };
             reader.readAsDataURL(file);
@@ -56,14 +59,91 @@ export default function Home() {
     setNotification({ message, type });
     setTimeout(() => {
       setNotification((curr) => (curr?.message === message ? null : curr));
-    }, 4000);
+    }, 5000);
+  };
+
+  /**
+   * AUTOMATYCZNY PIPELINE EKSTRAKCJI (Auto-Levels + Super-Resolution + Multi-Pass OCR)
+   * Uruchamia się natychmiast po zrobieniu zdjęcia aparatem lub wgraniu pliku.
+   */
+  const runAutoScanPipeline = async (imageSrc: string) => {
+    setIsOcrRunning(true);
+    setResults([]);
+    setOcrProgress({ status: '⚡ Automatyczna optymalizacja kontrastu i poziomów (Auto-Levels)...', progress: 10 });
+
+    try {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error('Nie udało się załadować zdjęcia'));
+        img.src = imageSrc;
+      });
+
+      // Przebieg 1: Auto-Levels Grayscale z Super-Resolution (zachowuje kropki i antyaliasing)
+      setOcrProgress({ status: '⚡ Skanowanie spektrogramu XRF (Przebieg 1: Auto-Grayscale)...', progress: 30 });
+      const pass1 = autoPreprocessImage(img, 'auto-levels', 0);
+
+      const textPass1 = await recognizeTextFromImage(pass1.canvas, (p) => {
+        setOcrProgress({
+          status: `Rozpoznawanie tekstu Tesseract OCR: ${p.progress}%`,
+          progress: 30 + Math.round(p.progress * 0.45)
+        });
+      });
+
+      let parsed = parseXrfOcrText(textPass1);
+      let finalText = textPass1;
+
+      // Jeśli Przebieg 1 wykrył mniej niż 2 pierwiastki (np. przez silne odblaski lub specyficzny ekran),
+      // uruchamiamy automatyczny Przebieg 2 (Otsu Adaptive Binarization)
+      if (parsed.length < 2) {
+        setOcrProgress({ status: '⚡ Przebieg 2: Adaptacyjna binaryzacja Otsu...', progress: 75 });
+        const pass2 = autoPreprocessImage(img, 'auto-otsu', 0);
+        const textPass2 = await recognizeTextFromImage(pass2.canvas, (p) => {
+          setOcrProgress({
+            status: `Skanowanie OCR (Przebieg 2): ${p.progress}%`,
+            progress: 75 + Math.round(p.progress * 0.2)
+          });
+        });
+        const parsed2 = parseXrfOcrText(textPass2);
+        if (parsed2.length > parsed.length) {
+          parsed = parsed2;
+          finalText = textPass2;
+        }
+      }
+
+      setRawOcrText(finalText);
+      setDetectedElements(parsed);
+
+      if (parsed.length > 0) {
+        showNotification(
+          `⚡ Sukces! Automatycznie wyodrębniono ${parsed.length} pierwiastków (${parsed.map((e) => e.symbol).join(', ')})`,
+          'success'
+        );
+        const matches = identifyMinerals(parsed);
+        setResults(matches);
+      } else {
+        showNotification(
+          'OCR nie wykrył pierwiastków automatycznie. Otwórz panel ręcznej regulacji poniżej, aby dostosować podgląd.',
+          'info'
+        );
+        setShowAdvancedManual(true);
+      }
+    } catch (err: unknown) {
+      console.error('Błąd automatycznego OCR:', err);
+      const errMsg = err instanceof Error ? err.message : String(err);
+      showNotification(`Błąd automatycznego rozpoznawania: ${errMsg}`, 'error');
+      setShowAdvancedManual(true);
+    } finally {
+      setIsOcrRunning(false);
+      setOcrProgress(null);
+    }
   };
 
   // Wybór obrazu z aparatu lub pliku
   const handleImageSelected = (dataUrl: string) => {
     setOriginalImage(dataUrl);
-    setResults([]);
-    showNotification('Zdjęcie załadowane. Dostosuj podgląd i uruchom OCR.', 'info');
+    runAutoScanPipeline(dataUrl);
   };
 
   // Wybór gotowej próbki testowej
@@ -75,8 +155,8 @@ export default function Home() {
     showNotification(`Załadowano wzorzec: ${preset.name}`, 'success');
   };
 
-  // Uruchomienie OCR Tesseract.js po przetworzeniu w Canvasie
-  const handleStartOcr = async (processedDataUrl: string) => {
+  // Ręczne ponowne uruchomienie OCR po manualnych zmianach w Canvasie
+  const handleStartOcrManual = async (processedDataUrl: string) => {
     setIsOcrRunning(true);
     setOcrProgress({ status: 'Przygotowanie Tesseract.js...', progress: 0 });
 
@@ -86,26 +166,20 @@ export default function Home() {
       });
 
       setRawOcrText(text);
-
-      // Parsowanie tekstu za pomocą Regex
       const parsed = parseXrfOcrText(text);
       setDetectedElements(parsed);
 
       if (parsed.length > 0) {
-        showNotification(`Pomyślnie wyodrębniono ${parsed.length} pierwiastków ze zdjęcia!`, 'success');
-        // Automatyczna wstępna identyfikacja
+        showNotification(`Pomyślnie wyodrębniono ${parsed.length} pierwiastków!`, 'success');
         const matches = identifyMinerals(parsed);
         setResults(matches);
       } else {
-        showNotification(
-          'OCR nie wykrył symboli pierwiastków z liczbami. Sprawdź suwak Threshold lub podgląd surowego tekstu.',
-          'info'
-        );
+        showNotification('Nie wykryto pierwiastków. Sprawdź podgląd surowego tekstu.', 'info');
       }
     } catch (err: unknown) {
       console.error('Błąd OCR:', err);
       const errMsg = err instanceof Error ? err.message : String(err);
-      showNotification(`Błąd rozpoznawania tekstu: ${errMsg}`, 'error');
+      showNotification(`Błąd rozpoznawania: ${errMsg}`, 'error');
     } finally {
       setIsOcrRunning(false);
       setOcrProgress(null);
@@ -167,11 +241,68 @@ export default function Home() {
           hasActiveImage={Boolean(originalImage)}
         />
 
-        {/* Krok 2: Wstępne przetwarzanie Canvas (High-Contrast B&W) & OCR */}
-        {originalImage && (
+        {/* Status automatycznego skanowania OCR */}
+        {isOcrRunning && ocrProgress && (
+          <div className="mt-4 p-4 rounded-2xl bg-slate-900 border border-cyan-800/80 shadow-2xl animate-pulse">
+            <div className="flex justify-between items-center text-xs mb-2">
+              <span className="text-cyan-300 font-semibold flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                {ocrProgress.status}
+              </span>
+              <span className="text-cyan-400 font-mono font-bold text-sm">
+                {ocrProgress.progress}%
+              </span>
+            </div>
+            <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-500 h-full transition-all duration-300"
+                style={{ width: `${ocrProgress.progress}%` }}
+              />
+            </div>
+            <p className="text-[11px] text-slate-400 mt-2">
+              Automatyczny silnik Auto-Levels analizuje histogram, wyostrza cyfry LCD i rekonstruuje kropki dziesiętne.
+            </p>
+          </div>
+        )}
+
+        {/* Przycisk rozwijania zaawansowanego podglądu Canvas / ręcznej regulacji */}
+        {originalImage && !isOcrRunning && (
+          <div className="mt-4 flex justify-between items-center bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
+            <div className="flex items-center gap-2 text-xs text-slate-300">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span>
+                {detectedElements.length > 0
+                  ? `Automatycznie wyodrębniono ${detectedElements.length} pierwiastków.`
+                  : 'Zdjęcie załadowane.'}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => runAutoScanPipeline(originalImage)}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-medium rounded-lg border border-slate-700 transition-colors flex items-center gap-1.5"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Przeskanuj ponownie</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowAdvancedManual(!showAdvancedManual)}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition-colors"
+              >
+                {showAdvancedManual ? 'Ukryj suwaki i podgląd' : 'Ręczne suwaki i obrót'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Krok 2: Zaawansowane narzędzia Canvas (widoczne po rozwinięciu lub przy braku odczytu) */}
+        {originalImage && showAdvancedManual && (
           <ImageCanvasPreprocessor
             originalImageSrc={originalImage}
-            onProcessedReadyForOcr={handleStartOcr}
+            onProcessedReadyForOcr={handleStartOcrManual}
             isOcrRunning={isOcrRunning}
             ocrProgress={ocrProgress}
           />
@@ -206,7 +337,7 @@ export default function Home() {
             <span>Aplikacja Next.js &amp; Tailwind CSS</span>
           </div>
           <p className="text-[11px] text-slate-500">
-            Fizyka XRF: pierwiastki Z &ge; 11 | Silnik stechiometryczny z bazą 63 minerałów
+            Fizyka XRF: pierwiastki Z &ge; 11 | Silnik stechiometryczny z bazą 1022 minerałów makroskopowych i tolerancją &plusmn;2%
           </p>
         </div>
       </footer>
