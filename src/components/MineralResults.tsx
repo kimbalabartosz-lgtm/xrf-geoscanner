@@ -54,7 +54,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
               4. Wyniki identyfikacji minerałów makroskopowych
             </h2>
             <span className="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
-              Baza 104 minerałów (Tolerancja ±2%)
+              Baza 1022 minerałów (Tolerancja ±2%)
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-0.5">
