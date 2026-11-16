@@ -99,18 +99,40 @@ const OCR_TYPO_MAP: Record<string, string> = {
   U0: 'U'
 };
 
-// Masy molowe do przeliczenia tlenków na czysty pierwiastek metaliczny
-const OXIDE_FACTORS: Record<string, { element: string; factor: number }> = {
-  SIO2: { element: 'Si', factor: 28.085 / 60.083 }, // ~0.4674
-  AL2O3: { element: 'Al', factor: (26.9815 * 2) / 101.96 }, // ~0.5292
-  FE2O3: { element: 'Fe', factor: (55.845 * 2) / 159.69 }, // ~0.6994
-  FEO: { element: 'Fe', factor: 55.845 / 71.844 }, // ~0.7773
-  CAO: { element: 'Ca', factor: 40.078 / 56.077 }, // ~0.7147
-  MGO: { element: 'Mg', factor: 24.305 / 40.304 }, // ~0.6030
-  TIO2: { element: 'Ti', factor: 47.867 / 79.866 }, // ~0.5993
-  MNO: { element: 'Mn', factor: 54.938 / 70.937 }, // ~0.7745
-  K2O: { element: 'K', factor: (39.0983 * 2) / 94.2 }, // ~0.8301
-  NA2O: { element: 'Na', factor: (22.9897 * 2) / 61.98 } // ~0.7419
+// Masy molowe i współczynniki stechiometryczne do przeliczenia tlenków na czyste pierwiastki
+const OXIDE_FACTORS: Record<string, { element: string; factor: number; formulaLabel: string }> = {
+  SIO2: { element: 'Si', factor: 28.085 / 60.083, formulaLabel: 'SiO₂' },
+  AL2O3: { element: 'Al', factor: (26.9815 * 2) / 101.96, formulaLabel: 'Al₂O₃' },
+  FE2O3: { element: 'Fe', factor: (55.845 * 2) / 159.69, formulaLabel: 'Fe₂O₃' },
+  FEO: { element: 'Fe', factor: 55.845 / 71.844, formulaLabel: 'FeO' },
+  CAO: { element: 'Ca', factor: 40.078 / 56.077, formulaLabel: 'CaO' },
+  MGO: { element: 'Mg', factor: 24.305 / 40.304, formulaLabel: 'MgO' },
+  TIO2: { element: 'Ti', factor: 47.867 / 79.866, formulaLabel: 'TiO₂' },
+  MNO: { element: 'Mn', factor: 54.938 / 70.937, formulaLabel: 'MnO' },
+  K2O: { element: 'K', factor: (39.0983 * 2) / 94.2, formulaLabel: 'K₂O' },
+  NA2O: { element: 'Na', factor: (22.9897 * 2) / 61.98, formulaLabel: 'Na₂O' },
+  BAO: { element: 'Ba', factor: 137.33 / 153.33, formulaLabel: 'BaO' },
+  P2O5: { element: 'P', factor: (30.974 * 2) / 141.94, formulaLabel: 'P₂O₅' },
+  SO2: { element: 'S', factor: 32.065 / 64.06, formulaLabel: 'SO₂' },
+  SO3: { element: 'S', factor: 32.065 / 80.06, formulaLabel: 'SO₃' },
+  CR2O3: { element: 'Cr', factor: (51.996 * 2) / 151.99, formulaLabel: 'Cr₂O₃' },
+  V2O5: { element: 'V', factor: (50.9415 * 2) / 181.88, formulaLabel: 'V₂O₅' },
+  ZRO2: { element: 'Zr', factor: 91.224 / 123.22, formulaLabel: 'ZrO₂' },
+  ZNO: { element: 'Zn', factor: 65.38 / 81.38, formulaLabel: 'ZnO' },
+  CUO: { element: 'Cu', factor: 63.546 / 79.55, formulaLabel: 'CuO' },
+  PBO: { element: 'Pb', factor: 207.2 / 223.2, formulaLabel: 'PbO' },
+  NIO: { element: 'Ni', factor: 58.69 / 74.69, formulaLabel: 'NiO' },
+  COO: { element: 'Co', factor: 58.93 / 74.93, formulaLabel: 'CoO' },
+  SRO: { element: 'Sr', factor: 87.62 / 103.62, formulaLabel: 'SrO' },
+  RB2O: { element: 'Rb', factor: (85.47 * 2) / 186.94, formulaLabel: 'Rb₂O' },
+  Y2O3: { element: 'Y', factor: (88.91 * 2) / 225.81, formulaLabel: 'Y₂O₃' },
+  NB2O5: { element: 'Nb', factor: (92.91 * 2) / 265.81, formulaLabel: 'Nb₂O₅' },
+  MOO3: { element: 'Mo', factor: 95.95 / 143.94, formulaLabel: 'MoO₃' },
+  WO3: { element: 'W', factor: 183.84 / 231.84, formulaLabel: 'WO₃' },
+  AS2O3: { element: 'As', factor: (74.92 * 2) / 197.84, formulaLabel: 'As₂O₃' },
+  THO2: { element: 'Th', factor: 232.04 / 264.04, formulaLabel: 'ThO₂' },
+  UO2: { element: 'U', factor: 238.03 / 270.03, formulaLabel: 'UO₂' },
+  U3O8: { element: 'U', factor: (238.03 * 3) / 842.08, formulaLabel: 'U₃O₈' }
 };
 
 // Słowa kluczowe nagłówków i metadanych spektrometrów do odrzucenia
@@ -290,8 +312,14 @@ export function parseXrfOcrText(rawText: string): DetectedElement[] {
     // Rekonstrukcja brakującej kropki dziesiętnej
     const finalValue = reconstructMissingDecimal(valStr, rawNum, hasPpm);
 
-    // Sprawdź czy to nie tlenek (np. SiO2)
+    // Sprawdź czy to nie tlenek (np. SiO2, Al2O3, Fe2O3, CaO, K2O, BaO...)
     const cleanSymUpper = rawSym.replace(/[\(\)\[\]%:|\-=_,\.]/g, '').toUpperCase();
+
+    // Specjalna obsługa LOI (Loss on Ignition - straty prażenia / pierwiastki lekkie H2O + CO2)
+    if (cleanSymUpper === 'LOI') {
+      return;
+    }
+
     if (OXIDE_FACTORS[cleanSymUpper]) {
       const oxide = OXIDE_FACTORS[cleanSymUpper];
       const converted = parseFloat((finalValue * oxide.factor).toFixed(2));
@@ -300,7 +328,10 @@ export function parseXrfOcrText(rawText: string): DetectedElement[] {
         symbol: oxide.element,
         value: converted,
         errorMargin: errStr ? parseFloat(errStr.replace(',', '.')) : undefined,
-        rawDetectedSymbol: rawSym
+        rawDetectedSymbol: rawSym,
+        isOxideConverted: true,
+        originalOxideSymbol: oxide.formulaLabel,
+        originalOxideValue: finalValue
       });
       return;
     }

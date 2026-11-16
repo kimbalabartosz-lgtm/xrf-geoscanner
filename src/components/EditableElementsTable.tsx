@@ -288,6 +288,11 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
                         className="w-24 px-2 py-1 bg-[#faf8f3] border-2 border-stone-400 rounded font-bold text-stone-900 focus:outline-none focus:border-stone-900 text-sm"
                         placeholder="np. Fe"
                       />
+                      {el.isOxideConverted && el.originalOxideSymbol && (
+                        <span className="text-[10px] text-stone-500 font-serif italic block mt-0.5">
+                          (z tlenku {el.originalOxideSymbol}: {el.originalOxideValue}%)
+                        </span>
+                      )}
                     </td>
                     <td className="py-2 px-4">
                       <div className="flex items-center gap-1.5">

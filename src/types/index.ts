@@ -13,6 +13,9 @@ export interface DetectedElement {
   value: number; // w % wagowych
   errorMargin?: number; // +/- niepewność pomiarowa
   rawDetectedSymbol?: string;
+  isOxideConverted?: boolean; // Czy wartość powstała z przeliczenia tlenku (np. SiO2 -> Si)
+  originalOxideSymbol?: string; // np. "SiO2"
+  originalOxideValue?: number; // np. 64.6
 }
 
 export interface MineralDiagnostic {

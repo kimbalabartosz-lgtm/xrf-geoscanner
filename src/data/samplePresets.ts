@@ -9,6 +9,20 @@ export interface SamplePreset {
 
 export const SAMPLE_PRESETS: SamplePreset[] = [
   {
+    id: 'mining-oxides-sample',
+    name: 'Mining Oxides (Tryb tlenkowy geologiczny)',
+    description: 'Przeliczone tlenki skał magmowych/ilastych: SiO₂ 64.6%, Al₂O₃ 14.4%, Fe₂O₃ 5.5%, CaO 2.7%, K₂O 2.6%, MgO 1.8%, LOI 7.2%',
+    elements: [
+      { id: '1', symbol: 'Si', value: 30.2, errorMargin: 0.3, isOxideConverted: true, originalOxideSymbol: 'SiO₂', originalOxideValue: 64.6 },
+      { id: '2', symbol: 'Al', value: 7.62, errorMargin: 0.3, isOxideConverted: true, originalOxideSymbol: 'Al₂O₃', originalOxideValue: 14.4 },
+      { id: '3', symbol: 'Fe', value: 3.85, errorMargin: 0.03, isOxideConverted: true, originalOxideSymbol: 'Fe₂O₃', originalOxideValue: 5.5 },
+      { id: '4', symbol: 'K', value: 2.16, errorMargin: 0.03, isOxideConverted: true, originalOxideSymbol: 'K₂O', originalOxideValue: 2.6 },
+      { id: '5', symbol: 'Ca', value: 1.93, errorMargin: 0.024, isOxideConverted: true, originalOxideSymbol: 'CaO', originalOxideValue: 2.7 },
+      { id: '6', symbol: 'Mg', value: 1.09, errorMargin: 0.6, isOxideConverted: true, originalOxideSymbol: 'MgO', originalOxideValue: 1.8 },
+      { id: '7', symbol: 'Ti', value: 0.36, errorMargin: 0.012, isOxideConverted: true, originalOxideSymbol: 'TiO₂', originalOxideValue: 0.61 }
+    ]
+  },
+  {
     id: 'pyrite-sample',
     name: 'Piryt (FeS₂)',
     description: 'Typowy odczyt XRF z próbki pirytu ze złoża polimetalicznego',
