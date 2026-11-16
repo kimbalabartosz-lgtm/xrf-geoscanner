@@ -19,9 +19,9 @@ export const ImageCanvasPreprocessor: React.FC<ImageCanvasPreprocessorProps> = (
   ocrProgress
 }) => {
   const [options, setOptions] = useState<PreprocessingOptions>({
-    contrast: 45, // Optymalny kontrast dla cyfr i tekstu
+    contrast: 45,
     brightness: 0,
-    threshold: 0, // 0 = płynny grayscale z zachowaniem kropek dziesiętnych
+    threshold: 0,
     grayscale: true,
     invert: false,
     rotation: 0
@@ -31,7 +31,6 @@ export const ImageCanvasPreprocessor: React.FC<ImageCanvasPreprocessorProps> = (
   const [processedDataUrl, setProcessedDataUrl] = useState<string>('');
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  // Renderowanie canvasa przy zmianie opcji lub obrazka
   useEffect(() => {
     if (!originalImageSrc) return;
 
@@ -57,238 +56,163 @@ export const ImageCanvasPreprocessor: React.FC<ImageCanvasPreprocessorProps> = (
   };
 
   const handleAutoThreshold = () => {
-    // 1 to flaga dla metody Otsu w naszym module preprocessImage
     setOptions((prev) => ({
       ...prev,
-      threshold: 1,
-      contrast: 50,
-      grayscale: true
+      threshold: 1
     }));
   };
 
-  const handleStartOcr = () => {
-    if (processedDataUrl) {
-      onProcessedReadyForOcr(processedDataUrl);
-    }
-  };
+  if (!originalImageSrc) return null;
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl mt-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div className="notebook-sheet rounded-lg p-5 mt-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-stone-300">
         <div>
-          <h2 className="text-base font-semibold text-white flex items-center gap-2">
-            <Sliders className="w-5 h-5 text-cyan-400" />
-            2. Wstępne przetwarzanie Canvas (High-Contrast B&W)
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Eliminacja odblasków szybki spektrometru i wyostrzenie cyfrowej czcionki LCD
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs font-bold bg-stone-900 text-stone-100 px-2 py-0.5 rounded">
+              MODUŁ OPTYCZNY
+            </span>
+            <h2 className="text-base font-black text-stone-900 uppercase font-mono tracking-tight flex items-center gap-2">
+              <Sliders className="w-4 h-4 text-stone-700" />
+              Podgląd i filtry obrazu spektrometru
+            </h2>
+          </div>
+          <p className="text-xs text-stone-600 font-serif italic mt-0.5">
+            Dostosuj kontrast i binaryzację w Canvasie w przypadku trudnych odblasków ekranu
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Przełącznik widoku: Przetworzony vs Oryginał */}
-          <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
-            <button
-              type="button"
-              onClick={() => setActiveTab('processed')}
-              className={`px-3 py-1 rounded-md transition-all font-medium ${
-                activeTab === 'processed'
-                  ? 'bg-emerald-600 text-white shadow'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Podgląd B&W
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('original')}
-              className={`px-3 py-1 rounded-md transition-all font-medium ${
-                activeTab === 'original'
-                  ? 'bg-slate-800 text-white shadow'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Oryginał
-            </button>
-          </div>
-
-          {/* Obróć zdjęcie */}
           <button
             type="button"
-            onClick={handleRotate}
-            title="Obróć o 90 stopni"
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition-colors"
+            onClick={() => setActiveTab('processed')}
+            className={`px-3 py-1 text-xs font-mono font-bold rounded border-2 transition-all ${
+              activeTab === 'processed'
+                ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-sm'
+                : 'bg-[#ffffff] text-stone-700 border-stone-300 hover:border-stone-800'
+            }`}
           >
-            <RotateCw className="w-4 h-4" />
+            Filtr OCR (Canvas)
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('original')}
+            className={`px-3 py-1 text-xs font-mono font-bold rounded border-2 transition-all ${
+              activeTab === 'original'
+                ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-sm'
+                : 'bg-[#ffffff] text-stone-700 border-stone-300 hover:border-stone-800'
+            }`}
+          >
+            Zdjęcie oryginalne
           </button>
         </div>
       </div>
 
-      {/* Podgląd obrazu */}
-      <div className="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800 flex items-center justify-center min-h-[260px] max-h-[440px]">
-        {activeTab === 'processed' ? (
-          processedDataUrl ? (
-            <img
-              src={processedDataUrl}
-              alt="Przetworzony spektrogram XRF"
-              className="max-h-[420px] w-auto object-contain select-none"
-            />
-          ) : (
-            <div className="text-xs text-slate-500">Przetwarzanie w toku...</div>
-          )
-        ) : (
-          <img
-            src={originalImageSrc}
-            alt="Oryginał zdjęcia"
-            className="max-h-[420px] w-auto object-contain select-none"
-            style={{ transform: `rotate(${options.rotation}deg)` }}
-          />
-        )}
-
-        {/* Wskaźnik obrotu */}
-        {options.rotation > 0 && (
-          <span className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm border border-slate-700 text-slate-300 text-[10px] px-2 py-0.5 rounded">
-            Obrót: {options.rotation}°
-          </span>
-        )}
-      </div>
-
-      {/* Suwaki i parametry regulacji */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 bg-slate-950/50 p-4 rounded-xl border border-slate-800/80">
-        {/* Suwak Threshold */}
-        <div>
-          <div className="flex justify-between items-center text-xs mb-1">
-            <span className="text-slate-300 font-medium">
-              Próg czerni i bieli (Threshold)
-            </span>
-            <span className="text-emerald-400 font-mono">
-              {options.threshold === 0
-                ? '0 (Grayscale)'
-                : options.threshold === 1
-                ? 'Auto (Otsu)'
-                : options.threshold}
-            </span>
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="255"
-            value={options.threshold === 1 ? 128 : options.threshold}
-            onChange={(e) =>
-              setOptions((prev) => ({ ...prev, threshold: Number(e.target.value) }))
-            }
-            className="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
-          />
-          <div className="flex justify-between items-center mt-1">
-            <button
-              type="button"
-              onClick={() =>
-                setOptions((prev) => ({
-                  ...prev,
-                  threshold: 0,
-                  contrast: 45,
-                  grayscale: true
-                }))
-              }
-              className="text-[10px] text-emerald-400 hover:text-emerald-300 font-medium underline"
-            >
-              ✨ Grayscale (Kropki LCD)
-            </button>
-            <button
-              type="button"
-              onClick={handleAutoThreshold}
-              className="text-[10px] text-cyan-400 hover:text-cyan-300 font-medium underline"
-            >
-              🏁 Auto Otsu B&W
-            </button>
-          </div>
-        </div>
-
-        {/* Suwak Kontrastu */}
-        <div>
-          <div className="flex justify-between items-center text-xs mb-1">
-            <span className="text-slate-300 font-medium">Podbicie kontrastu</span>
-            <span className="text-cyan-400 font-mono">+{options.contrast}%</span>
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={options.contrast}
-            onChange={(e) =>
-              setOptions((prev) => ({ ...prev, contrast: Number(e.target.value) }))
-            }
-            className="w-full accent-cyan-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
-          />
-          <div className="flex justify-between mt-1 text-[10px] text-slate-500">
-            <span>Naturalny</span>
-            <span>Maksimum</span>
-          </div>
-        </div>
-
-        {/* Opcje binarne */}
-        <div className="flex flex-col justify-center gap-2">
-          <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer select-none">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+        {/* Kontrolki filtrów */}
+        <div className="md:col-span-5 space-y-4 font-mono text-xs">
+          <div>
+            <div className="flex justify-between font-bold text-stone-800 mb-1">
+              <span>Próg czerni i bieli (Threshold)</span>
+              <span className="text-stone-900">{options.threshold === 0 ? 'Płynny Grayscale' : options.threshold}</span>
+            </div>
             <input
-              type="checkbox"
-              checked={options.invert}
+              type="range"
+              min="0"
+              max="255"
+              value={options.threshold}
               onChange={(e) =>
-                setOptions((prev) => ({ ...prev, invert: e.target.checked }))
+                setOptions((prev) => ({ ...prev, threshold: parseInt(e.target.value) }))
               }
-              className="rounded accent-emerald-500 bg-slate-800 border-slate-700"
+              className="w-full h-2 bg-stone-300 rounded cursor-pointer"
             />
-            <span>Odwróć kolory (Inwersja)</span>
-          </label>
-          <p className="text-[10px] text-slate-500">
-            Zaznacz, jeśli ekran wyświetlacza ma jasne litery na ciemnym tle.
-          </p>
-        </div>
-      </div>
-
-      {/* Pasek postępu OCR */}
-      {isOcrRunning && ocrProgress && (
-        <div className="mt-4 p-4 rounded-xl bg-slate-950 border border-cyan-800/60 shadow-lg">
-          <div className="flex justify-between text-xs mb-2">
-            <span className="text-cyan-300 font-medium flex items-center gap-2">
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-cyan-400" />
-              {ocrProgress.status}
-            </span>
-            <span className="text-cyan-400 font-mono font-bold">
-              {ocrProgress.progress}%
-            </span>
+            <div className="flex justify-between text-[10px] text-stone-500 mt-0.5">
+              <button
+                type="button"
+                onClick={handleAutoThreshold}
+                className="underline hover:text-stone-900 font-bold"
+              >
+                Włącz Auto Otsu
+              </button>
+              <span>0 - 255</span>
+            </div>
           </div>
-          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-emerald-500 to-cyan-500 h-full transition-all duration-200"
-              style={{ width: `${ocrProgress.progress}%` }}
+
+          <div>
+            <div className="flex justify-between font-bold text-stone-800 mb-1">
+              <span>Podbicie kontrastu</span>
+              <span className="text-stone-900">+{options.contrast}%</span>
+            </div>
+            <input
+              type="range"
+              min="-50"
+              max="100"
+              value={options.contrast}
+              onChange={(e) =>
+                setOptions((prev) => ({ ...prev, contrast: parseInt(e.target.value) }))
+              }
+              className="w-full h-2 bg-stone-300 rounded cursor-pointer"
             />
           </div>
-        </div>
-      )}
 
-      {/* Przycisk Start OCR */}
-      <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p className="text-xs text-slate-400">
-          Używa lokalnego Tesseract.js w WebAssembly z filtrem znaków (Whitelist: symbole, cyfry, %)
-        </p>
-        <button
-          type="button"
-          disabled={isOcrRunning || !processedDataUrl}
-          onClick={handleStartOcr}
-          className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 disabled:opacity-50 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all"
-        >
-          {isOcrRunning ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span>Analizowanie obrazu...</span>
-            </>
+          <div className="flex items-center justify-between pt-2 border-t border-stone-200">
+            <label className="flex items-center gap-2 cursor-pointer font-bold text-stone-800">
+              <input
+                type="checkbox"
+                checked={options.invert}
+                onChange={(e) =>
+                  setOptions((prev) => ({ ...prev, invert: e.target.checked }))
+                }
+                className="w-4 h-4 rounded border-stone-400 text-stone-900 focus:ring-0"
+              />
+              <span>Odwróć kolory (Inwersja)</span>
+            </label>
+            <button
+              type="button"
+              onClick={handleRotate}
+              className="p-1.5 rounded border border-stone-400 bg-stone-100 hover:bg-stone-200 text-stone-800"
+              title="Obróć o 90°"
+            >
+              <RotateCw className="w-4 h-4" />
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onProcessedReadyForOcr(processedDataUrl)}
+            disabled={isOcrRunning || !processedDataUrl}
+            className="w-full py-2.5 px-4 bg-stone-900 hover:bg-stone-800 text-stone-100 font-mono font-bold rounded text-xs flex items-center justify-center gap-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.3)] active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-40"
+          >
+            {isOcrRunning ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Analiza OCR w toku...</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4" />
+                <span>Wyodrębnij tekst z tego ujęcia (OCR)</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Podgląd Canvas / Zdjęcia */}
+        <div className="md:col-span-7 flex flex-col items-center justify-center p-3 border-2 border-stone-300 rounded bg-[#faf9f5]">
+          {activeTab === 'processed' ? (
+            <img
+              src={processedDataUrl || originalImageSrc}
+              alt="Przetworzone dla OCR"
+              className="max-h-72 object-contain rounded border border-stone-300 bg-white shadow-sm"
+            />
           ) : (
-            <>
-              <Play className="w-4 h-4 fill-current" />
-              <span>Wyodrębnij tekst (Tesseract OCR)</span>
-            </>
+            <img
+              src={originalImageSrc}
+              alt="Oryginał"
+              className="max-h-72 object-contain rounded border border-stone-300 bg-white shadow-sm"
+            />
           )}
-        </button>
+        </div>
       </div>
     </div>
   );

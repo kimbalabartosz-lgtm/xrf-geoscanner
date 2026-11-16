@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f3ec;
+  --foreground: #1c1917;
+  --paper: #ffffff;
+  --paper-tint: #faf8f3;
+  --ink: #1c1917;
+  --ink-muted: #57534e;
+  --rule-line: rgba(160, 150, 130, 0.22);
 }
 
 @theme inline {
@@ -12,15 +17,92 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background-color: var(--background);
+  background-image: 
+    linear-gradient(to right, var(--rule-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--rule-line) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Surowy styl kartki z notatnika / dziennika terenowego */
+.notebook-sheet {
+  background-color: #ffffff;
+  border: 2px solid #292524;
+  box-shadow: 3px 4px 0px rgba(41, 37, 36, 0.18);
+}
+
+.notebook-sheet-subtle {
+  background-color: #fcfbf7;
+  border: 1px solid #d6d3c7;
+  box-shadow: 2px 2px 0px rgba(41, 37, 36, 0.07);
+}
+
+/* Surowe stemple laboratoryjne (ink stamps) */
+.stamp-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 2px solid #991b1b;
+  color: #991b1b;
+  background-color: #fef2f2;
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.25rem;
+}
+
+.stamp-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 2px solid #166534;
+  color: #166534;
+  background-color: #f0fdf4;
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.25rem;
+}
+
+.stamp-amber {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 2px solid #b45309;
+  color: #92400e;
+  background-color: #fefce8;
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.25rem;
+}
+
+.stamp-blue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 2px solid #0369a1;
+  color: #075985;
+  background-color: #f0f9ff;
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.25rem;
+}
+
+/* Surowy suwak techniczny */
+input[type="range"] {
+  accent-color: #292524;
 }

@@ -3,7 +3,6 @@
 import React, { useRef } from 'react';
 import { Camera, Upload, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { SAMPLE_PRESETS, SamplePreset } from '@/data/samplePresets';
-import { DetectedElement } from '@/types';
 
 interface ImageUploaderProps {
   onImageSelected: (dataUrl: string) => void;
@@ -31,7 +30,6 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       }
     };
     reader.readAsDataURL(file);
-    // Reset wartości inputu, aby można było wybrać ten sam plik ponownie
     e.target.value = '';
   };
 
@@ -51,23 +49,26 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div className="notebook-sheet rounded-lg p-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-stone-300">
         <div>
-          <h2 className="text-base font-semibold text-white flex items-center gap-2">
-            <Camera className="w-5 h-5 text-emerald-400" />
-            1. Zdjęcie ekranu spektrometru XRF
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Zrób zdjęcie ekranu spektrometru aparatem lub wgraj zrzut ekranu
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs font-bold bg-stone-900 text-stone-100 px-2 py-0.5 rounded">
+              SEKCJA 01
+            </span>
+            <h2 className="text-base font-black text-stone-900 uppercase font-mono tracking-tight">
+              Zdjęcie ekranu spektrometru XRF
+            </h2>
+          </div>
+          <p className="text-xs text-stone-600 font-serif italic mt-0.5">
+            Zrób zdjęcie aparatem polowym lub wklej zrzut ekranu spektrometru (Ctrl+V)
           </p>
         </div>
 
         {/* Gotowe próbki */}
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-xs font-medium text-slate-400 flex items-center gap-1 mr-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            Próbki testowe:
+          <span className="text-xs font-mono font-semibold text-stone-600">
+            Wzorce testowe:
           </span>
           <select
             onChange={(e) => {
@@ -76,7 +77,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               e.target.value = '';
             }}
             defaultValue=""
-            className="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 hover:border-slate-600 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className="bg-[#faf8f3] text-xs text-stone-900 border-2 border-stone-700 rounded px-2.5 py-1 font-mono font-medium hover:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 cursor-pointer shadow-sm"
           >
             <option value="" disabled>Wybierz próbkę testową...</option>
             {SAMPLE_PRESETS.map((p) => (
@@ -105,37 +106,43 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         className="hidden"
       />
 
-      {/* Przyciski i strefa upuszczania */}
+      {/* Obszar przeciągania pliku / przyciski */}
       <div
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
-        className="border-2 border-dashed border-slate-700/80 hover:border-emerald-500/60 transition-colors rounded-xl p-6 text-center bg-slate-950/40"
+        className="border-2 border-dashed border-stone-400 hover:border-stone-800 rounded-lg p-6 bg-[#fbfaf5] transition-colors flex flex-col items-center justify-center text-center cursor-pointer"
+        onClick={() => fileInputRef.current?.click()}
       >
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          {/* Aparat mobilny (capture="environment") */}
+        <div className="w-12 h-12 rounded-full bg-stone-200 border border-stone-400 flex items-center justify-center text-stone-700 mb-3 shadow-inner">
+          <ImageIcon className="w-6 h-6" />
+        </div>
+
+        <p className="text-sm font-bold text-stone-900 font-mono">
+          Przeciągnij zdjęcie tutaj lub kliknij, aby wybrać z dysku
+        </p>
+        <p className="text-xs text-stone-500 font-serif italic mt-1">
+          Obsługuje zrzuty ekranu, zdjęcia pod kątem i ekrany z odblaskami (automatyczna korekcja Auto-Levels)
+        </p>
+
+        <div className="flex flex-wrap gap-3 mt-4" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
             onClick={() => cameraInputRef.current?.click()}
-            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 active:scale-95 transition-all"
+            className="px-4 py-2 bg-stone-900 hover:bg-stone-800 text-stone-100 rounded text-xs font-mono font-bold flex items-center gap-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.3)] active:translate-x-0.5 active:translate-y-0.5"
           >
-            <Camera className="w-5 h-5" />
-            <span>Zrób zdjęcie (Aparat)</span>
+            <Camera className="w-4 h-4" />
+            <span>Zrób zdjęcie aparatem</span>
           </button>
 
-          {/* Wybór z galerii / dysku */}
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-sm flex items-center justify-center gap-2 border border-slate-700 active:scale-95 transition-all"
+            className="px-4 py-2 bg-[#ffffff] hover:bg-stone-100 text-stone-900 border-2 border-stone-800 rounded text-xs font-mono font-bold flex items-center gap-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.15)] active:translate-x-0.5 active:translate-y-0.5"
           >
-            <Upload className="w-4 h-4 text-slate-400" />
-            <span>Wybierz z pliku / galerii</span>
+            <Upload className="w-4 h-4" />
+            <span>Wybierz plik ze schowka/dysku</span>
           </button>
         </div>
-
-        <p className="text-xs text-slate-500 mt-3">
-          Możesz także przeciągnąć plik graficzny tutaj lub wkleić ze schowka (Ctrl+V)
-        </p>
       </div>
     </div>
   );

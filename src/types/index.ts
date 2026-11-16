@@ -57,14 +57,23 @@ export interface MineralDefinition {
   notes?: string;
 }
 
+export type ToleranceMode = 'adaptive' | 'fixed';
+
+export interface ToleranceConfig {
+  mode: ToleranceMode; // 'adaptive' | 'fixed'
+  fixedValue: number; // 1.0, 2.0, 3.0, 4.0, 5.0%
+}
+
 export interface ElementComparisonResult {
   symbol: string;
   samplePercent: number; // Zmierzony udział w próbce (%)
   theoreticalPercent: number; // Wzorzec teoretyczny (%)
   difference: number; // Odchylenie bezwzględne (%)
-  withinTolerance: boolean; // Czy mieści się w widełkach +-2%
+  withinTolerance: boolean; // Czy mieści się w wyznaczonych widełkach
   toleranceMin: number;
   toleranceMax: number;
+  appliedTolerance: number; // Obliczona widełka (+- %) dla tego składnika
+  tierLabel: string; // Etykieta progu np. ">40% (±3%)", "5-40% (±2%)", "<5% (±1%)"
 }
 
 export interface PolymorphMember {
@@ -98,9 +107,10 @@ export interface MatchScore {
   score: number; // 0 - 100%
   confidenceTier: 'high' | 'medium' | 'low' | 'unlikely';
   allElementsWithin2Percent: boolean; // Czy WSZYSTKIE pierwiastki mieszczą się w widełkach +-2%
-  isVerified: boolean; // Czy minerał jest zweryfikowany w oknie +-2.0% (wszystkie pierwiastki + bilans lekkich)
+  isVerified: boolean; // Czy minerał jest zweryfikowany w wyznaczonym oknie tolerancji (wszystkie pierwiastki + bilans lekkich)
   maxElementDifference: number; // Największe odchylenie w % spośród porównywanych pierwiastków
   maxDiffSymbol: string; // Symbol pierwiastka z największym odchyleniem
+  appliedToleranceConfig?: ToleranceConfig; // Konfiguracja tolerancji użyta do obliczeń
   polymorphInfo?: PolymorphInfo;
   technicalAlloyHint?: TechnicalAlloyMatch | null;
   molarRatioDetails: {

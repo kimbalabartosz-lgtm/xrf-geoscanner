@@ -3,7 +3,6 @@
 import React from 'react';
 import { X, CheckCircle2, AlertTriangle, BookOpen, Atom, Activity, Sparkles, Feather } from 'lucide-react';
 import { MatchScore } from '@/types';
-import { ELEMENTS } from '@/data/elements';
 
 interface MineralDetailModalProps {
   match: MatchScore | null;
@@ -13,206 +12,131 @@ interface MineralDetailModalProps {
 export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, onClose }) => {
   if (!match) return null;
 
-  const { mineral, score, allElementsWithin2Percent, molarRatioDetails, elementComparison, lightElementInfo, explanation } = match;
+  const { mineral, score, allElementsWithin2Percent, isVerified, elementComparison, lightElementInfo, explanation } = match;
   const d = mineral.diagnostics;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl text-slate-200">
-        {/* Nagłówek modala */}
-        <div className="sticky top-0 bg-slate-900/95 backdrop-blur-md px-6 py-4 border-b border-slate-800 flex items-center justify-between z-10">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="bg-[#ffffff] border-2 border-stone-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-[4px_6px_0px_rgba(0,0,0,0.3)] text-stone-900">
+        {/* NAGŁÓWEK KARTOTEKI */}
+        <div className="sticky top-0 bg-[#fdfcf7] px-6 py-4 border-b-2 border-stone-800 flex items-center justify-between z-10">
           <div>
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <h2 className="text-xl font-bold text-white">{mineral.namePl}</h2>
-              <span className="text-xs text-slate-400 font-mono italic">
-                ({mineral.nameEn})
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-mono text-xs font-black uppercase tracking-wider text-stone-500">
+                KARTA MINERAŁU #{mineral.id} //
               </span>
-              <span className="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
-                {score}% dopasowania
-              </span>
-              {allElementsWithin2Percent && (
-                <span className="text-[10px] bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-cyan-400" />
-                  W widełkach ±2%
-                </span>
+              <h2 className="text-xl font-black font-mono text-stone-900">{mineral.namePl}</h2>
+              <span className="text-xs text-stone-500 font-mono italic">({mineral.nameEn})</span>
+              {isVerified ? (
+                <span className="stamp-green text-[10px] py-0.5">Zweryfikowany</span>
+              ) : (
+                <span className="stamp-red text-[10px] py-0.5">Odrzucony</span>
               )}
             </div>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950/50 px-2 py-0.5 rounded border border-cyan-800/40">
+            <div className="flex items-center gap-2 mt-1 font-mono text-xs">
+              <span className="px-2 py-0.5 bg-stone-900 text-stone-100 rounded font-bold">
                 {mineral.formula}
               </span>
-              <span className="text-xs text-slate-400">
-                Grupa: <span className="text-slate-200">{mineral.mineralGroup}</span>
+              <span className="text-stone-600">
+                Grupa: <b className="text-stone-900">{mineral.mineralGroup}</b>
               </span>
+              <span className="text-stone-400">|</span>
+              <span className="text-stone-700 font-bold">Dopasowanie: {score}%</span>
             </div>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
+            className="p-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-200 rounded border border-stone-400 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Zawartość modala */}
-        <div className="p-6 space-y-6">
-          {/* Wyjaśnienie algorytmu i widełek */}
-          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs">
-            <span className="font-semibold text-emerald-400 block mb-1">
-              Ocena analityczna XRF (Tolerancja ±2.0%):
-            </span>
-            <p className="text-slate-300 leading-relaxed">{explanation}</p>
-
-            {/* Bilans pierwiastków lekkich */}
-            <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-start gap-2 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
-              <Feather className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-semibold text-slate-300">
-                  Niewidoczne pierwiastki lekkie (Z &lt; 11):
-                </span>{' '}
-                <span className="font-mono text-amber-300 font-bold">
-                  {mineral.lightElementsPercent}%
-                </span>{' '}
-                wzoru stanowi masa pierwiastków lekkich (
-                {Object.entries(mineral.lightElementsBreakdown)
-                  .map(([s, p]) => `${s}: ${p}%`)
-                  .join(', ')}
-                ) z widełkami wzorca [{mineral.lightElementsToleranceWindow.min}% - {mineral.lightElementsToleranceWindow.max}%].
-              </div>
-            </div>
-
-            {molarRatioDetails.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-2.5">
-                {molarRatioDetails.map((r, idx) => (
-                  <div key={idx} className="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-[11px]">
-                    <span className="text-slate-400">Stosunek {r.ratioName}: </span>
-                    <span className="font-mono font-bold text-white">{r.sampleRatio}</span>
-                    <span className="text-slate-500 mx-1">/</span>
-                    <span className="text-emerald-400 font-mono font-semibold">{r.theoreticalRatio} (teoria)</span>
-                    <span className="text-slate-400 ml-1.5">Δ {r.differencePercent}%</span>
-                  </div>
-                ))}
-              </div>
-            )}
+        {/* ZAWARTOŚĆ METRYKI */}
+        <div className="p-6 space-y-5 font-mono text-xs">
+          {/* Wyjaśnienie */}
+          <div className="p-3.5 rounded border border-stone-300 bg-stone-50 text-stone-800 font-serif leading-relaxed italic">
+            {explanation}
           </div>
 
-          {/* Porównanie składu pierwiastkowego z widełkami +-2% */}
+          {/* CECHY FIZYCZNE I DIAGNOSTYCZNE */}
           <div>
-            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <Atom className="w-4 h-4 text-cyan-400" />
-                Porównanie widmowe XRF (Widełki błędu ±2.0%)
-              </span>
-              <span className="text-[10px] text-slate-500 font-normal">
-                Zielony znacznik = w normie ±2%
-              </span>
-            </h3>
-            <div className="space-y-2.5">
-              {elementComparison.map((ec) => (
-                <div key={ec.symbol} className="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
-                  <div className="flex justify-between items-center text-xs mb-1.5">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-emerald-400">
-                        {ec.symbol} ({ELEMENTS[ec.symbol]?.namePl || ec.symbol})
-                      </span>
-                      {ec.withinTolerance ? (
-                        <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.2 rounded flex items-center gap-0.5">
-                          <CheckCircle2 className="w-3 h-3" /> W normie (±2%)
-                        </span>
-                      ) : (
-                        <span className="text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.2 rounded">
-                          Δ {ec.difference}%
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-slate-300 font-mono text-[11px]">
-                      Próbka: <b className="text-white">{ec.samplePercent}%</b> | Wzorzec:{' '}
-                      <b className="text-cyan-400">{ec.theoreticalPercent}%</b> [Zakres: {ec.toleranceMin}% - {ec.toleranceMax}%]
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 h-2">
-                    <div className="bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className="bg-emerald-500 h-full rounded-full"
-                        style={{ width: `${Math.min(100, ec.samplePercent)}%` }}
-                        title={`Próbka: ${ec.samplePercent}%`}
-                      />
-                    </div>
-                    <div className="bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className="bg-cyan-500 h-full rounded-full"
-                        style={{ width: `${Math.min(100, ec.theoreticalPercent)}%` }}
-                        title={`Wzorzec: ${ec.theoreticalPercent}%`}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Cechy diagnostyczne fizyczne */}
-          <div>
-            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Activity className="w-4 h-4 text-amber-400" />
-              Właściwości fizyczne i makroskopowe
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-slate-500 block text-[10px] uppercase">Twardość Mohsa</span>
-                <span className="font-semibold text-white mt-0.5 block">{d.hardness}</span>
+            <span className="font-mono text-xs font-black uppercase text-stone-900 tracking-wider block mb-2 border-b border-stone-300 pb-1">
+              Właściwości fizyczne i próby polowe:
+            </span>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              <div className="p-2.5 rounded border border-stone-300 bg-stone-50">
+                <span className="text-stone-500 block text-[10px] uppercase font-bold">Twardość Mohsa</span>
+                <span className="font-bold text-stone-900 text-sm">{d.hardness}</span>
               </div>
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-slate-500 block text-[10px] uppercase">Barwa rysy</span>
-                <span className="font-semibold text-white mt-0.5 block">{d.streak}</span>
+              <div className="p-2.5 rounded border border-stone-300 bg-stone-50">
+                <span className="text-stone-500 block text-[10px] uppercase font-bold">Rysa</span>
+                <span className="font-bold text-stone-900">{d.streak}</span>
               </div>
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-slate-500 block text-[10px] uppercase">Połysk</span>
-                <span className="font-semibold text-white mt-0.5 block">{d.luster}</span>
+              <div className="p-2.5 rounded border border-stone-300 bg-stone-50">
+                <span className="text-stone-500 block text-[10px] uppercase font-bold">Połysk</span>
+                <span className="font-bold text-stone-900">{d.luster}</span>
               </div>
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-slate-500 block text-[10px] uppercase">Barwa makroskopowa</span>
-                <span className="font-semibold text-white mt-0.5 block">{d.color}</span>
+              <div className="p-2.5 rounded border border-stone-300 bg-stone-50">
+                <span className="text-stone-500 block text-[10px] uppercase font-bold">Barwa</span>
+                <span className="font-bold text-stone-900">{d.color}</span>
               </div>
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-slate-500 block text-[10px] uppercase">Gęstość</span>
-                <span className="font-semibold text-white mt-0.5 block">{d.density}</span>
+              <div className="p-2.5 rounded border border-stone-300 bg-stone-50">
+                <span className="text-stone-500 block text-[10px] uppercase font-bold">Gęstość</span>
+                <span className="font-bold text-stone-900">{d.density}</span>
               </div>
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-slate-500 block text-[10px] uppercase">Łupliwość</span>
-                <span className="font-semibold text-white mt-0.5 block">{d.cleavage}</span>
+              <div className="p-2.5 rounded border border-stone-300 bg-stone-50">
+                <span className="text-stone-500 block text-[10px] uppercase font-bold">Łupliwość</span>
+                <span className="font-bold text-stone-900">{d.cleavage || 'Wyraźna'}</span>
               </div>
             </div>
           </div>
 
-          {/* Próby terenowe */}
-          <div className="bg-amber-950/20 border border-amber-800/40 rounded-xl p-4 text-xs">
-            <span className="font-bold text-amber-300 block mb-1">
-              Próby terenowe i cechy rozpoznawcze w okazie:
-            </span>
-            <p className="text-amber-100/90 leading-relaxed">{d.tests}</p>
+          {/* PRÓBY DIAGNOSTYCZNE I WYSTĘPOWANIE */}
+          <div className="space-y-3 pt-2">
+            <div>
+              <span className="text-stone-500 block text-[10px] uppercase font-bold mb-1">
+                Kluczowe próby identyfikacyjne:
+              </span>
+              <p className="font-serif italic text-stone-800 bg-[#fdfcf7] p-3 rounded border border-stone-300 leading-relaxed">
+                {d.tests}
+              </p>
+            </div>
+
+            <div>
+              <span className="text-stone-500 block text-[10px] uppercase font-bold mb-1">
+                Typowe środowisko występowania:
+              </span>
+              <p className="font-serif italic text-stone-800 bg-[#fdfcf7] p-3 rounded border border-stone-300 leading-relaxed">
+                {d.occurrence}
+              </p>
+            </div>
           </div>
 
-          {/* Występowanie */}
-          <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs">
-            <span className="font-bold text-slate-300 block mb-1 flex items-center gap-1.5">
-              <BookOpen className="w-4 h-4 text-cyan-400" />
-              Występowanie i środowisko geologiczne:
+          {/* BILANS PIERWIASTKÓW LEKKICH */}
+          <div className="p-3.5 rounded border border-stone-300 bg-stone-50 flex items-center justify-between flex-wrap gap-2 text-[11px]">
+            <div>
+              <span className="font-bold text-stone-900 block">Pierwiastki lekkie (Z &lt; 11):</span>
+              <span className="text-stone-600">
+                Teoretyczna zawartość H, Li, Be, B, C, N, O, F: <b>{mineral.lightElementsPercent}%</b>
+              </span>
+            </div>
+            <span className="px-2 py-1 rounded bg-[#ffffff] border border-stone-400 font-bold">
+              {lightElementInfo.withinTolerance ? 'Bilans zgodny' : 'Niezgodność bilansu'}
             </span>
-            <p className="text-slate-400 leading-relaxed">{d.occurrence}</p>
           </div>
         </div>
 
-        {/* Stopka */}
-        <div className="px-6 py-3.5 bg-slate-950 border-t border-slate-800 flex justify-end">
+        {/* STOPKA */}
+        <div className="p-4 border-t-2 border-stone-800 bg-[#fdfcf7] flex justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors"
+            className="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-stone-100 font-mono font-bold rounded text-xs transition-colors shadow-sm"
           >
-            Zamknij
+            Zamknij kartę
           </button>
         </div>
       </div>

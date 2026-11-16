@@ -1,8 +1,50 @@
-import { DetectedElement, MatchScore, MineralDefinition, ElementComparisonResult, PolymorphInfo, TechnicalAlloyMatch } from '@/types';
+import {
+  DetectedElement,
+  MatchScore,
+  MineralDefinition,
+  ElementComparisonResult,
+  PolymorphInfo,
+  TechnicalAlloyMatch,
+  ToleranceConfig,
+  ToleranceMode
+} from '@/types';
 import { MINERALS_DATABASE } from '@/data/minerals';
 import { getAtomicMass, isLightElement } from '@/data/elements';
 
-const TOLERANCE_WINDOW_PCT = 2.0; // Ścisłe widełki błędu +-2.0%
+export const DEFAULT_TOLERANCE_CONFIG: ToleranceConfig = {
+  mode: 'adaptive',
+  fixedValue: 2.0
+};
+
+/**
+ * Oblicza dopuszczalny margines błędu (+- %) dla danego stężenia pierwiastka:
+ * - Tryb adaptacyjny (domyślny geochemiczny):
+ *   > 40% masy -> ±3.0% (składnik główny, efekty matrycy i chropowatości)
+ *   5% do 40% -> ±2.0% (składnik średni)
+ *   0% do 5%   -> ±1.0% (śladowy / pierwiastek obcy - bardzo ostra selekcja zanieczyszczeń)
+ * - Tryb stały:
+ *   Wartość wybrana suwakiem (np. 1.0%, 2.0%, 3.0%, 4.0%, 5.0%)
+ */
+export function getElementTolerance(
+  concentrationPercent: number,
+  config: ToleranceConfig = DEFAULT_TOLERANCE_CONFIG
+): { tolerance: number; tierLabel: string } {
+  if (config.mode === 'fixed') {
+    return {
+      tolerance: config.fixedValue,
+      tierLabel: `Stała (±${config.fixedValue.toFixed(1)}%)`
+    };
+  }
+
+  const c = Math.max(0, concentrationPercent);
+  if (c > 40.0) {
+    return { tolerance: 3.0, tierLabel: `>40% (±3.0%)` };
+  }
+  if (c >= 5.0) {
+    return { tolerance: 2.0, tierLabel: `5-40% (±2.0%)` };
+  }
+  return { tolerance: 1.0, tierLabel: `<5% (±1.0%)` };
+}
 
 /**
  * Wykrywa powszechne stopy przemysłowe i próbki kalibracyjne XRF (np. stal SS-316),
@@ -152,6 +194,7 @@ function getStoichiometryFingerprint(min: MineralDefinition): string {
  */
 export function identifyMinerals(
   detectedElements: DetectedElement[],
+  toleranceConfig: ToleranceConfig = DEFAULT_TOLERANCE_CONFIG,
   database: MineralDefinition[] = MINERALS_DATABASE
 ): MatchScore[] {
   const { normalized: sampleNorm, visibleTotal, sampleLightPercent } =
@@ -206,14 +249,13 @@ export function identifyMinerals(
       normSample += Math.pow(sVal, 2);
       normMineral += Math.pow(mVal, 2);
 
-      const toleranceWindow = mineral.toleranceWindows[sym] || {
-        expected: mVal,
-        min: Math.max(0, mVal - TOLERANCE_WINDOW_PCT),
-        max: Math.min(100, mVal + TOLERANCE_WINDOW_PCT)
-      };
+      // Oblicz dynamiczną widełkę tolerancji dla danego pierwiastka (adaptacyjną lub stałą)
+      const refConcentration = Math.max(sVal, mVal);
+      const { tolerance: tolPct, tierLabel } = getElementTolerance(refConcentration, toleranceConfig);
 
-      // Czy mieści się w widełkach +-2%
-      const withinTolerance = diff <= TOLERANCE_WINDOW_PCT;
+      const toleranceMin = Math.max(0, mVal - tolPct);
+      const toleranceMax = Math.min(100, mVal + tolPct);
+      const withinTolerance = diff <= tolPct;
 
       if (sVal > 0 || mVal > 0) {
         totalComparedCount++;
@@ -225,8 +267,10 @@ export function identifyMinerals(
           theoreticalPercent: Number(mVal.toFixed(2)),
           difference: Number(diff.toFixed(2)),
           withinTolerance,
-          toleranceMin: toleranceWindow.min,
-          toleranceMax: toleranceWindow.max
+          toleranceMin: Number(toleranceMin.toFixed(2)),
+          toleranceMax: Number(toleranceMax.toFixed(2)),
+          appliedTolerance: tolPct,
+          tierLabel
         });
       }
     });
@@ -244,17 +288,18 @@ export function identifyMinerals(
         maxDiffSymbol = ec.symbol;
       }
       if (!ec.withinTolerance) {
-        totalExcessError += (ec.difference - TOLERANCE_WINDOW_PCT);
+        totalExcessError += (ec.difference - ec.appliedTolerance);
       }
     });
 
     const euclideanDist = Math.sqrt(sumSquaredDiff);
 
-    // Weryfikacja bilansu pierwiastków lekkich
+    // Weryfikacja bilansu pierwiastków lekkich z dynamiczną tolerancją
+    const { tolerance: lightTol } = getElementTolerance(mineral.lightElementsPercent, toleranceConfig);
     const lightDiff = Math.abs(sampleLightPercent - mineral.lightElementsPercent);
-    const lightWithinTolerance = sampleLightPercent === 0 || lightDiff <= TOLERANCE_WINDOW_PCT;
+    const lightWithinTolerance = sampleLightPercent === 0 || lightDiff <= lightTol;
     if (sampleLightPercent > 0 && !lightWithinTolerance) {
-      const excessLight = lightDiff - TOLERANCE_WINDOW_PCT;
+      const excessLight = lightDiff - lightTol;
       if (excessLight > maxElementDifference) {
         maxElementDifference = lightDiff;
         maxDiffSymbol = 'Lekkie (Z<11)';
@@ -262,29 +307,26 @@ export function identifyMinerals(
       totalExcessError += excessLight;
     }
 
-    // Minerał jest zweryfikowany TYLKO wtedy, gdy żaden pierwiastek nie przekracza +-2.0%
+    // Minerał jest zweryfikowany TYLKO wtedy, gdy każdy pierwiastek mieści się w wyznaczonych widełkach
     const isVerified = allElementsWithin2Percent && lightWithinTolerance;
 
-    // Punktacja oparta na ścisłej tolerancji +-2.0%:
+    // Punktacja oparta na ścisłej tolerancji błędu:
     let score = 0;
     let confidenceTier: MatchScore['confidenceTier'] = 'unlikely';
 
     if (isVerified) {
-      // IDEALNA ZGODNOŚĆ: Wszystkie pierwiastki mieszczą się w widełkach +-2.0%
+      // IDEALNA ZGODNOŚĆ: Wszystkie pierwiastki mieszczą się w wyznaczonych widełkach
       score = Math.max(92.0, 99.8 - euclideanDist * 2.0);
       confidenceTier = 'high';
     } else {
-      // Skład przekracza limit +-2.0% w którymkolwiek kierunku
+      // Skład przekracza limit w którymkolwiek kierunku
       if (maxElementDifference > 15 || totalExcessError > 20) {
-        // Drastyczna rozbieżność składu (np. Fe różni się o 21% lub Cr o 17%)
         score = Math.max(5.0, Math.min(25.0, 35 - maxElementDifference * 0.8));
         confidenceTier = 'unlikely';
       } else if (maxElementDifference > 6 || totalExcessError > 10) {
-        // Istotna rozbieżność składu
         score = Math.max(15.0, Math.min(42.0, 52 - maxElementDifference * 1.8));
         confidenceTier = 'unlikely';
-      } else if (maxElementDifference > 2.0) {
-        // Niewielkie przekroczenie widełek (np. 2.1% - 5.0%)
+      } else if (maxElementDifference > 1.0) {
         score = Math.max(45.0, Math.min(65.0, 75 - maxElementDifference * 4.0));
         confidenceTier = 'low';
       }
@@ -319,9 +361,9 @@ export function identifyMinerals(
     // Generowanie zwięzłego wyjaśnienia analitycznego
     let explanation = '';
     if (isVerified) {
-      explanation = `Zweryfikowano! Wszystkie wykryte pierwiastki mieszczą się w ścisłych widełkach błędu ±2.0% od teoretycznego wzorca ${mineral.namePl}!`;
+      explanation = `Zweryfikowano! Wszystkie wykryte pierwiastki mieszczą się w dopuszczalnym marginesie błędu od wzorca ${mineral.namePl}!`;
     } else {
-      explanation = `Nie można zweryfikować jako ${mineral.namePl}: odchylenie składu przekracza dopuszczalny limit ±2.0% (największa różnica na ${maxDiffSymbol}: ${maxElementDifference.toFixed(1)}%). Minerał odrzucony.`;
+      explanation = `Nie można zweryfikować jako ${mineral.namePl}: odchylenie składu przekracza dopuszczalny limit (największa różnica na ${maxDiffSymbol}: ${maxElementDifference.toFixed(1)}%). Minerał odrzucony.`;
     }
 
     if (mineral.lightElementsPercent > 0) {
@@ -339,6 +381,7 @@ export function identifyMinerals(
       isVerified,
       maxElementDifference: Number(maxElementDifference.toFixed(2)),
       maxDiffSymbol,
+      appliedToleranceConfig: toleranceConfig,
       molarRatioDetails,
       elementComparison: elementComparison.sort((a, b) => b.samplePercent - a.samplePercent),
       lightElementInfo: {

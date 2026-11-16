@@ -13,10 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "XRF GeoScanner - Identyfikator Minerałów",
-  description: "Aplikacja do identyfikacji minerałów na podstawie zdjęć ekranu spektrometru XRF z lokalnym OCR (Tesseract.js)",
+  title: "XRF GeoScanner - Dziennik Identyfikacji Minerałów",
+  description: "Surowy notatnik geologiczny i silnik identyfikacji minerałów na podstawie zdjęć spektrometru XRF z adaptacyjną tolerancją",
   applicationName: "XRF GeoScanner",
-  keywords: ["XRF", "minerały", "spektrometr", "geologia", "Tesseract", "OCR"],
+  keywords: ["XRF", "minerały", "spektrometr", "geologia", "notatnik laboratoryjny", "Tesseract", "OCR"],
   authors: [{ name: "XRF GeoScanner" }]
 };
 
@@ -24,7 +24,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#020617"
+  themeColor: "#f5f3ec"
 };
 
 export default function RootLayout({
@@ -35,9 +35,11 @@ export default function RootLayout({
   return (
     <html
       lang="pl"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-100">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#f5f3ec] text-stone-900 selection:bg-stone-300 selection:text-stone-900">
+        {children}
+      </body>
     </html>
   );
 }
