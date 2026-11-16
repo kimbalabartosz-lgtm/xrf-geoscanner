@@ -253,6 +253,15 @@ export default function Home() {
           onImageSelected={handleImageSelected}
           onPresetSelected={handlePresetSelected}
           hasActiveImage={Boolean(originalImage)}
+          currentImage={originalImage}
+          onClearImage={() => {
+            setOriginalImage('');
+            setDetectedElements([]);
+            setResults([]);
+            setRawOcrText('');
+          }}
+          onRescan={() => runAutoScanPipeline(originalImage, toleranceConfig)}
+          isScanning={isOcrRunning}
         />
 
         {/* Status skanowania OCR */}
