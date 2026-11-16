@@ -34,7 +34,7 @@ export const Header: React.FC = () => {
           </div>
           <div className="flex items-center gap-1 bg-cyan-950/40 border border-cyan-800/50 rounded-lg px-2.5 py-1 text-xs text-cyan-300">
             <Layers className="w-3.5 h-3.5 text-cyan-400" />
-            <span>63 minerały</span>
+            <span>104 minerały (±2% widełki)</span>
           </div>
         </div>
       </div>

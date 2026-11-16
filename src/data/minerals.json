@@ -1,0 +1,5814 @@
+[
+  {
+    "id": "pyrite",
+    "namePl": "Piryt",
+    "nameEn": "Pyrite",
+    "formula": "FeS₂",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Fe": 1,
+      "S": 2
+    },
+    "keyMolarRatios": {
+      "Fe/S": 0.5
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 6.5",
+      "streak": "czarnozielona do czarnej",
+      "luster": "metaliczny, silny",
+      "color": "mosiężnożółta, złocista",
+      "cleavage": "niewyraźna",
+      "fracture": "muszlowy do nierównego",
+      "density": "4.95 - 5.10 g/cm³",
+      "tests": "Iskrzy przy uderzeniu stalą (zapach SO₂). Rysuje szkło, nie daje się zarysować nożem (różnica z chalkopirytem).",
+      "occurrence": "Skały magmowe, metamorficzne, osadowe, złoża hydrotermalne (\"złoto głupców\")."
+    },
+    "totalWeightPercent": {
+      "Fe": 46.55,
+      "S": 53.45
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 46.55,
+      "S": 53.45
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 46.55,
+        "min": 44.55,
+        "max": 48.55
+      },
+      "S": {
+        "expected": 53.45,
+        "min": 51.45,
+        "max": 55.45
+      }
+    }
+  },
+  {
+    "id": "marcasite",
+    "namePl": "Markasyt",
+    "nameEn": "Marcasite",
+    "formula": "FeS₂ (polimorf rombowy)",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Fe": 1,
+      "S": 2
+    },
+    "keyMolarRatios": {
+      "Fe/S": 0.5
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 6.5",
+      "streak": "szaroczarna",
+      "luster": "metaliczny",
+      "color": "blado mosiężnożółta z odcieniem zielonkawym",
+      "cleavage": "wyraźna",
+      "fracture": "nierówny",
+      "density": "4.85 - 4.90 g/cm³",
+      "tests": "Charakterystyczne skupienia grzebieniaste (\"kogucie grzebienie\") i promieniste. Szybciej wietrzeje niż piryt.",
+      "occurrence": "Niskotemperaturowe utwory hydrotermalne, konkrecje w skałach osadowych (węgiel, iły)."
+    },
+    "totalWeightPercent": {
+      "Fe": 46.55,
+      "S": 53.45
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 46.55,
+      "S": 53.45
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 46.55,
+        "min": 44.55,
+        "max": 48.55
+      },
+      "S": {
+        "expected": 53.45,
+        "min": 51.45,
+        "max": 55.45
+      }
+    }
+  },
+  {
+    "id": "pyrrhotite",
+    "namePl": "Pirotyn (piryt magnetyczny)",
+    "nameEn": "Pyrrhotite",
+    "formula": "Fe₇S₈",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Fe": 7,
+      "S": 8
+    },
+    "keyMolarRatios": {
+      "Fe/S": 0.875
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.5",
+      "streak": "szaroczarna",
+      "luster": "metaliczny",
+      "color": "brązowoczerwona, tombakowobrązowa",
+      "cleavage": "brak (oddzielność)",
+      "fracture": "nierówny",
+      "density": "4.58 - 4.65 g/cm³",
+      "tests": "Naturalnie ferrimagnetyczny (przyciąga magnes). Wyraźna brązowa barwa tombaku.",
+      "occurrence": "Złoża magmowe zasadowe i ultrazasadowe (Ni-Cu), pegmatyty, skarny."
+    },
+    "totalWeightPercent": {
+      "Fe": 60.38,
+      "S": 39.62
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 60.38,
+      "S": 39.62
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 60.38,
+        "min": 58.38,
+        "max": 62.38
+      },
+      "S": {
+        "expected": 39.62,
+        "min": 37.62,
+        "max": 41.62
+      }
+    }
+  },
+  {
+    "id": "chalcopyrite",
+    "namePl": "Chalkopiryt",
+    "nameEn": "Chalcopyrite",
+    "formula": "CuFeS₂",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Cu": 1,
+      "Fe": 1,
+      "S": 2
+    },
+    "keyMolarRatios": {
+      "Cu/Fe": 1,
+      "Cu/S": 0.5
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "zielonkawoczarna",
+      "luster": "metaliczny",
+      "color": "złocistożółta, mosiężna, często z barwną tęczową iryzacją",
+      "cleavage": "niewyraźna",
+      "fracture": "muszlowy do nierównego",
+      "density": "4.10 - 4.30 g/cm³",
+      "tests": "Daje się łatwo zarysować nożem (w przeciwieństwie do twardego pirytu). Pstra iryzacja.",
+      "occurrence": "Główna ruda miedzi, żyły hydrotermalne, złoża porfirowe."
+    },
+    "totalWeightPercent": {
+      "Cu": 34.63,
+      "Fe": 30.43,
+      "S": 34.94
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 34.63,
+      "Fe": 30.43,
+      "S": 34.94
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 34.63,
+        "min": 32.63,
+        "max": 36.63
+      },
+      "Fe": {
+        "expected": 30.43,
+        "min": 28.43,
+        "max": 32.43
+      },
+      "S": {
+        "expected": 34.94,
+        "min": 32.94,
+        "max": 36.94
+      }
+    }
+  },
+  {
+    "id": "bornite",
+    "namePl": "Bornit (ruda pstra)",
+    "nameEn": "Bornite",
+    "formula": "Cu₅FeS₄",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Cu": 5,
+      "Fe": 1,
+      "S": 4
+    },
+    "keyMolarRatios": {
+      "Cu/Fe": 5,
+      "Cu/S": 1.25
+    },
+    "diagnostics": {
+      "hardness": "3.0",
+      "streak": "ciemnoszara do czarnej",
+      "luster": "metaliczny",
+      "color": "miedzianoczerwona na świeżym przełamie, szybko utlenia się na jaskrawy fioletowo-niebieski",
+      "cleavage": "bardzo słaba",
+      "fracture": "muszlowy",
+      "density": "4.90 - 5.30 g/cm³",
+      "tests": "Intensywna purpurowo-błękitna iryzacja (\"pawie pióra\"). Bardzo wysoka zawartość Cu (~63%).",
+      "occurrence": "Strefy wzbogacenia siarczkowego złóż kruszców miedzi."
+    },
+    "totalWeightPercent": {
+      "Cu": 63.32,
+      "Fe": 11.13,
+      "S": 25.56
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 63.32,
+      "Fe": 11.13,
+      "S": 25.56
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 63.32,
+        "min": 61.32,
+        "max": 65.32
+      },
+      "Fe": {
+        "expected": 11.13,
+        "min": 9.13,
+        "max": 13.13
+      },
+      "S": {
+        "expected": 25.56,
+        "min": 23.56,
+        "max": 27.56
+      }
+    }
+  },
+  {
+    "id": "chalcocite",
+    "namePl": "Chalkozyn",
+    "nameEn": "Chalcocite",
+    "formula": "Cu₂S",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Cu": 2,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Cu/S": 2
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.0",
+      "streak": "stalowoszara do czarnej, lśniąca",
+      "luster": "metaliczny",
+      "color": "ołowianoszara do czarnej",
+      "cleavage": "słaba",
+      "fracture": "muszlowy",
+      "density": "5.50 - 5.80 g/cm³",
+      "tests": "Miękki – daje się strugać ostrzem noża jak ołów. Wyjątkowo bogata ruda miedzi (~80% Cu).",
+      "occurrence": "Strefy utlenienia i cementacji złóż miedzi (m.in. łupek miedzionośny LGOM)."
+    },
+    "totalWeightPercent": {
+      "Cu": 79.86,
+      "S": 20.14
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 79.86,
+      "S": 20.14
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 79.86,
+        "min": 77.86,
+        "max": 81.86
+      },
+      "S": {
+        "expected": 20.14,
+        "min": 18.14,
+        "max": 22.14
+      }
+    }
+  },
+  {
+    "id": "covellite",
+    "namePl": "Kowelin",
+    "nameEn": "Covellite",
+    "formula": "CuS",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Cu": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Cu/S": 1
+    },
+    "diagnostics": {
+      "hardness": "1.5 - 2.0",
+      "streak": "ołowianoszara do czarnej",
+      "luster": "metaliczny do żywicznego",
+      "color": "indygo-niebieska, granatowa, purpurowa",
+      "cleavage": "doskonała, blaszkowa",
+      "fracture": "nierówny",
+      "density": "4.60 - 4.76 g/cm³",
+      "tests": "Charakterystyczna głęboka barwa indygo, zwilżony wodą zmienia barwę na fioletową.",
+      "occurrence": "Wtórna strefa wzbogacenia złóż miedzi."
+    },
+    "totalWeightPercent": {
+      "Cu": 66.47,
+      "S": 33.53
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 66.47,
+      "S": 33.53
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 66.47,
+        "min": 64.47,
+        "max": 68.47
+      },
+      "S": {
+        "expected": 33.53,
+        "min": 31.53,
+        "max": 35.53
+      }
+    }
+  },
+  {
+    "id": "galena",
+    "namePl": "Galena (błyszcz ołowiu)",
+    "nameEn": "Galena",
+    "formula": "PbS",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Pb": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Pb/S": 1
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 2.8",
+      "streak": "ołowianoszara",
+      "luster": "metaliczny, bardzo silny",
+      "color": "ołowianoszara",
+      "cleavage": "doskonała, sześciana (kostkowa w 3 kierunkach)",
+      "fracture": "stopniowy, nierówny",
+      "density": "7.40 - 7.60 g/cm³",
+      "tests": "Uderzający ciężar w dłoni (gęstość ~7.5). Idealna kostkowa łupliwość. Główna ruda ołowiu i srebra.",
+      "occurrence": "Złoża hydrotermalne Zn-Pb, złoża typu MVT (Śląsk, Olkusz)."
+    },
+    "totalWeightPercent": {
+      "Pb": 86.6,
+      "S": 13.4
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Pb": 86.6,
+      "S": 13.4
+    },
+    "toleranceWindows": {
+      "Pb": {
+        "expected": 86.6,
+        "min": 84.6,
+        "max": 88.6
+      },
+      "S": {
+        "expected": 13.4,
+        "min": 11.4,
+        "max": 15.4
+      }
+    }
+  },
+  {
+    "id": "sphalerite",
+    "namePl": "Sfalleryt (blenda cynkowa)",
+    "nameEn": "Sphalerite",
+    "formula": "ZnS",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Zn": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Zn/S": 1
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "biała, żółtobrązowa do brązowej (ciemniejsza przy wyższym Fe)",
+      "luster": "diamentowy do żywicznego",
+      "color": "żółta, miodowa, brunatna, czarna (odmiana marmatyt bogata w Fe)",
+      "cleavage": "doskonała w 6 kierunkach (rombowo-dwunastościenna)",
+      "fracture": "muszlowy",
+      "density": "3.90 - 4.20 g/cm³",
+      "tests": "Żywiczny/diamentowy połysk, wielokierunkowa łupliwość. Rozpuszcza się w ciepłym HCl wydzielając H₂S.",
+      "occurrence": "Główna ruda cynku, współwystępuje z galeną, pirytem i markasytem."
+    },
+    "totalWeightPercent": {
+      "Zn": 67.1,
+      "S": 32.9
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Zn": 67.1,
+      "S": 32.9
+    },
+    "toleranceWindows": {
+      "Zn": {
+        "expected": 67.1,
+        "min": 65.1,
+        "max": 69.1
+      },
+      "S": {
+        "expected": 32.9,
+        "min": 30.9,
+        "max": 34.9
+      }
+    }
+  },
+  {
+    "id": "wurtzite",
+    "namePl": "Wurcyt",
+    "nameEn": "Wurtzite",
+    "formula": "ZnS (odmiana heksagonalna)",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Zn": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Zn/S": 1
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "jasnobrązowa",
+      "luster": "diamentowy do żywicznego",
+      "color": "brązowoczarna, ciemnobrązowa",
+      "cleavage": "wyraźna, słupkowa",
+      "fracture": "nierówny",
+      "density": "3.98 - 4.10 g/cm³",
+      "tests": "Heksagonalny polimorf ZnS. Kryształy piramidowe lub skupienia skorupowe.",
+      "occurrence": "Niskotemperaturowe utwory hydrotermalne."
+    },
+    "totalWeightPercent": {
+      "Zn": 67.1,
+      "S": 32.9
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Zn": 67.1,
+      "S": 32.9
+    },
+    "toleranceWindows": {
+      "Zn": {
+        "expected": 67.1,
+        "min": 65.1,
+        "max": 69.1
+      },
+      "S": {
+        "expected": 32.9,
+        "min": 30.9,
+        "max": 34.9
+      }
+    }
+  },
+  {
+    "id": "arsenopyrite",
+    "namePl": "Arsenopiryt",
+    "nameEn": "Arsenopyrite",
+    "formula": "FeAsS",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Fe": 1,
+      "As": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Fe/As": 1,
+      "As/S": 1
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.0",
+      "streak": "szaroczarna",
+      "luster": "metaliczny",
+      "color": "srebrzystobiała, stalowoszara",
+      "cleavage": "wyraźna",
+      "fracture": "nierówny",
+      "density": "5.90 - 6.20 g/cm³",
+      "tests": "Silny zapach czosnku przy uderzeniu młotkiem (wydzielanie par arsenu). Główna ruda arsenu, nośnik Au.",
+      "occurrence": "Wysokotemperaturowe żyły hydrotermalne, pegmatyty, grejzeny (Złoty Stok)."
+    },
+    "totalWeightPercent": {
+      "Fe": 34.3,
+      "As": 46.01,
+      "S": 19.69
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 34.3,
+      "As": 46.01,
+      "S": 19.69
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 34.3,
+        "min": 32.3,
+        "max": 36.3
+      },
+      "As": {
+        "expected": 46.01,
+        "min": 44.01,
+        "max": 48.01
+      },
+      "S": {
+        "expected": 19.69,
+        "min": 17.69,
+        "max": 21.69
+      }
+    }
+  },
+  {
+    "id": "realgar",
+    "namePl": "Realgar",
+    "nameEn": "Realgar",
+    "formula": "As₄S₄ (AsS)",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "As": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "As/S": 1
+    },
+    "diagnostics": {
+      "hardness": "1.5 - 2.0",
+      "streak": "czerwona do pomarańczowoczerwonej",
+      "luster": "żywiczny do tłustego",
+      "color": "jaskrawo rubinowoczerwona, pomarańczowoczerwona",
+      "cleavage": "wyraźna",
+      "fracture": "muszlowy",
+      "density": "3.56 g/cm³",
+      "tests": "Jaskrawa rubinowa barwa. Pod wpływem światła słonecznego rozkłada się na żółty proszek (aurypigment/pararealgar).",
+      "occurrence": "Niskotemperaturowe żyły hydrotermalne, sublimaty wulkaniczne."
+    },
+    "totalWeightPercent": {
+      "As": 70.03,
+      "S": 29.97
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "As": 70.03,
+      "S": 29.97
+    },
+    "toleranceWindows": {
+      "As": {
+        "expected": 70.03,
+        "min": 68.03,
+        "max": 72.03
+      },
+      "S": {
+        "expected": 29.97,
+        "min": 27.97,
+        "max": 31.97
+      }
+    }
+  },
+  {
+    "id": "orpiment",
+    "namePl": "Aurypigment",
+    "nameEn": "Orpiment",
+    "formula": "As₂S₃",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "As": 2,
+      "S": 3
+    },
+    "keyMolarRatios": {
+      "As/S": 0.667
+    },
+    "diagnostics": {
+      "hardness": "1.5 - 2.0",
+      "streak": "cytrynowożółta",
+      "luster": "perłowy na łupliwości, żywiczny",
+      "color": "cytrynowożółta, złocistożółta, pomarańczowa",
+      "cleavage": "bardzo doskonała, blaszkowa",
+      "fracture": "nierówny",
+      "density": "3.49 g/cm³",
+      "tests": "Intensywnie złocistożółta barwa, elastyczne blaszki łupliwości, silny zapach siarki i czosnku przy ogrzewaniu.",
+      "occurrence": "Żyły hydrotermalne, osady gorących źródeł."
+    },
+    "totalWeightPercent": {
+      "As": 60.91,
+      "S": 39.09
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "As": 60.91,
+      "S": 39.09
+    },
+    "toleranceWindows": {
+      "As": {
+        "expected": 60.91,
+        "min": 58.91,
+        "max": 62.91
+      },
+      "S": {
+        "expected": 39.09,
+        "min": 37.09,
+        "max": 41.09
+      }
+    }
+  },
+  {
+    "id": "stibnite",
+    "namePl": "Antymonit (stibnit)",
+    "nameEn": "Stibnite",
+    "formula": "Sb₂S₃",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Sb": 2,
+      "S": 3
+    },
+    "keyMolarRatios": {
+      "Sb/S": 0.667
+    },
+    "diagnostics": {
+      "hardness": "2.0",
+      "streak": "ołowianoszara",
+      "luster": "metaliczny, bardzo silny, olśniewający",
+      "color": "ołowianoszara, stalowoszara",
+      "cleavage": "bardzo doskonała wzdłuż słupków",
+      "fracture": "nierówny",
+      "density": "4.52 - 4.62 g/cm³",
+      "tests": "Długie igiełkowe lub słupkowe kryształy z poprzecznym prążkowaniem. Topi się w płomieniu zapałki.",
+      "occurrence": "Niskotemperaturowe żyły hydrotermalne, główna ruda antymonu."
+    },
+    "totalWeightPercent": {
+      "Sb": 71.69,
+      "S": 28.31
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Sb": 71.69,
+      "S": 28.31
+    },
+    "toleranceWindows": {
+      "Sb": {
+        "expected": 71.69,
+        "min": 69.69,
+        "max": 73.69
+      },
+      "S": {
+        "expected": 28.31,
+        "min": 26.31,
+        "max": 30.31
+      }
+    }
+  },
+  {
+    "id": "bismuthinite",
+    "namePl": "Bizmutyn",
+    "nameEn": "Bismuthinite",
+    "formula": "Bi₂S₃",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Bi": 2,
+      "S": 3
+    },
+    "keyMolarRatios": {
+      "Bi/S": 0.667
+    },
+    "diagnostics": {
+      "hardness": "2.0 - 2.5",
+      "streak": "ołowianoszara",
+      "luster": "metaliczny",
+      "color": "stalowoszara z żółtawym lub tęczowym nalotem",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "6.78 - 6.81 g/cm³",
+      "tests": "Duży ciężar właściwy (~6.8), kryształy igiełkowe podobne do antymonitu, ale znacznie gęstsze.",
+      "occurrence": "Żyły pegmatytowo-pneumatolityczne i hydrotermalne Sn-W-Bi."
+    },
+    "totalWeightPercent": {
+      "Bi": 81.29,
+      "S": 18.71
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Bi": 81.29,
+      "S": 18.71
+    },
+    "toleranceWindows": {
+      "Bi": {
+        "expected": 81.29,
+        "min": 79.29,
+        "max": 83.29
+      },
+      "S": {
+        "expected": 18.71,
+        "min": 16.71,
+        "max": 20.71
+      }
+    }
+  },
+  {
+    "id": "molybdenite",
+    "namePl": "Molibdenit",
+    "nameEn": "Molybdenite",
+    "formula": "MoS₂",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Mo": 1,
+      "S": 2
+    },
+    "keyMolarRatios": {
+      "Mo/S": 0.5
+    },
+    "diagnostics": {
+      "hardness": "1.0 - 1.5",
+      "streak": "szaroniebieskawa na porcelanie, zielonkawa na papierze",
+      "luster": "metaliczny",
+      "color": "ołowianoszara, srebrzystoszara",
+      "cleavage": "wyjątkowo doskonała (giętkie blaszki)",
+      "fracture": "haczykowaty",
+      "density": "4.62 - 4.73 g/cm³",
+      "tests": "Tłusty w dotyku, brudzi palce i papier jak grafit, ale ma zielonkawo-niebieski odcień rysy.",
+      "occurrence": "Złoża porfirowe Mo-Cu, grejzeny, pegmatyty."
+    },
+    "totalWeightPercent": {
+      "Mo": 59.94,
+      "S": 40.06
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Mo": 59.94,
+      "S": 40.06
+    },
+    "toleranceWindows": {
+      "Mo": {
+        "expected": 59.94,
+        "min": 57.94,
+        "max": 61.94
+      },
+      "S": {
+        "expected": 40.06,
+        "min": 38.06,
+        "max": 42.06
+      }
+    }
+  },
+  {
+    "id": "cinnabar",
+    "namePl": "Cynober",
+    "nameEn": "Cinnabar",
+    "formula": "HgS",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Hg": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Hg/S": 1
+    },
+    "diagnostics": {
+      "hardness": "2.0 - 2.5",
+      "streak": "szkarłatnoczerwona",
+      "luster": "diamentowy do matowego",
+      "color": "karminowoczerwona, szkarłatna",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "8.00 - 8.20 g/cm³",
+      "tests": "Uderzająco duża gęstość (ciężki jak ołów) połączona z jaskrawoczerwoną barwą i rysą. Główna ruda rtęci.",
+      "occurrence": "Niskotemperaturowe żyły hydrotermalne, obszary aktywności wulkanicznej."
+    },
+    "totalWeightPercent": {
+      "Hg": 86.22,
+      "S": 13.78
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Hg": 86.22,
+      "S": 13.78
+    },
+    "toleranceWindows": {
+      "Hg": {
+        "expected": 86.22,
+        "min": 84.22,
+        "max": 88.22
+      },
+      "S": {
+        "expected": 13.78,
+        "min": 11.78,
+        "max": 15.78
+      }
+    }
+  },
+  {
+    "id": "cobaltite",
+    "namePl": "Kobaltyn",
+    "nameEn": "Cobaltite",
+    "formula": "CoAsS",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Co": 1,
+      "As": 1,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Co/As": 1,
+      "Co/S": 1
+    },
+    "diagnostics": {
+      "hardness": "5.5",
+      "streak": "szaroczarna",
+      "luster": "metaliczny",
+      "color": "srebrzystobiała z charakterystycznym różowawym odcieniem",
+      "cleavage": "wyraźna, sześciana",
+      "fracture": "nierówny",
+      "density": "6.33 g/cm³",
+      "tests": "Kryształy izometryczne podobne do pirytu, ale z różowym połyskiem. Główna ruda kobaltu.",
+      "occurrence": "Wysokotemperaturowe żyły hydrotermalne, skarny."
+    },
+    "totalWeightPercent": {
+      "Co": 35.52,
+      "As": 45.16,
+      "S": 19.32
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Co": 35.52,
+      "As": 45.16,
+      "S": 19.32
+    },
+    "toleranceWindows": {
+      "Co": {
+        "expected": 35.52,
+        "min": 33.52,
+        "max": 37.52
+      },
+      "As": {
+        "expected": 45.16,
+        "min": 43.16,
+        "max": 47.16
+      },
+      "S": {
+        "expected": 19.32,
+        "min": 17.32,
+        "max": 21.32
+      }
+    }
+  },
+  {
+    "id": "nickeline",
+    "namePl": "Nikielin (kupfernikiel)",
+    "nameEn": "Nickeline",
+    "formula": "NiAs",
+    "mineralGroup": "Siarczki i arsenki",
+    "stoichiometry": {
+      "Ni": 1,
+      "As": 1
+    },
+    "keyMolarRatios": {
+      "Ni/As": 1
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 5.5",
+      "streak": "brunatnoczarna",
+      "luster": "metaliczny",
+      "color": "jasnomiedzianoczerwona, szybko matowieje",
+      "cleavage": "niewyraźna",
+      "fracture": "muszlowy",
+      "density": "7.78 g/cm³",
+      "tests": "Miedzianoczerwona barwa o metalicznym blasku, duży ciężar właściwy, ruda niklu.",
+      "occurrence": "Żyły hydrotermalne z kruszcami Co-Ni-Ag, perydotyty."
+    },
+    "totalWeightPercent": {
+      "Ni": 43.93,
+      "As": 56.07
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Ni": 43.93,
+      "As": 56.07
+    },
+    "toleranceWindows": {
+      "Ni": {
+        "expected": 43.93,
+        "min": 41.93,
+        "max": 45.93
+      },
+      "As": {
+        "expected": 56.07,
+        "min": 54.07,
+        "max": 58.07
+      }
+    }
+  },
+  {
+    "id": "skutterudite",
+    "namePl": "Skutterudyt",
+    "nameEn": "Skutterudite",
+    "formula": "CoAs₃",
+    "mineralGroup": "Siarczki i arsenki",
+    "stoichiometry": {
+      "Co": 1,
+      "As": 3
+    },
+    "keyMolarRatios": {
+      "Co/As": 0.333
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.0",
+      "streak": "czarna",
+      "luster": "metaliczny",
+      "color": "cynowobiała do stalowoszarej",
+      "cleavage": "wyraźna",
+      "fracture": "nierówny",
+      "density": "6.50 - 6.80 g/cm³",
+      "tests": "Kryształy sześciany i ośmiościany, duża gęstość, ruda kobaltu i niklu.",
+      "occurrence": "Żyły kruszcowe typu Co-Ni-As-Bi-Ag (Erzgebirge)."
+    },
+    "totalWeightPercent": {
+      "Co": 20.77,
+      "As": 79.23
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Co": 20.77,
+      "As": 79.23
+    },
+    "toleranceWindows": {
+      "Co": {
+        "expected": 20.77,
+        "min": 18.77,
+        "max": 22.77
+      },
+      "As": {
+        "expected": 79.23,
+        "min": 77.23,
+        "max": 81.23
+      }
+    }
+  },
+  {
+    "id": "acanthite",
+    "namePl": "Akantyt (błyszcz srebra)",
+    "nameEn": "Acanthite / Argentite",
+    "formula": "Ag₂S",
+    "mineralGroup": "Siarczki",
+    "stoichiometry": {
+      "Ag": 2,
+      "S": 1
+    },
+    "keyMolarRatios": {
+      "Ag/S": 2
+    },
+    "diagnostics": {
+      "hardness": "2.0 - 2.5",
+      "streak": "lśniąca ołowianoszara",
+      "luster": "metaliczny",
+      "color": "ołowianoszara do czarnej",
+      "cleavage": "słaba",
+      "fracture": "nierówny, daje się kroić nożem",
+      "density": "7.20 - 7.40 g/cm³",
+      "tests": "Kowalny i dający się ciąć ostrzem jak ołów! Najważniejsza pierwotna ruda srebra (~87% Ag).",
+      "occurrence": "Żyły hydrotermalne kruszców srebra."
+    },
+    "totalWeightPercent": {
+      "Ag": 87.06,
+      "S": 12.94
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Ag": 87.06,
+      "S": 12.94
+    },
+    "toleranceWindows": {
+      "Ag": {
+        "expected": 87.06,
+        "min": 85.06,
+        "max": 89.06
+      },
+      "S": {
+        "expected": 12.94,
+        "min": 10.94,
+        "max": 14.94
+      }
+    }
+  },
+  {
+    "id": "tetrahedrite",
+    "namePl": "Tetraedryt (ruda szara)",
+    "nameEn": "Tetrahedrite",
+    "formula": "Cu₁₂Sb₄S₁₃",
+    "mineralGroup": "Sulfosole",
+    "stoichiometry": {
+      "Cu": 12,
+      "Sb": 4,
+      "S": 13
+    },
+    "keyMolarRatios": {
+      "Cu/Sb": 3
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "czarna do brunatnoczerwonawej",
+      "luster": "metaliczny",
+      "color": "stalowoszara do żelazistoczarnej",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "4.60 - 5.10 g/cm³",
+      "tests": "Charakterystyczne czworościenne kryształy (czworościany foremne / tetraedry). Ważna ruda miedzi i srebra.",
+      "occurrence": "Żyły hydrotermalne średniotemperaturowe."
+    },
+    "totalWeightPercent": {
+      "Cu": 45.76,
+      "Sb": 29.23,
+      "S": 25.01
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 45.76,
+      "Sb": 29.23,
+      "S": 25.01
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 45.76,
+        "min": 43.76,
+        "max": 47.76
+      },
+      "Sb": {
+        "expected": 29.23,
+        "min": 27.23,
+        "max": 31.23
+      },
+      "S": {
+        "expected": 25.01,
+        "min": 23.01,
+        "max": 27.01
+      }
+    }
+  },
+  {
+    "id": "quartz",
+    "namePl": "Kwarc",
+    "nameEn": "Quartz",
+    "formula": "SiO₂",
+    "mineralGroup": "Tlenki (krzemiany)",
+    "stoichiometry": {
+      "Si": 1,
+      "O": 2
+    },
+    "diagnostics": {
+      "hardness": "7.0 (wzorzec skali Mohsa)",
+      "streak": "biała (rysuje szkło i stal)",
+      "luster": "szklisty, na przełamie tłusty",
+      "color": "bezbarwny (kryształ górski), mleczny, dymny, fioletowy (ametyst), żółty (cytryn)",
+      "cleavage": "brak (brak płaszczyzn łupliwości)",
+      "fracture": "idealny muszlowy",
+      "density": "2.65 g/cm³",
+      "tests": "Rysuje nóż i szkło (H=7). Brak łupliwości, ostry muszlowy przełam. XRF widzi wyłącznie Si w widzialnym spektrum (reszta to ~53% tlenu).",
+      "occurrence": "Jeden z najpospolitszych minerałów skorupy ziemskiej (granity, piaskowce, kwarcyty)."
+    },
+    "totalWeightPercent": {
+      "Si": 46.74,
+      "O": 53.26
+    },
+    "lightElementsPercent": 53.26,
+    "lightElementsBreakdown": {
+      "O": 53.26
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 53.26,
+      "min": 51.26,
+      "max": 55.26
+    },
+    "xrfVisibleWeightPercent": {
+      "Si": 100
+    },
+    "toleranceWindows": {
+      "Si": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "chalcedony",
+    "namePl": "Chalcedon / Agat / Jaspis",
+    "nameEn": "Chalcedony / Agate / Jasper",
+    "formula": "SiO₂ (skrytokrystaliczny)",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Si": 1,
+      "O": 2
+    },
+    "diagnostics": {
+      "hardness": "6.5 - 7.0",
+      "streak": "biała",
+      "luster": "woskowy, tłusty do matowego",
+      "color": "szaroniebieskawa, pasiasta (agat), czerwono-żółta (jaspis), czarna (onyks)",
+      "cleavage": "brak",
+      "fracture": "muszlowy do zadziorowatego",
+      "density": "2.59 - 2.61 g/cm³",
+      "tests": "Woskowy połysk, wstęgowanie pasowe (agaty), mikrowłóknista budowa.",
+      "occurrence": "Migdałowce wulkaniczne (melafiry, bazalty), utwory krzemionkowe."
+    },
+    "totalWeightPercent": {
+      "Si": 46.74,
+      "O": 53.26
+    },
+    "lightElementsPercent": 53.26,
+    "lightElementsBreakdown": {
+      "O": 53.26
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 53.26,
+      "min": 51.26,
+      "max": 55.26
+    },
+    "xrfVisibleWeightPercent": {
+      "Si": 100
+    },
+    "toleranceWindows": {
+      "Si": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "opal",
+    "namePl": "Opal",
+    "nameEn": "Opal",
+    "formula": "SiO₂ · nH₂O (uwodniony żel krzemionkowy)",
+    "mineralGroup": "Tlenki (mineraloidy)",
+    "stoichiometry": {
+      "Si": 1,
+      "O": 2,
+      "H": 0.8
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.5",
+      "streak": "biała",
+      "luster": "szklisty, żywiczny, perłowy",
+      "color": "mlecznobiała, czarna, tęczowa gra barw (opalescencja)",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "1.98 - 2.25 g/cm³",
+      "tests": "Zjawisko opalescencji (tęczowe migotanie plamek światła). Niższa gęstość niż kwarc ze względu na wodę.",
+      "occurrence": "Niskotemperaturowe roztwory krzemionkowe, zwietrzeliny serpentynitów (Szklary)."
+    },
+    "totalWeightPercent": {
+      "Si": 46.12,
+      "O": 52.55,
+      "H": 1.32
+    },
+    "lightElementsPercent": 53.87,
+    "lightElementsBreakdown": {
+      "O": 52.55,
+      "H": 1.32
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 53.87,
+      "min": 51.87,
+      "max": 55.87
+    },
+    "xrfVisibleWeightPercent": {
+      "Si": 100
+    },
+    "toleranceWindows": {
+      "Si": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "hematite",
+    "namePl": "Hematyt",
+    "nameEn": "Hematite",
+    "formula": "Fe₂O₃",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Fe": 2,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.5",
+      "streak": "wiśniowoczerwona do czerwonobrunatnej (niezawodna cecha!)",
+      "luster": "metaliczny do matowego",
+      "color": "stalowoszara, żelazistoczarna (krwawnik), czerwonobrunatna",
+      "cleavage": "brak (oddzielność romboedryczna)",
+      "fracture": "nierówny do muszlowego",
+      "density": "5.20 - 5.30 g/cm³",
+      "tests": "Charakterystyczna wiśniowa rysa na nieszkliwionej porcelanie (nawet czarne kryształy dają czerwoną rysę!). Niemagnetyczny na zimno.",
+      "occurrence": "Główna ruda żelaza (BIF - wstęgowe rudy żelaza, złoża osadowe i hydrotermalne)."
+    },
+    "totalWeightPercent": {
+      "Fe": 69.94,
+      "O": 30.06
+    },
+    "lightElementsPercent": 30.06,
+    "lightElementsBreakdown": {
+      "O": 30.06
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 30.06,
+      "min": 28.06,
+      "max": 32.06
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 100
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "magnetite",
+    "namePl": "Magnetyt",
+    "nameEn": "Magnetite",
+    "formula": "Fe₃O₄",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Fe": 3,
+      "O": 4
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.5",
+      "streak": "czarna",
+      "luster": "metaliczny do półmetalicznego",
+      "color": "żelazistoczarna",
+      "cleavage": "brak (oddzielność ośmiościenna)",
+      "fracture": "nierówny",
+      "density": "5.10 - 5.20 g/cm³",
+      "tests": "Silny naturalny ferromagnetyzm – silnie przyciąga magnes, a samorodki magnetytu przyciągają opiłki żelaza. Czarna rysa.",
+      "occurrence": "Skały magmowe zasadowe, skarny, piaski magnetytowe."
+    },
+    "totalWeightPercent": {
+      "Fe": 72.36,
+      "O": 27.64
+    },
+    "lightElementsPercent": 27.64,
+    "lightElementsBreakdown": {
+      "O": 27.64
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 27.64,
+      "min": 25.64,
+      "max": 29.64
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 100
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "rutile",
+    "namePl": "Rutyl",
+    "nameEn": "Rutile",
+    "formula": "TiO₂",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Ti": 1,
+      "O": 2
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 6.5",
+      "streak": "jasnobrązowa do żółtawej",
+      "luster": "diamentowy do półmetalicznego",
+      "color": "czerwonobrunatna, krwistoczerwona, czarna",
+      "cleavage": "wyraźna",
+      "fracture": "muszlowy",
+      "density": "4.20 - 4.30 g/cm³",
+      "tests": "Wysoki współczynnik załamania światła i diamentowy blask. Często wrosły w kwarc w postaci igiełek (\"włosy Wenus\").",
+      "occurrence": "Główna ruda tytanu, pegmatyty, piaski ciężkie."
+    },
+    "totalWeightPercent": {
+      "Ti": 59.93,
+      "O": 40.07
+    },
+    "lightElementsPercent": 40.07,
+    "lightElementsBreakdown": {
+      "O": 40.07
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 40.07,
+      "min": 38.07,
+      "max": 42.07
+    },
+    "xrfVisibleWeightPercent": {
+      "Ti": 100
+    },
+    "toleranceWindows": {
+      "Ti": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "anatase",
+    "namePl": "Anataz",
+    "nameEn": "Anatase",
+    "formula": "TiO₂ (polimorf tetragonalny bipiramidalny)",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Ti": 1,
+      "O": 2
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.0",
+      "streak": "biała do jasnobrązowej",
+      "luster": "diamentowy",
+      "color": "niebieskoczarna, brązowa, miodowożółta",
+      "cleavage": "doskonała",
+      "fracture": "muszlowy",
+      "density": "3.82 - 3.97 g/cm³",
+      "tests": "Ostre podwójne piramidki tetragonalne o diamentowym połysku.",
+      "occurrence": "Szczeliny typu alpejskiego, pegmatyty."
+    },
+    "totalWeightPercent": {
+      "Ti": 59.93,
+      "O": 40.07
+    },
+    "lightElementsPercent": 40.07,
+    "lightElementsBreakdown": {
+      "O": 40.07
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 40.07,
+      "min": 38.07,
+      "max": 42.07
+    },
+    "xrfVisibleWeightPercent": {
+      "Ti": 100
+    },
+    "toleranceWindows": {
+      "Ti": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "ilmenite",
+    "namePl": "Ilmenit",
+    "nameEn": "Ilmenite",
+    "formula": "FeTiO₃",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Fe": 1,
+      "Ti": 1,
+      "O": 3
+    },
+    "keyMolarRatios": {
+      "Fe/Ti": 1
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 6.0",
+      "streak": "brązowoczarna",
+      "luster": "metaliczny do półmetalicznego",
+      "color": "żelazistoczarna",
+      "cleavage": "brak",
+      "fracture": "muszlowy do nierównego",
+      "density": "4.70 - 4.80 g/cm³",
+      "tests": "Równomolowy udział Fe i Ti (~1:1). Bardzo słabo magnetyczny (w przeciwieństwie do silnie magnetycznego magnetytu).",
+      "occurrence": "Gabra, anortozyty, czarne piaski tytanonośne."
+    },
+    "totalWeightPercent": {
+      "Fe": 36.81,
+      "Ti": 31.55,
+      "O": 31.64
+    },
+    "lightElementsPercent": 31.64,
+    "lightElementsBreakdown": {
+      "O": 31.64
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 31.64,
+      "min": 29.64,
+      "max": 33.64
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 53.85,
+      "Ti": 46.15
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 53.85,
+        "min": 51.85,
+        "max": 55.85
+      },
+      "Ti": {
+        "expected": 46.15,
+        "min": 44.15,
+        "max": 48.15
+      }
+    }
+  },
+  {
+    "id": "chromite",
+    "namePl": "Chromit",
+    "nameEn": "Chromite",
+    "formula": "FeCr₂O₄",
+    "mineralGroup": "Tlenki (grupa spinelu)",
+    "stoichiometry": {
+      "Fe": 1,
+      "Cr": 2,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Cr/Fe": 2
+    },
+    "diagnostics": {
+      "hardness": "5.5",
+      "streak": "ciemnobrązowa (odróżnienie od czarnej rysy magnetytu)",
+      "luster": "metaliczny do tłustego",
+      "color": "czarna do smolisto-brunatnoczarnej",
+      "cleavage": "brak",
+      "fracture": "nierówny",
+      "density": "4.50 - 4.80 g/cm³",
+      "tests": "Stosunek Cr do Fe bliski 2:1. Słabo magnetyczny lub niemagnetyczny, ciemnobrązowa rysa.",
+      "occurrence": "Skały ultramaficzne (perydotyty, serpentynity), jedyna przemysłowa ruda chromu."
+    },
+    "totalWeightPercent": {
+      "Fe": 24.95,
+      "Cr": 46.46,
+      "O": 28.59
+    },
+    "lightElementsPercent": 28.59,
+    "lightElementsBreakdown": {
+      "O": 28.59
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 28.59,
+      "min": 26.59,
+      "max": 30.59
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 34.94,
+      "Cr": 65.06
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 34.94,
+        "min": 32.94,
+        "max": 36.94
+      },
+      "Cr": {
+        "expected": 65.06,
+        "min": 63.06,
+        "max": 67.06
+      }
+    }
+  },
+  {
+    "id": "cassiterite",
+    "namePl": "Kasyteryt (kamień cynowy)",
+    "nameEn": "Cassiterite",
+    "formula": "SnO₂",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Sn": 1,
+      "O": 2
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 7.0",
+      "streak": "biała do szarożółtej",
+      "luster": "diamentowy do tłustego",
+      "color": "brunatnoczarna, smolista, żółtawobrązowa",
+      "cleavage": "niewyraźna",
+      "fracture": "podmuszlowy",
+      "density": "6.80 - 7.10 g/cm³",
+      "tests": "Uderzający ciężar właściwy (~7.0) przy diamentowym połysku (\"kolankowe\" zbliźniaczenia). Główna ruda cyny.",
+      "occurrence": "Grejzeny, pegmatyty granitowe, aluwialne piaski cynonośne."
+    },
+    "totalWeightPercent": {
+      "Sn": 78.77,
+      "O": 21.23
+    },
+    "lightElementsPercent": 21.23,
+    "lightElementsBreakdown": {
+      "O": 21.23
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 21.23,
+      "min": 19.23,
+      "max": 23.23
+    },
+    "xrfVisibleWeightPercent": {
+      "Sn": 100
+    },
+    "toleranceWindows": {
+      "Sn": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "corundum",
+    "namePl": "Korund (rubin / szafir)",
+    "nameEn": "Corundum",
+    "formula": "Al₂O₃",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Al": 2,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "9.0 (wzorzec skali Mohsa)",
+      "streak": "biała (bardzo trudna)",
+      "luster": "szklisty do diamentowego",
+      "color": "bezbarwna, czerwona (rubin), niebieska (szafir), żółta, brązowa",
+      "cleavage": "brak (oddzielność romboedryczna)",
+      "fracture": "muszlowy do nierównego",
+      "density": "3.98 - 4.10 g/cm³",
+      "tests": "Ekstremalna twardość (rysuje wszystkie minerały prócz diamentu). Baryłkowate kryształy.",
+      "occurrence": "Marmury zmetamorfizowane kontaktowo, sjenity, piaski kamieni szlachetnych."
+    },
+    "totalWeightPercent": {
+      "Al": 52.93,
+      "O": 47.07
+    },
+    "lightElementsPercent": 47.07,
+    "lightElementsBreakdown": {
+      "O": 47.07
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 47.07,
+      "min": 45.07,
+      "max": 49.07
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 100
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "spinel",
+    "namePl": "Spinel",
+    "nameEn": "Spinel",
+    "formula": "MgAl₂O₄",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Mg": 1,
+      "Al": 2,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Al/Mg": 2
+    },
+    "diagnostics": {
+      "hardness": "7.5 - 8.0",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "czerwona (rubinowy), niebieska, zielona, czarna (pleonast)",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "3.55 - 4.10 g/cm³",
+      "tests": "Kryształy ośmiościany foremne (oktaedry), bardzo twardy (8.0). Stosunek molowy Al:Mg = 2:1.",
+      "occurrence": "Marmury metamorficzne, bazalty, piaski aluwialne."
+    },
+    "totalWeightPercent": {
+      "Mg": 17.08,
+      "Al": 37.93,
+      "O": 44.98
+    },
+    "lightElementsPercent": 44.98,
+    "lightElementsBreakdown": {
+      "O": 44.98
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 44.98,
+      "min": 42.98,
+      "max": 46.98
+    },
+    "xrfVisibleWeightPercent": {
+      "Mg": 31.05,
+      "Al": 68.95
+    },
+    "toleranceWindows": {
+      "Mg": {
+        "expected": 31.05,
+        "min": 29.05,
+        "max": 33.05
+      },
+      "Al": {
+        "expected": 68.95,
+        "min": 66.95,
+        "max": 70.95
+      }
+    }
+  },
+  {
+    "id": "pyrolusite",
+    "namePl": "Piroluzyt",
+    "nameEn": "Pyrolusite",
+    "formula": "MnO₂",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Mn": 1,
+      "O": 2
+    },
+    "diagnostics": {
+      "hardness": "2.0 - 2.5 (krystaliczny do 6)",
+      "streak": "czarna, aksamitna, silnie brudząca",
+      "luster": "metaliczny do matowego",
+      "color": "stalowoszara do smolistoczarnej",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "4.80 - 5.00 g/cm³",
+      "tests": "Silnie brudzi ręce i papier na czarno (czarne \"dendryty\" na płaszczyznach skalnych to zwykle piroluzyt).",
+      "occurrence": "Osady jeziorne i bagienne, strefy utlenienia rud manganu."
+    },
+    "totalWeightPercent": {
+      "Mn": 63.19,
+      "O": 36.81
+    },
+    "lightElementsPercent": 36.81,
+    "lightElementsBreakdown": {
+      "O": 36.81
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 36.81,
+      "min": 34.81,
+      "max": 38.81
+    },
+    "xrfVisibleWeightPercent": {
+      "Mn": 100
+    },
+    "toleranceWindows": {
+      "Mn": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "manganite",
+    "namePl": "Manganit",
+    "nameEn": "Manganite",
+    "formula": "MnO(OH)",
+    "mineralGroup": "Wodorotlenki",
+    "stoichiometry": {
+      "Mn": 1,
+      "O": 2,
+      "H": 1
+    },
+    "diagnostics": {
+      "hardness": "4.0",
+      "streak": "czerwonobrunatna do ciemnobrązowej",
+      "luster": "półmetaliczny",
+      "color": "ciemnostalowoszara do żelazistoczarnej",
+      "cleavage": "bardzo doskonała",
+      "fracture": "nierówny",
+      "density": "4.30 - 4.40 g/cm³",
+      "tests": "Rysa brunatna (w odróżnieniu od czarnej piroluzytu), twardszy od piroluzytu (H=4).",
+      "occurrence": "Niskotemperaturowe żyły hydrotermalne, złoża osadowe Mn."
+    },
+    "totalWeightPercent": {
+      "Mn": 62.47,
+      "O": 36.38,
+      "H": 1.15
+    },
+    "lightElementsPercent": 37.53,
+    "lightElementsBreakdown": {
+      "O": 36.38,
+      "H": 1.15
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 37.53,
+      "min": 35.53,
+      "max": 39.53
+    },
+    "xrfVisibleWeightPercent": {
+      "Mn": 100
+    },
+    "toleranceWindows": {
+      "Mn": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "goethite",
+    "namePl": "Getyt",
+    "nameEn": "Goethite",
+    "formula": "α-FeO(OH)",
+    "mineralGroup": "Wodorotlenki",
+    "stoichiometry": {
+      "Fe": 1,
+      "O": 2,
+      "H": 1
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 5.5",
+      "streak": "rdzawożółta do ochrowobrunatnej",
+      "luster": "diamentowy, jedwabisty lub matowy",
+      "color": "brunatnoczarna, żółtobrunatna",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "4.20 - 4.30 g/cm³",
+      "tests": "Rdzawo-żółtawa rysa, skupienia nerkowate, groniaste lub włókniste (\"szklana głowa\").",
+      "occurrence": "Czapki żelazne (gossan), utwory wietrzeniowe, ruda darniowa."
+    },
+    "totalWeightPercent": {
+      "Fe": 62.85,
+      "O": 36.01,
+      "H": 1.13
+    },
+    "lightElementsPercent": 37.14,
+    "lightElementsBreakdown": {
+      "O": 36.01,
+      "H": 1.13
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 37.14,
+      "min": 35.14,
+      "max": 39.14
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 100
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "gibbsite",
+    "namePl": "Gibbsyt (hydrargilit / boksyt)",
+    "nameEn": "Gibbsite",
+    "formula": "Al(OH)₃",
+    "mineralGroup": "Wodorotlenki",
+    "stoichiometry": {
+      "Al": 1,
+      "O": 3,
+      "H": 3
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.5",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "biała, szarawa, czerwonawa (od domieszek Fe)",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "2.30 - 2.40 g/cm³",
+      "tests": "Główny składnik boksytów (rud aluminium). W XRF widoczny w 100% jako Al w części widzialnej, ~65% stanowią niewidoczne O i H.",
+      "occurrence": "Zwietrzeliny laterytowe w klimacie tropikalnym."
+    },
+    "totalWeightPercent": {
+      "Al": 34.59,
+      "O": 61.53,
+      "H": 3.88
+    },
+    "lightElementsPercent": 65.41,
+    "lightElementsBreakdown": {
+      "O": 61.53,
+      "H": 3.88
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 65.41,
+      "min": 63.41,
+      "max": 67.41
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 100
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "cuprite",
+    "namePl": "Kupryt",
+    "nameEn": "Cuprite",
+    "formula": "Cu₂O",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "Cu": 2,
+      "O": 1
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "brunatnoczerwona, błyszcząca",
+      "luster": "diamentowy do półmetalicznego",
+      "color": "rubinowoczerwona, ciemnoczerwona do czarniawej",
+      "cleavage": "wyraźna, ośmiościenna",
+      "fracture": "muszlowy",
+      "density": "6.14 g/cm³",
+      "tests": "Rubinowa czerwień o diamentowym blasku, bardzo wysoka zawartość Cu (~88.8%).",
+      "occurrence": "Strefy utlenienia złóż miedzi."
+    },
+    "totalWeightPercent": {
+      "Cu": 88.82,
+      "O": 11.18
+    },
+    "lightElementsPercent": 11.18,
+    "lightElementsBreakdown": {
+      "O": 11.18
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 11.18,
+      "min": 9.18,
+      "max": 13.18
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 100
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "uraninite",
+    "namePl": "Uraninit (blenda smolista)",
+    "nameEn": "Uraninite / Pitchblende",
+    "formula": "UO₂",
+    "mineralGroup": "Tlenki",
+    "stoichiometry": {
+      "U": 1,
+      "O": 2
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 6.0",
+      "streak": "brunatnoczarna do smolistej",
+      "luster": "tłusty, smolisty, półmetaliczny",
+      "color": "czarna, smolista, szaroczarna",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "8.00 - 10.50 g/cm³ (bardzo duża)",
+      "tests": "Silnie radioaktywny (reaguje z licznikiem Geigera-Müllera). Ekstremalnie ciężki czarny kamień.",
+      "occurrence": "Żyły hydrotermalne, pegmatyty, piaskowce uranonośne (Kowary, Kletno)."
+    },
+    "totalWeightPercent": {
+      "U": 88.15,
+      "O": 11.85
+    },
+    "lightElementsPercent": 11.85,
+    "lightElementsBreakdown": {
+      "O": 11.85
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 11.85,
+      "min": 9.85,
+      "max": 13.85
+    },
+    "xrfVisibleWeightPercent": {
+      "U": 100
+    },
+    "toleranceWindows": {
+      "U": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "calcite",
+    "namePl": "Kalcyt",
+    "nameEn": "Calcite",
+    "formula": "CaCO₃",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Ca": 1,
+      "C": 1,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "3.0 (wzorzec skali Mohsa)",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "bezbarwna (szpat islandzki), biała, żółtawa, miodowa",
+      "cleavage": "doskonała w 3 kierunkach (romboedryczna pod kątem 75°)",
+      "fracture": "muszlowy",
+      "density": "2.71 g/cm³",
+      "tests": "GWAŁTOWNIE burzy (pieni się) w zimnym rozcieńczonym kwasie solnym (10% HCl). Podwójne załamanie światła.",
+      "occurrence": "Wapienie, marmury, żyły hydrotermalne, nacieki krasowe."
+    },
+    "totalWeightPercent": {
+      "Ca": 40.04,
+      "C": 12,
+      "O": 47.96
+    },
+    "lightElementsPercent": 59.96,
+    "lightElementsBreakdown": {
+      "C": 12,
+      "O": 47.96
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 59.96,
+      "min": 57.96,
+      "max": 61.96
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 100
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "aragonite",
+    "namePl": "Aragonit",
+    "nameEn": "Aragonite",
+    "formula": "CaCO₃ (polimorf rombowy)",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Ca": 1,
+      "C": 1,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "biała, żółtawa, czerwonobrązowa",
+      "cleavage": "wyraźna",
+      "fracture": "podmuszlowy",
+      "density": "2.95 g/cm³",
+      "tests": "Pieni się z zimnym HCl jak kalcyt, ale jest twardszy (3.5-4) i gęstszy. Słupkowe i promieniste formy (\"żelazne kwiaty\").",
+      "occurrence": "Strefy utlenienia, gorące źródła, masa perłowa i perły mięczaków."
+    },
+    "totalWeightPercent": {
+      "Ca": 40.04,
+      "C": 12,
+      "O": 47.96
+    },
+    "lightElementsPercent": 59.96,
+    "lightElementsBreakdown": {
+      "C": 12,
+      "O": 47.96
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 59.96,
+      "min": 57.96,
+      "max": 61.96
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 100
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "dolomite",
+    "namePl": "Dolomit",
+    "nameEn": "Dolomite",
+    "formula": "CaMg(CO₃)₂",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Ca": 1,
+      "Mg": 1,
+      "C": 2,
+      "O": 6
+    },
+    "keyMolarRatios": {
+      "Ca/Mg": 1
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "biała, szaroróżowa, żółtawa",
+      "cleavage": "doskonała, romboedryczna (siodełkowato wygięte ściany)",
+      "fracture": "muszlowy",
+      "density": "2.84 - 2.86 g/cm³",
+      "tests": "Reaguje z 10% HCl DOPIERO PO SPROSZKOWANIU lub na gorąco! Równomolowy stosunek Ca do Mg (1:1).",
+      "occurrence": "Skały osadowe (dolomity), marmury dolomitowe, żyły kruszcowe."
+    },
+    "totalWeightPercent": {
+      "Ca": 21.73,
+      "Mg": 13.18,
+      "C": 13.03,
+      "O": 52.06
+    },
+    "lightElementsPercent": 65.09,
+    "lightElementsBreakdown": {
+      "C": 13.03,
+      "O": 52.06
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 65.09,
+      "min": 63.09,
+      "max": 67.09
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 62.25,
+      "Mg": 37.75
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 62.25,
+        "min": 60.25,
+        "max": 64.25
+      },
+      "Mg": {
+        "expected": 37.75,
+        "min": 35.75,
+        "max": 39.75
+      }
+    }
+  },
+  {
+    "id": "magnesite",
+    "namePl": "Magnezyt",
+    "nameEn": "Magnesite",
+    "formula": "MgCO₃",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Mg": 1,
+      "C": 1,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.5",
+      "streak": "biała",
+      "luster": "szklisty, matowy, porcelanowy",
+      "color": "śnieżnobiała, żółtawa, szara",
+      "cleavage": "doskonała (w kryształach) lub zbity jak porcelana",
+      "fracture": "muszlowy",
+      "density": "3.00 - 3.12 g/cm³",
+      "tests": "Zbite masy przypominające nieszkliwioną porcelanę. Reaguje tylko z gorącym stężonym kwasem. W XRF widoczne wyłącznie Mg.",
+      "occurrence": "Zwietrzeliny serpentynitów (Sobótka, Wiry na Dolnym Śląsku)."
+    },
+    "totalWeightPercent": {
+      "Mg": 28.83,
+      "C": 14.25,
+      "O": 56.93
+    },
+    "lightElementsPercent": 71.18,
+    "lightElementsBreakdown": {
+      "C": 14.25,
+      "O": 56.93
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 71.18,
+      "min": 69.18,
+      "max": 73.18
+    },
+    "xrfVisibleWeightPercent": {
+      "Mg": 100
+    },
+    "toleranceWindows": {
+      "Mg": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "siderite",
+    "namePl": "Syderyt (szpat żelazny)",
+    "nameEn": "Siderite",
+    "formula": "FeCO₃",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Fe": 1,
+      "C": 1,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.5",
+      "streak": "biała do żółtawoszarej",
+      "luster": "szklisty do perłowego",
+      "color": "jasnobrunatna, żółtawobrązowa, szarobrązowa",
+      "cleavage": "doskonała, romboedryczna",
+      "fracture": "nierówny",
+      "density": "3.80 - 3.96 g/cm³",
+      "tests": "Wyraźnie cięższy od kalcytu i dolomitu (Fe). Reaguje z gorącym HCl. Po prażeniu płomieniem staje się magnetyczny.",
+      "occurrence": "Żyły hydrotermalne, sferosyderyty i syderyty ilaste w węglu kamiennym."
+    },
+    "totalWeightPercent": {
+      "Fe": 48.2,
+      "C": 10.37,
+      "O": 41.43
+    },
+    "lightElementsPercent": 51.8,
+    "lightElementsBreakdown": {
+      "C": 10.37,
+      "O": 41.43
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 51.8,
+      "min": 49.8,
+      "max": 53.8
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 100
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "rhodochrosite",
+    "namePl": "Rodochrozyt (szpat malinowy)",
+    "nameEn": "Rhodochrosite",
+    "formula": "MnCO₃",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Mn": 1,
+      "C": 1,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "różowa, malinowoczerwona, pasteloworóżowa ze wstęgami",
+      "cleavage": "doskonała, romboedryczna",
+      "fracture": "nierówny",
+      "density": "3.60 - 3.70 g/cm³",
+      "tests": "Wspaniała malinowa barwa. Pieni się w ciepłym HCl. W XRF dominuje mangan (Mn).",
+      "occurrence": "Żyły hydrotermalne z kruszcami Ag, Pb, Zn."
+    },
+    "totalWeightPercent": {
+      "Mn": 47.79,
+      "C": 10.45,
+      "O": 41.76
+    },
+    "lightElementsPercent": 52.21,
+    "lightElementsBreakdown": {
+      "C": 10.45,
+      "O": 41.76
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 52.21,
+      "min": 50.21,
+      "max": 54.21
+    },
+    "xrfVisibleWeightPercent": {
+      "Mn": 100
+    },
+    "toleranceWindows": {
+      "Mn": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "smithsonite",
+    "namePl": "Smithsonit (galman cynkowy)",
+    "nameEn": "Smithsonite",
+    "formula": "ZnCO₃",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Zn": 1,
+      "C": 1,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "4.0 - 4.5",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "biała, szara, błękitnozielona, żółtawa",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "4.40 - 4.45 g/cm³",
+      "tests": "Bardzo ciężki węglan (gęstość ~4.4). Pieni się w ciepłym HCl. W XRF dominuje Zn.",
+      "occurrence": "Strefy utlenienia kruszców cynku w wapieniach (śląskie galmany)."
+    },
+    "totalWeightPercent": {
+      "Zn": 52.14,
+      "C": 9.58,
+      "O": 38.28
+    },
+    "lightElementsPercent": 47.86,
+    "lightElementsBreakdown": {
+      "C": 9.58,
+      "O": 38.28
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 47.86,
+      "min": 45.86,
+      "max": 49.86
+    },
+    "xrfVisibleWeightPercent": {
+      "Zn": 100
+    },
+    "toleranceWindows": {
+      "Zn": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "cerussite",
+    "namePl": "Cerusyt (biel ołowiana)",
+    "nameEn": "Cerussite",
+    "formula": "PbCO₃",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Pb": 1,
+      "C": 1,
+      "O": 3
+    },
+    "diagnostics": {
+      "hardness": "3.0 - 3.5",
+      "streak": "biała",
+      "luster": "diamentowy, bardzo silny",
+      "color": "bezbarwna, biała, szara",
+      "cleavage": "wyraźna",
+      "fracture": "muszlowy",
+      "density": "6.53 - 6.57 g/cm³",
+      "tests": "Uderzająco ciężki kamień o olśniewającym diamentowym blasku. Pieni się w kwasie azotowym.",
+      "occurrence": "Strefy utlenienia galeny."
+    },
+    "totalWeightPercent": {
+      "Pb": 77.54,
+      "C": 4.5,
+      "O": 17.96
+    },
+    "lightElementsPercent": 22.46,
+    "lightElementsBreakdown": {
+      "C": 4.5,
+      "O": 17.96
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 22.46,
+      "min": 20.46,
+      "max": 24.46
+    },
+    "xrfVisibleWeightPercent": {
+      "Pb": 100
+    },
+    "toleranceWindows": {
+      "Pb": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "malachite",
+    "namePl": "Malachit",
+    "nameEn": "Malachite",
+    "formula": "Cu₂CO₃(OH)₂",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Cu": 2,
+      "C": 1,
+      "H": 2,
+      "O": 5
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "jasnozielona (charakterystyczna)",
+      "luster": "diamentowy, jedwabisty do matowego",
+      "color": "szmaragdowozielona, trawiasta z koncentrycznymi wstęgami",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "3.90 - 4.03 g/cm³",
+      "tests": "Pieni się z rozcieńczonym HCl zabarwiając roztwór na szmaragdowy kolor. Wyłącznie zielona rysa.",
+      "occurrence": "Strefy utlenienia rud miedzi (Miedzianka, Chęciny)."
+    },
+    "totalWeightPercent": {
+      "Cu": 57.48,
+      "C": 5.43,
+      "H": 0.91,
+      "O": 36.18
+    },
+    "lightElementsPercent": 42.52,
+    "lightElementsBreakdown": {
+      "C": 5.43,
+      "H": 0.91,
+      "O": 36.18
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 42.52,
+      "min": 40.52,
+      "max": 44.52
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 100
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "azurite",
+    "namePl": "Azuryt",
+    "nameEn": "Azurite",
+    "formula": "Cu₃(CO₃)₂(OH)₂",
+    "mineralGroup": "Węglany",
+    "stoichiometry": {
+      "Cu": 3,
+      "C": 2,
+      "H": 2,
+      "O": 8
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "błękitna",
+      "luster": "szklisty do diamentowego",
+      "color": "lazurowoniebieska, ciemnobłękitna, szafirowa",
+      "cleavage": "doskonała",
+      "fracture": "muszlowy",
+      "density": "3.77 - 3.89 g/cm³",
+      "tests": "Głęboka lazurowa barwa, burzy z kwasem solnym. Często tworzy zrosty z zielonym malachitem.",
+      "occurrence": "Strefy utlenienia złóż miedzi."
+    },
+    "totalWeightPercent": {
+      "Cu": 55.31,
+      "C": 6.97,
+      "H": 0.58,
+      "O": 37.13
+    },
+    "lightElementsPercent": 44.68,
+    "lightElementsBreakdown": {
+      "C": 6.97,
+      "H": 0.58,
+      "O": 37.13
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 44.68,
+      "min": 42.68,
+      "max": 46.68
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 100
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "gypsum",
+    "namePl": "Gips",
+    "nameEn": "Gypsum",
+    "formula": "CaSO₄ · 2H₂O",
+    "mineralGroup": "Siarczany",
+    "stoichiometry": {
+      "Ca": 1,
+      "S": 1,
+      "H": 4,
+      "O": 6
+    },
+    "keyMolarRatios": {
+      "Ca/S": 1
+    },
+    "diagnostics": {
+      "hardness": "2.0 (wzorzec skali Mohsa)",
+      "streak": "biała",
+      "luster": "szklisty, perłowy na płaszczyznach łupliwości",
+      "color": "bezbarwna (selenit), biała, szarawa, miodowa (jaskółcze ogony)",
+      "cleavage": "bardzo doskonała w 1 kierunku (cienkie elastyczne blaszki)",
+      "fracture": "włóknisty lub nierówny",
+      "density": "2.31 - 2.33 g/cm³",
+      "tests": "Można go zarysować paznokciem (H=2). Nie pieni się z zimnym HCl. Równomolowy stosunek Ca do S (1:1).",
+      "occurrence": "Ewaporaty morskie i jeziorne (Dolina Nidy, Wieliczka)."
+    },
+    "totalWeightPercent": {
+      "Ca": 23.28,
+      "S": 18.62,
+      "H": 2.34,
+      "O": 55.76
+    },
+    "lightElementsPercent": 58.1,
+    "lightElementsBreakdown": {
+      "H": 2.34,
+      "O": 55.76
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 58.1,
+      "min": 56.1,
+      "max": 60.1
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 55.56,
+      "S": 44.44
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 55.56,
+        "min": 53.56,
+        "max": 57.56
+      },
+      "S": {
+        "expected": 44.44,
+        "min": 42.44,
+        "max": 46.44
+      }
+    }
+  },
+  {
+    "id": "anhydrite",
+    "namePl": "Anhydryt",
+    "nameEn": "Anhydrite",
+    "formula": "CaSO₄",
+    "mineralGroup": "Siarczany",
+    "stoichiometry": {
+      "Ca": 1,
+      "S": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Ca/S": 1
+    },
+    "diagnostics": {
+      "hardness": "3.5",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "biała, szaroniebieskawa, fioletowawa",
+      "cleavage": "doskonała w 3 prostopadłych kierunkach (kostkowa)",
+      "fracture": "nierówny",
+      "density": "2.90 - 3.00 g/cm³",
+      "tests": "Twardszy od gipsu (nie daje się zarysować paznokciem). W odróżnieniu od kalcytu nie reaguje z zimnym HCl.",
+      "occurrence": "Ewaporaty pod złożami gipsu."
+    },
+    "totalWeightPercent": {
+      "Ca": 29.44,
+      "S": 23.55,
+      "O": 47.01
+    },
+    "lightElementsPercent": 47.01,
+    "lightElementsBreakdown": {
+      "O": 47.01
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 47.01,
+      "min": 45.01,
+      "max": 49.01
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 55.56,
+      "S": 44.44
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 55.56,
+        "min": 53.56,
+        "max": 57.56
+      },
+      "S": {
+        "expected": 44.44,
+        "min": 42.44,
+        "max": 46.44
+      }
+    }
+  },
+  {
+    "id": "barite",
+    "namePl": "Baryt (szpat ciężki)",
+    "nameEn": "Barite",
+    "formula": "BaSO₄",
+    "mineralGroup": "Siarczany",
+    "stoichiometry": {
+      "Ba": 1,
+      "S": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Ba/S": 1
+    },
+    "diagnostics": {
+      "hardness": "3.0 - 3.5",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "biała, miodowożółta, błękitnawa, brunatna",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "4.48 g/cm³",
+      "tests": "Niezwykle ciężki jak na jasny minerał (stąd nazwa \"szpat ciężki\"). Nie reaguje z kwasami. Pik Ba i S.",
+      "occurrence": "Żyły hydrotermalne średniotemperaturowe (Stanisławów, Boguszów)."
+    },
+    "totalWeightPercent": {
+      "Ba": 58.84,
+      "S": 13.74,
+      "O": 27.42
+    },
+    "lightElementsPercent": 27.42,
+    "lightElementsBreakdown": {
+      "O": 27.42
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 27.42,
+      "min": 25.42,
+      "max": 29.42
+    },
+    "xrfVisibleWeightPercent": {
+      "Ba": 81.07,
+      "S": 18.93
+    },
+    "toleranceWindows": {
+      "Ba": {
+        "expected": 81.07,
+        "min": 79.07,
+        "max": 83.07
+      },
+      "S": {
+        "expected": 18.93,
+        "min": 16.93,
+        "max": 20.93
+      }
+    }
+  },
+  {
+    "id": "celestine",
+    "namePl": "Celestyn",
+    "nameEn": "Celestine",
+    "formula": "SrSO₄",
+    "mineralGroup": "Siarczany",
+    "stoichiometry": {
+      "Sr": 1,
+      "S": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Sr/S": 1
+    },
+    "diagnostics": {
+      "hardness": "3.0 - 3.5",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "jasnobłękitna, bladoniebieska, bezbarwna",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "3.95 - 4.00 g/cm³",
+      "tests": "Jasnobłękitna barwa, barwi płomień palnika na karminowoczerwony kolor (stront). W XRF pik Sr i S.",
+      "occurrence": "Skały osadowe (wapienie, gipsy), geody i szczeliny."
+    },
+    "totalWeightPercent": {
+      "Sr": 47.7,
+      "S": 17.45,
+      "O": 34.84
+    },
+    "lightElementsPercent": 34.84,
+    "lightElementsBreakdown": {
+      "O": 34.84
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 34.84,
+      "min": 32.84,
+      "max": 36.84
+    },
+    "xrfVisibleWeightPercent": {
+      "Sr": 73.21,
+      "S": 26.79
+    },
+    "toleranceWindows": {
+      "Sr": {
+        "expected": 73.21,
+        "min": 71.21,
+        "max": 75.21
+      },
+      "S": {
+        "expected": 26.79,
+        "min": 24.79,
+        "max": 28.79
+      }
+    }
+  },
+  {
+    "id": "anglesite",
+    "namePl": "Anglezyt",
+    "nameEn": "Anglesite",
+    "formula": "PbSO₄",
+    "mineralGroup": "Siarczany",
+    "stoichiometry": {
+      "Pb": 1,
+      "S": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Pb/S": 1
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.0",
+      "streak": "biała",
+      "luster": "diamentowy, żywiczny",
+      "color": "bezbarwna, biała, żółtawa, szara",
+      "cleavage": "wyraźna",
+      "fracture": "muszlowy",
+      "density": "6.30 - 6.39 g/cm³",
+      "tests": "Bardzo duża gęstość połączona z diamentowym połyskiem. W odróżnieniu od cerusytu NIE burzy z kwasami.",
+      "occurrence": "Strefy utlenienia galeny."
+    },
+    "totalWeightPercent": {
+      "Pb": 68.33,
+      "S": 10.57,
+      "O": 21.1
+    },
+    "lightElementsPercent": 21.1,
+    "lightElementsBreakdown": {
+      "O": 21.1
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 21.1,
+      "min": 19.1,
+      "max": 23.1
+    },
+    "xrfVisibleWeightPercent": {
+      "Pb": 86.6,
+      "S": 13.4
+    },
+    "toleranceWindows": {
+      "Pb": {
+        "expected": 86.6,
+        "min": 84.6,
+        "max": 88.6
+      },
+      "S": {
+        "expected": 13.4,
+        "min": 11.4,
+        "max": 15.4
+      }
+    }
+  },
+  {
+    "id": "scheelite",
+    "namePl": "Szeelit",
+    "nameEn": "Scheelite",
+    "formula": "CaWO₄",
+    "mineralGroup": "Wolframiany",
+    "stoichiometry": {
+      "Ca": 1,
+      "W": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "W/Ca": 1
+    },
+    "diagnostics": {
+      "hardness": "4.5 - 5.0",
+      "streak": "biała",
+      "luster": "diamentowy do tłustego",
+      "color": "żółtawobiała, miodowobrązowa, pomarańczowa",
+      "cleavage": "wyraźna",
+      "fracture": "nierówny",
+      "density": "5.90 - 6.12 g/cm³",
+      "tests": "Intensywna jasnoniebieska fluorescencja pod krótkofalowym UV (254 nm). Ciężki minerał, ruda wolframu.",
+      "occurrence": "Skarny, grejzeny, pegmatyty."
+    },
+    "totalWeightPercent": {
+      "Ca": 13.92,
+      "W": 63.85,
+      "O": 22.23
+    },
+    "lightElementsPercent": 22.23,
+    "lightElementsBreakdown": {
+      "O": 22.23
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 22.23,
+      "min": 20.23,
+      "max": 24.23
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 17.9,
+      "W": 82.1
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 17.9,
+        "min": 15.9,
+        "max": 19.9
+      },
+      "W": {
+        "expected": 82.1,
+        "min": 80.1,
+        "max": 84.1
+      }
+    }
+  },
+  {
+    "id": "wolframite",
+    "namePl": "Wolframit",
+    "nameEn": "Wolframite",
+    "formula": "(Fe,Mn)WO₄",
+    "mineralGroup": "Wolframiany",
+    "stoichiometry": {
+      "Fe": 0.5,
+      "Mn": 0.5,
+      "W": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "W/(Fe+Mn)": 1
+    },
+    "diagnostics": {
+      "hardness": "4.0 - 4.5",
+      "streak": "czerwonobrunatna do czarnej",
+      "luster": "metaliczny do diamentowego",
+      "color": "czarna, brunatnoczarna",
+      "cleavage": "bardzo doskonała w 1 kierunku",
+      "fracture": "nierówny",
+      "density": "7.10 - 7.50 g/cm³",
+      "tests": "Ekstremalnie ciężki (gęstość ~7.3), doskonała łupliwość płytkowa, ruda wolframu.",
+      "occurrence": "Grejzeny kwarcowe, pegmatyty granitowe."
+    },
+    "totalWeightPercent": {
+      "Fe": 9.21,
+      "Mn": 9.06,
+      "W": 60.63,
+      "O": 21.1
+    },
+    "lightElementsPercent": 21.1,
+    "lightElementsBreakdown": {
+      "O": 21.1
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 21.1,
+      "min": 19.1,
+      "max": 23.1
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 11.67,
+      "Mn": 11.48,
+      "W": 76.85
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 11.67,
+        "min": 9.67,
+        "max": 13.67
+      },
+      "Mn": {
+        "expected": 11.48,
+        "min": 9.48,
+        "max": 13.48
+      },
+      "W": {
+        "expected": 76.85,
+        "min": 74.85,
+        "max": 78.85
+      }
+    }
+  },
+  {
+    "id": "wulfenite",
+    "namePl": "Wulfenit",
+    "nameEn": "Wulfenite",
+    "formula": "PbMoO₄",
+    "mineralGroup": "Molibdeniany",
+    "stoichiometry": {
+      "Pb": 1,
+      "Mo": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Pb/Mo": 1
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.0",
+      "streak": "biała",
+      "luster": "diamentowy do żywicznego",
+      "color": "pomarańczowa, miodowożółta, woskowożółta",
+      "cleavage": "wyraźna",
+      "fracture": "podmuszlowy",
+      "density": "6.70 - 7.00 g/cm³",
+      "tests": "Cienkie tabliczkowe kryształy o jaskrawopomarańczowej barwie i diamentowym blasku, bardzo ciężki (Pb+Mo).",
+      "occurrence": "Strefy utlenienia złóż Pb-Mo."
+    },
+    "totalWeightPercent": {
+      "Pb": 56.44,
+      "Mo": 26.13,
+      "O": 17.43
+    },
+    "lightElementsPercent": 17.43,
+    "lightElementsBreakdown": {
+      "O": 17.43
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 17.43,
+      "min": 15.43,
+      "max": 19.43
+    },
+    "xrfVisibleWeightPercent": {
+      "Pb": 68.35,
+      "Mo": 31.65
+    },
+    "toleranceWindows": {
+      "Pb": {
+        "expected": 68.35,
+        "min": 66.35,
+        "max": 70.35
+      },
+      "Mo": {
+        "expected": 31.65,
+        "min": 29.65,
+        "max": 33.65
+      }
+    }
+  },
+  {
+    "id": "orthoclase",
+    "namePl": "Ortoklaz (skaleń potasowy)",
+    "nameEn": "Orthoclase / K-Feldspar",
+    "formula": "KAlSi₃O₈",
+    "mineralGroup": "Krzemiany (skalenie)",
+    "stoichiometry": {
+      "K": 1,
+      "Al": 1,
+      "Si": 3,
+      "O": 8
+    },
+    "keyMolarRatios": {
+      "Si/Al": 3,
+      "K/Al": 1
+    },
+    "diagnostics": {
+      "hardness": "6.0 (wzorzec skali Mohsa)",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "różowa, łososiowa, mięsnoczerwona, biała",
+      "cleavage": "doskonała w 2 kierunkach pod kątem prostym (90°)",
+      "fracture": "nierówny",
+      "density": "2.56 - 2.58 g/cm³",
+      "tests": "Różowa barwa, łupliwość pod kątem prostym. W XRF widoczne K, Al, Si w proporcji molowej 1:1:3.",
+      "occurrence": "Główny składnik granitów, sjenitów i pegmatytów."
+    },
+    "totalWeightPercent": {
+      "K": 14.05,
+      "Al": 9.69,
+      "Si": 30.27,
+      "O": 45.99
+    },
+    "lightElementsPercent": 45.99,
+    "lightElementsBreakdown": {
+      "O": 45.99
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 45.99,
+      "min": 43.99,
+      "max": 47.99
+    },
+    "xrfVisibleWeightPercent": {
+      "K": 26.01,
+      "Al": 17.95,
+      "Si": 56.04
+    },
+    "toleranceWindows": {
+      "K": {
+        "expected": 26.01,
+        "min": 24.01,
+        "max": 28.01
+      },
+      "Al": {
+        "expected": 17.95,
+        "min": 15.95,
+        "max": 19.95
+      },
+      "Si": {
+        "expected": 56.04,
+        "min": 54.04,
+        "max": 58.04
+      }
+    }
+  },
+  {
+    "id": "microcline",
+    "namePl": "Mikroklin / Amazonit",
+    "nameEn": "Microcline / Amazonite",
+    "formula": "KAlSi₃O₈ (trójskośny)",
+    "mineralGroup": "Krzemiany (skalenie)",
+    "stoichiometry": {
+      "K": 1,
+      "Al": 1,
+      "Si": 3,
+      "O": 8
+    },
+    "keyMolarRatios": {
+      "Si/Al": 3,
+      "K/Al": 1
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 6.5",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "zielononiebieska (amazonit), różowa, biała",
+      "cleavage": "doskonała pod kątem bliskim 90° (89°30')",
+      "fracture": "nierówny",
+      "density": "2.56 g/cm³",
+      "tests": "Siatkowa struktura zbliźniaczeń mikroklinowych pod mikroskopem, odmiana amazonit ma unikalną turkusową zieleń.",
+      "occurrence": "Pegmatyty granitowe (Strzegom)."
+    },
+    "totalWeightPercent": {
+      "K": 14.05,
+      "Al": 9.69,
+      "Si": 30.27,
+      "O": 45.99
+    },
+    "lightElementsPercent": 45.99,
+    "lightElementsBreakdown": {
+      "O": 45.99
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 45.99,
+      "min": 43.99,
+      "max": 47.99
+    },
+    "xrfVisibleWeightPercent": {
+      "K": 26.01,
+      "Al": 17.95,
+      "Si": 56.04
+    },
+    "toleranceWindows": {
+      "K": {
+        "expected": 26.01,
+        "min": 24.01,
+        "max": 28.01
+      },
+      "Al": {
+        "expected": 17.95,
+        "min": 15.95,
+        "max": 19.95
+      },
+      "Si": {
+        "expected": 56.04,
+        "min": 54.04,
+        "max": 58.04
+      }
+    }
+  },
+  {
+    "id": "albite",
+    "namePl": "Albit (plagioklaz sodowy)",
+    "nameEn": "Albite",
+    "formula": "NaAlSi₃O₈",
+    "mineralGroup": "Krzemiany (plagioklazy)",
+    "stoichiometry": {
+      "Na": 1,
+      "Al": 1,
+      "Si": 3,
+      "O": 8
+    },
+    "keyMolarRatios": {
+      "Si/Al": 3,
+      "Na/Al": 1
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 6.5",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "czysto biała, szarobiała, niebieskawa (perysteryt)",
+      "cleavage": "doskonała pod kątem 86° (charakterystyczne prążkowanie polisyntetyczne)",
+      "fracture": "nierówny",
+      "density": "2.62 g/cm³",
+      "tests": "Drobne prążki zbliźniaczeń na ścianach łupliwości. W XRF widoczne Na, Al, Si.",
+      "occurrence": "Granity, pegmatyty, krystaliczne łupki zieleńcowe."
+    },
+    "totalWeightPercent": {
+      "Na": 8.77,
+      "Al": 10.29,
+      "Si": 32.13,
+      "O": 48.81
+    },
+    "lightElementsPercent": 48.81,
+    "lightElementsBreakdown": {
+      "O": 48.81
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 48.81,
+      "min": 46.81,
+      "max": 50.81
+    },
+    "xrfVisibleWeightPercent": {
+      "Na": 17.13,
+      "Al": 20.1,
+      "Si": 62.77
+    },
+    "toleranceWindows": {
+      "Na": {
+        "expected": 17.13,
+        "min": 15.13,
+        "max": 19.13
+      },
+      "Al": {
+        "expected": 20.1,
+        "min": 18.1,
+        "max": 22.1
+      },
+      "Si": {
+        "expected": 62.77,
+        "min": 60.77,
+        "max": 64.77
+      }
+    }
+  },
+  {
+    "id": "anorthite",
+    "namePl": "Anortyt (plagioklaz wapniowy)",
+    "nameEn": "Anorthite",
+    "formula": "CaAl₂Si₂O₈",
+    "mineralGroup": "Krzemiany (plagioklazy)",
+    "stoichiometry": {
+      "Ca": 1,
+      "Al": 2,
+      "Si": 2,
+      "O": 8
+    },
+    "keyMolarRatios": {
+      "Si/Al": 1,
+      "Ca/Al": 0.5
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 6.5",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "biała, szarawa, bezbarwna",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "2.73 - 2.76 g/cm³",
+      "tests": "Zasadowy skaleń plagioklazowy. W XRF dominują Ca, Al, Si w stosunku molowym 1:2:2.",
+      "occurrence": "Gabra, bazalty, anortozyty, skały księżycowe."
+    },
+    "totalWeightPercent": {
+      "Ca": 14.41,
+      "Al": 19.4,
+      "Si": 20.19,
+      "O": 46.01
+    },
+    "lightElementsPercent": 46.01,
+    "lightElementsBreakdown": {
+      "O": 46.01
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 46.01,
+      "min": 44.01,
+      "max": 48.01
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 26.68,
+      "Al": 35.92,
+      "Si": 37.39
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 26.68,
+        "min": 24.68,
+        "max": 28.68
+      },
+      "Al": {
+        "expected": 35.92,
+        "min": 33.92,
+        "max": 37.92
+      },
+      "Si": {
+        "expected": 37.39,
+        "min": 35.39,
+        "max": 39.39
+      }
+    }
+  },
+  {
+    "id": "muscovite",
+    "namePl": "Muskowit (łyszczyk jasny)",
+    "nameEn": "Muscovite",
+    "formula": "KAl₂(AlSi₃O₁₀)(OH)₂",
+    "mineralGroup": "Krzemiany (fyllokrzemiany)",
+    "stoichiometry": {
+      "K": 1,
+      "Al": 3,
+      "Si": 3,
+      "H": 2,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Si/Al": 1,
+      "K/Al": 0.333
+    },
+    "diagnostics": {
+      "hardness": "2.0 - 2.5",
+      "streak": "biała",
+      "luster": "perłowy, srebrzystoszklisty",
+      "color": "bezbarwna, srebrzysta, jasnozłocista",
+      "cleavage": "wyjątkowo doskonała (rozszczepia się na cienkie, elastyczne blaszki)",
+      "fracture": "haczykowaty",
+      "density": "2.77 - 2.88 g/cm³",
+      "tests": "Cienkie sprężyste przezroczyste blaszki (po wygięciu wracają do płaszczyzny). Doskonały izolator elektryczny.",
+      "occurrence": "Gnejsy, łupki mikowe, granity, pegmatyty."
+    },
+    "totalWeightPercent": {
+      "K": 9.82,
+      "Al": 20.32,
+      "Si": 21.15,
+      "H": 0.51,
+      "O": 48.2
+    },
+    "lightElementsPercent": 48.71,
+    "lightElementsBreakdown": {
+      "H": 0.51,
+      "O": 48.2
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 48.71,
+      "min": 46.71,
+      "max": 50.71
+    },
+    "xrfVisibleWeightPercent": {
+      "K": 19.14,
+      "Al": 39.62,
+      "Si": 41.24
+    },
+    "toleranceWindows": {
+      "K": {
+        "expected": 19.14,
+        "min": 17.14,
+        "max": 21.14
+      },
+      "Al": {
+        "expected": 39.62,
+        "min": 37.62,
+        "max": 41.62
+      },
+      "Si": {
+        "expected": 41.24,
+        "min": 39.24,
+        "max": 43.24
+      }
+    }
+  },
+  {
+    "id": "biotite",
+    "namePl": "Biotyt (łyszczyk ciemny)",
+    "nameEn": "Biotite",
+    "formula": "K(Mg,Fe)₃(AlSi₃O₁₀)(OH)₂",
+    "mineralGroup": "Krzemiany (fyllokrzemiany)",
+    "stoichiometry": {
+      "K": 1,
+      "Mg": 1.5,
+      "Fe": 1.5,
+      "Al": 1,
+      "Si": 3,
+      "H": 2,
+      "O": 12
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.0",
+      "streak": "biała do szarej",
+      "luster": "szklisty do perłowego",
+      "color": "ciemnobrązowa do smolistoczarnej",
+      "cleavage": "wyjątkowo doskonała w 1 kierunku",
+      "fracture": "nierówny",
+      "density": "2.80 - 3.20 g/cm³",
+      "tests": "Czarne lśniące sprężyste blaszki. W odróżnieniu od muskowitu wykazuje wysokie Fe i Mg w widmie XRF.",
+      "occurrence": "Granity, dioryty, gnejsy, amfibolity."
+    },
+    "totalWeightPercent": {
+      "K": 8.42,
+      "Mg": 7.85,
+      "Fe": 18.03,
+      "Al": 5.81,
+      "Si": 18.14,
+      "H": 0.43,
+      "O": 41.33
+    },
+    "lightElementsPercent": 41.76,
+    "lightElementsBreakdown": {
+      "H": 0.43,
+      "O": 41.33
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 41.76,
+      "min": 39.76,
+      "max": 43.76
+    },
+    "xrfVisibleWeightPercent": {
+      "K": 14.45,
+      "Mg": 13.47,
+      "Fe": 30.96,
+      "Al": 9.97,
+      "Si": 31.14
+    },
+    "toleranceWindows": {
+      "K": {
+        "expected": 14.45,
+        "min": 12.45,
+        "max": 16.45
+      },
+      "Mg": {
+        "expected": 13.47,
+        "min": 11.47,
+        "max": 15.47
+      },
+      "Fe": {
+        "expected": 30.96,
+        "min": 28.96,
+        "max": 32.96
+      },
+      "Al": {
+        "expected": 9.97,
+        "min": 7.97,
+        "max": 11.97
+      },
+      "Si": {
+        "expected": 31.14,
+        "min": 29.14,
+        "max": 33.14
+      }
+    }
+  },
+  {
+    "id": "lepidolite",
+    "namePl": "Lepidolit (mika litowa)",
+    "nameEn": "Lepidolite",
+    "formula": "K(Li,Al)₃(Al,Si)₄O₁₀(F,OH)₂",
+    "mineralGroup": "Krzemiany (miki)",
+    "stoichiometry": {
+      "K": 1,
+      "Li": 1.5,
+      "Al": 1.5,
+      "Si": 3,
+      "O": 10,
+      "F": 2
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.5",
+      "streak": "biała",
+      "luster": "perłowy",
+      "color": "liliowa, fioletoworóżowa, lawendowa",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "2.80 - 2.90 g/cm³",
+      "tests": "Fioletoworóżowa barwa łyszczyka. Barwi płomień na karminowy kolor (lit).",
+      "occurrence": "Pegmatyty litonośne."
+    },
+    "totalWeightPercent": {
+      "K": 10.5,
+      "Li": 2.8,
+      "Al": 10.87,
+      "Si": 22.64,
+      "O": 42.98,
+      "F": 10.21
+    },
+    "lightElementsPercent": 55.99,
+    "lightElementsBreakdown": {
+      "Li": 2.8,
+      "O": 42.98,
+      "F": 10.21
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 55.99,
+      "min": 53.99,
+      "max": 57.99
+    },
+    "xrfVisibleWeightPercent": {
+      "K": 23.87,
+      "Al": 24.7,
+      "Si": 51.43
+    },
+    "toleranceWindows": {
+      "K": {
+        "expected": 23.87,
+        "min": 21.87,
+        "max": 25.87
+      },
+      "Al": {
+        "expected": 24.7,
+        "min": 22.7,
+        "max": 26.7
+      },
+      "Si": {
+        "expected": 51.43,
+        "min": 49.43,
+        "max": 53.43
+      }
+    }
+  },
+  {
+    "id": "forsterite",
+    "namePl": "Forsteryt / Oliwin",
+    "nameEn": "Forsterite / Olivine",
+    "formula": "Mg₂SiO₄",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Mg": 2,
+      "Si": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Mg/Si": 2
+    },
+    "diagnostics": {
+      "hardness": "6.5 - 7.0",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "oliwkowozielona, żółtawozielona, butelkowa",
+      "cleavage": "słaba",
+      "fracture": "muszlowy",
+      "density": "3.22 - 3.30 g/cm³",
+      "tests": "Charakterystyczna oliwkowa zieleń, szklisty połysk, muszlowy przełam bez wyraźnej łupliwości. Stosunek molowy Mg:Si = 2:1.",
+      "occurrence": "Główny składnik górnego płaszcza Ziemi, perydotyty, bazalty oliwinowe."
+    },
+    "totalWeightPercent": {
+      "Mg": 34.55,
+      "Si": 19.96,
+      "O": 45.49
+    },
+    "lightElementsPercent": 45.49,
+    "lightElementsBreakdown": {
+      "O": 45.49
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 45.49,
+      "min": 43.49,
+      "max": 47.49
+    },
+    "xrfVisibleWeightPercent": {
+      "Mg": 63.38,
+      "Si": 36.62
+    },
+    "toleranceWindows": {
+      "Mg": {
+        "expected": 63.38,
+        "min": 61.38,
+        "max": 65.38
+      },
+      "Si": {
+        "expected": 36.62,
+        "min": 34.62,
+        "max": 38.62
+      }
+    }
+  },
+  {
+    "id": "fayalite",
+    "namePl": "Fajalit (oliwin żelazisty)",
+    "nameEn": "Fayalite",
+    "formula": "Fe₂SiO₄",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Fe": 2,
+      "Si": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Fe/Si": 2
+    },
+    "diagnostics": {
+      "hardness": "6.5",
+      "streak": "szara",
+      "luster": "szklisty do żywicznego",
+      "color": "brunatnoczarna, ciemnozielona",
+      "cleavage": "słaba",
+      "fracture": "muszlowy",
+      "density": "4.39 g/cm³",
+      "tests": "Ciemna barwa, znacznie wyższa gęstość niż forsteryt. Stosunek molowy Fe do Si = 2:1.",
+      "occurrence": "Żużle hutnicze, rzadkie skały magmowe zasadowe."
+    },
+    "totalWeightPercent": {
+      "Fe": 54.81,
+      "Si": 13.78,
+      "O": 31.41
+    },
+    "lightElementsPercent": 31.41,
+    "lightElementsBreakdown": {
+      "O": 31.41
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 31.41,
+      "min": 29.41,
+      "max": 33.41
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 79.91,
+      "Si": 20.09
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 79.91,
+        "min": 77.91,
+        "max": 81.91
+      },
+      "Si": {
+        "expected": 20.09,
+        "min": 18.09,
+        "max": 22.09
+      }
+    }
+  },
+  {
+    "id": "almandine",
+    "namePl": "Almandyn (granat żelazowo-glinowy)",
+    "nameEn": "Almandine Garnet",
+    "formula": "Fe₃Al₂(SiO₄)₃",
+    "mineralGroup": "Krzemiany (granaty)",
+    "stoichiometry": {
+      "Fe": 3,
+      "Al": 2,
+      "Si": 3,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Fe/Al": 1.5,
+      "Si/Al": 1.5
+    },
+    "diagnostics": {
+      "hardness": "7.0 - 7.5",
+      "streak": "biała",
+      "luster": "szklisty do żywicznego",
+      "color": "ciemnoczerwona, brunatnoczerwona, purpurowa",
+      "cleavage": "brak (oddzielność)",
+      "fracture": "muszlowy do nierównego",
+      "density": "4.10 - 4.30 g/cm³",
+      "tests": "Kryształy dwunastościany rombowe (dodekaedry) lub dwudziestoczterościany. Bardzo twardy (rysuje kwarc).",
+      "occurrence": "Łupki łyszczykowe, gnejsy, amfibolity (Karkonosze)."
+    },
+    "totalWeightPercent": {
+      "Fe": 33.66,
+      "Al": 10.84,
+      "Si": 16.93,
+      "O": 38.57
+    },
+    "lightElementsPercent": 38.57,
+    "lightElementsBreakdown": {
+      "O": 38.57
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 38.57,
+      "min": 36.57,
+      "max": 40.57
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 54.79,
+      "Al": 17.65,
+      "Si": 27.56
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 54.79,
+        "min": 52.79,
+        "max": 56.79
+      },
+      "Al": {
+        "expected": 17.65,
+        "min": 15.65,
+        "max": 19.65
+      },
+      "Si": {
+        "expected": 27.56,
+        "min": 25.56,
+        "max": 29.56
+      }
+    }
+  },
+  {
+    "id": "pyrope",
+    "namePl": "Pirop (granat magnezowy)",
+    "nameEn": "Pyrope Garnet",
+    "formula": "Mg₃Al₂(SiO₄)₃",
+    "mineralGroup": "Krzemiany (granaty)",
+    "stoichiometry": {
+      "Mg": 3,
+      "Al": 2,
+      "Si": 3,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Mg/Al": 1.5,
+      "Si/Al": 1.5
+    },
+    "diagnostics": {
+      "hardness": "7.0 - 7.5",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "krwistoczerwona, rubinowa, winnoczerwona",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "3.65 - 3.84 g/cm³",
+      "tests": "Jaskrawa rubinowa czerwień (\"czeski granat\"). W widmie XRF wysokie Mg, Al, Si, b. mała ilość Fe.",
+      "occurrence": "Eklogity, perydotyty, kimberlity (kominy diamentonośne)."
+    },
+    "totalWeightPercent": {
+      "Mg": 18.09,
+      "Al": 13.39,
+      "Si": 20.9,
+      "O": 47.63
+    },
+    "lightElementsPercent": 47.63,
+    "lightElementsBreakdown": {
+      "O": 47.63
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 47.63,
+      "min": 45.63,
+      "max": 49.63
+    },
+    "xrfVisibleWeightPercent": {
+      "Mg": 34.54,
+      "Al": 25.56,
+      "Si": 39.91
+    },
+    "toleranceWindows": {
+      "Mg": {
+        "expected": 34.54,
+        "min": 32.54,
+        "max": 36.54
+      },
+      "Al": {
+        "expected": 25.56,
+        "min": 23.56,
+        "max": 27.56
+      },
+      "Si": {
+        "expected": 39.91,
+        "min": 37.91,
+        "max": 41.91
+      }
+    }
+  },
+  {
+    "id": "grossular",
+    "namePl": "Grossular (granat wapniowy)",
+    "nameEn": "Grossular Garnet",
+    "formula": "Ca₃Al₂(SiO₄)₃",
+    "mineralGroup": "Krzemiany (granaty)",
+    "stoichiometry": {
+      "Ca": 3,
+      "Al": 2,
+      "Si": 3,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Ca/Al": 1.5,
+      "Si/Al": 1.5
+    },
+    "diagnostics": {
+      "hardness": "6.5 - 7.0",
+      "streak": "biała",
+      "luster": "szklisty do żywicznego",
+      "color": "szmaragdowozielona (tsavoryt), cynamonowożółta (hessonit), biała",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "3.59 - 3.65 g/cm³",
+      "tests": "Wapniowo-glinowy granat skarnowy. Stosunek molowy Ca:Al:Si = 3:2:3.",
+      "occurrence": "Skarny, marmury metamorficzne kontaktowe."
+    },
+    "totalWeightPercent": {
+      "Ca": 26.69,
+      "Al": 11.98,
+      "Si": 18.71,
+      "O": 42.62
+    },
+    "lightElementsPercent": 42.62,
+    "lightElementsBreakdown": {
+      "O": 42.62
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 42.62,
+      "min": 40.62,
+      "max": 44.62
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 46.52,
+      "Al": 20.88,
+      "Si": 32.6
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 46.52,
+        "min": 44.52,
+        "max": 48.52
+      },
+      "Al": {
+        "expected": 20.88,
+        "min": 18.88,
+        "max": 22.88
+      },
+      "Si": {
+        "expected": 32.6,
+        "min": 30.6,
+        "max": 34.6
+      }
+    }
+  },
+  {
+    "id": "andradite",
+    "namePl": "Andradyt (granat wapniowo-żelazowy)",
+    "nameEn": "Andradite Garnet",
+    "formula": "Ca₃Fe₂(SiO₄)₃",
+    "mineralGroup": "Krzemiany (granaty)",
+    "stoichiometry": {
+      "Ca": 3,
+      "Fe": 2,
+      "Si": 3,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Ca/Fe": 1.5,
+      "Si/Fe": 1.5
+    },
+    "diagnostics": {
+      "hardness": "6.5 - 7.0",
+      "streak": "biała",
+      "luster": "diamentowy do żywicznego",
+      "color": "zielona (demantoid), żółta (topazolit), czarna (melanit)",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "3.80 - 3.90 g/cm³",
+      "tests": "Zielona odmiana demantoid ma olśniewający diamentowy blask. W XRF równe zawartości Ca i Fe.",
+      "occurrence": "Skarny kontaktowe, serpentynity."
+    },
+    "totalWeightPercent": {
+      "Ca": 23.66,
+      "Fe": 21.98,
+      "Si": 16.58,
+      "O": 37.78
+    },
+    "lightElementsPercent": 37.78,
+    "lightElementsBreakdown": {
+      "O": 37.78
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 37.78,
+      "min": 35.78,
+      "max": 39.78
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 38.03,
+      "Fe": 35.32,
+      "Si": 26.65
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 38.03,
+        "min": 36.03,
+        "max": 40.03
+      },
+      "Fe": {
+        "expected": 35.32,
+        "min": 33.32,
+        "max": 37.32
+      },
+      "Si": {
+        "expected": 26.65,
+        "min": 24.65,
+        "max": 28.65
+      }
+    }
+  },
+  {
+    "id": "spessartine",
+    "namePl": "Spessartyn (granat manganowy)",
+    "nameEn": "Spessartine Garnet",
+    "formula": "Mn₃Al₂(SiO₄)₃",
+    "mineralGroup": "Krzemiany (granaty)",
+    "stoichiometry": {
+      "Mn": 3,
+      "Al": 2,
+      "Si": 3,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Mn/Al": 1.5,
+      "Si/Al": 1.5
+    },
+    "diagnostics": {
+      "hardness": "7.0 - 7.5",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "pomarańczowa, miodowoczerwona, żółtobrązowa",
+      "cleavage": "brak",
+      "fracture": "muszlowy",
+      "density": "4.12 - 4.18 g/cm³",
+      "tests": "Soczysta pomarańczowa barwa (\"mandarynkowa\"). W XRF potężny pik Mn i Al.",
+      "occurrence": "Pegmatyty granitowe, ryolity."
+    },
+    "totalWeightPercent": {
+      "Mn": 33.29,
+      "Al": 10.9,
+      "Si": 17.02,
+      "O": 38.78
+    },
+    "lightElementsPercent": 38.78,
+    "lightElementsBreakdown": {
+      "O": 38.78
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 38.78,
+      "min": 36.78,
+      "max": 40.78
+    },
+    "xrfVisibleWeightPercent": {
+      "Mn": 54.39,
+      "Al": 17.81,
+      "Si": 27.8
+    },
+    "toleranceWindows": {
+      "Mn": {
+        "expected": 54.39,
+        "min": 52.39,
+        "max": 56.39
+      },
+      "Al": {
+        "expected": 17.81,
+        "min": 15.81,
+        "max": 19.81
+      },
+      "Si": {
+        "expected": 27.8,
+        "min": 25.8,
+        "max": 29.8
+      }
+    }
+  },
+  {
+    "id": "diopside",
+    "namePl": "Diopsyd (piroksen wapniowo-magnezowy)",
+    "nameEn": "Diopside",
+    "formula": "CaMgSi₂O₆",
+    "mineralGroup": "Krzemiany (pirokseny)",
+    "stoichiometry": {
+      "Ca": 1,
+      "Mg": 1,
+      "Si": 2,
+      "O": 6
+    },
+    "keyMolarRatios": {
+      "Ca/Mg": 1,
+      "Si/Ca": 2
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.5",
+      "streak": "biała do jasnozielonej",
+      "luster": "szklisty",
+      "color": "jasnozielona, szmaragdowa (chromodiopsyd), biała",
+      "cleavage": "wyraźna w 2 kierunkach pod kątem 87°",
+      "fracture": "nierówny",
+      "density": "3.22 - 3.38 g/cm³",
+      "tests": "Piroksen o kącie łupliwości bliskim 90° (87°). Stosunek molowy Ca:Mg:Si = 1:1:2.",
+      "occurrence": "Skarny, marmury metamorficzne, perydotyty."
+    },
+    "totalWeightPercent": {
+      "Ca": 18.51,
+      "Mg": 11.22,
+      "Si": 25.94,
+      "O": 44.33
+    },
+    "lightElementsPercent": 44.33,
+    "lightElementsBreakdown": {
+      "O": 44.33
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 44.33,
+      "min": 42.33,
+      "max": 46.33
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 33.25,
+      "Mg": 20.16,
+      "Si": 46.59
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 33.25,
+        "min": 31.25,
+        "max": 35.25
+      },
+      "Mg": {
+        "expected": 20.16,
+        "min": 18.16,
+        "max": 22.16
+      },
+      "Si": {
+        "expected": 46.59,
+        "min": 44.59,
+        "max": 48.59
+      }
+    }
+  },
+  {
+    "id": "augite",
+    "namePl": "Augit (piroksen jednoskośny)",
+    "nameEn": "Augite",
+    "formula": "(Ca,Na)(Mg,Fe,Al,Ti)(Si,Al)₂O₆",
+    "mineralGroup": "Krzemiany (pirokseny)",
+    "stoichiometry": {
+      "Ca": 0.8,
+      "Mg": 0.8,
+      "Fe": 0.4,
+      "Al": 0.4,
+      "Si": 1.8,
+      "O": 6
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.0",
+      "streak": "jasnoszara do szarozielonej",
+      "luster": "szklisty do matowego",
+      "color": "czarna, ciemnozielona, smolistoczarna",
+      "cleavage": "dobra pod kątem 87° i 93°",
+      "fracture": "nierówny",
+      "density": "3.23 - 3.52 g/cm³",
+      "tests": "Krótkie grube słupy o przekroju ośmiokątnym. Kąt łupliwości ~90° (odróżnienie od amfiboli ~120°).",
+      "occurrence": "Bazalty, gabra, andezyty."
+    },
+    "totalWeightPercent": {
+      "Ca": 13.87,
+      "Mg": 8.41,
+      "Fe": 9.66,
+      "Al": 4.67,
+      "Si": 21.87,
+      "O": 41.52
+    },
+    "lightElementsPercent": 41.52,
+    "lightElementsBreakdown": {
+      "O": 41.52
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 41.52,
+      "min": 39.52,
+      "max": 43.52
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 23.72,
+      "Mg": 14.38,
+      "Fe": 16.52,
+      "Al": 7.98,
+      "Si": 37.39
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 23.72,
+        "min": 21.72,
+        "max": 25.72
+      },
+      "Mg": {
+        "expected": 14.38,
+        "min": 12.38,
+        "max": 16.38
+      },
+      "Fe": {
+        "expected": 16.52,
+        "min": 14.52,
+        "max": 18.52
+      },
+      "Al": {
+        "expected": 7.98,
+        "min": 5.98,
+        "max": 9.98
+      },
+      "Si": {
+        "expected": 37.39,
+        "min": 35.39,
+        "max": 39.39
+      }
+    }
+  },
+  {
+    "id": "hornblende",
+    "namePl": "Hornblenda (amfibol zwyczajny)",
+    "nameEn": "Hornblende",
+    "formula": "Ca₂(Mg,Fe)₄Al(AlSi₇O₂₂)(OH)₂",
+    "mineralGroup": "Krzemiany (amfibole)",
+    "stoichiometry": {
+      "Ca": 2,
+      "Mg": 2.5,
+      "Fe": 1.5,
+      "Al": 2,
+      "Si": 7,
+      "H": 2,
+      "O": 24
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 6.0",
+      "streak": "szarobiała",
+      "luster": "szklisty",
+      "color": "ciemnozielona do czarnej",
+      "cleavage": "doskonała w 2 kierunkach pod kątem 124° i 56° (charakterystyczny romb)",
+      "fracture": "nierówny",
+      "density": "3.00 - 3.47 g/cm³",
+      "tests": "Wydłużone słupy, kąt łupliwości 124° (odróżnienie od piroksenów 90°).",
+      "occurrence": "Amfibolity, dioryty, granodioryty, syenity."
+    },
+    "totalWeightPercent": {
+      "Ca": 9.31,
+      "Mg": 7.06,
+      "Fe": 9.73,
+      "Al": 6.27,
+      "Si": 22.83,
+      "H": 0.23,
+      "O": 44.58
+    },
+    "lightElementsPercent": 44.81,
+    "lightElementsBreakdown": {
+      "H": 0.23,
+      "O": 44.58
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 44.81,
+      "min": 42.81,
+      "max": 46.81
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 16.87,
+      "Mg": 12.79,
+      "Fe": 17.63,
+      "Al": 11.35,
+      "Si": 41.37
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 16.87,
+        "min": 14.87,
+        "max": 18.87
+      },
+      "Mg": {
+        "expected": 12.79,
+        "min": 10.79,
+        "max": 14.79
+      },
+      "Fe": {
+        "expected": 17.63,
+        "min": 15.63,
+        "max": 19.63
+      },
+      "Al": {
+        "expected": 11.35,
+        "min": 9.35,
+        "max": 13.35
+      },
+      "Si": {
+        "expected": 41.37,
+        "min": 39.37,
+        "max": 43.37
+      }
+    }
+  },
+  {
+    "id": "tremolite",
+    "namePl": "Tremolit",
+    "nameEn": "Tremolite",
+    "formula": "Ca₂Mg₅Si₈O₂₂(OH)₂",
+    "mineralGroup": "Krzemiany (amfibole)",
+    "stoichiometry": {
+      "Ca": 2,
+      "Mg": 5,
+      "Si": 8,
+      "H": 2,
+      "O": 24
+    },
+    "keyMolarRatios": {
+      "Mg/Ca": 2.5,
+      "Si/Ca": 4
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 6.0",
+      "streak": "biała",
+      "luster": "szklisty, jedwabisty (azbest)",
+      "color": "biała, szarawa, jasnozielonkawa",
+      "cleavage": "doskonała pod kątem 124°",
+      "fracture": "zadziorowaty",
+      "density": "2.99 - 3.03 g/cm³",
+      "tests": "Igiełkowe, promieniste agregaty. Bezżelazowy amfibol wapniowo-magnezowy.",
+      "occurrence": "Marmury dolomitowe zmetamorfizowane, krystaliczne łupki."
+    },
+    "totalWeightPercent": {
+      "Ca": 9.87,
+      "Mg": 14.96,
+      "Si": 27.66,
+      "H": 0.25,
+      "O": 47.27
+    },
+    "lightElementsPercent": 47.52,
+    "lightElementsBreakdown": {
+      "H": 0.25,
+      "O": 47.27
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 47.52,
+      "min": 45.52,
+      "max": 49.52
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 18.8,
+      "Mg": 28.5,
+      "Si": 52.7
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 18.8,
+        "min": 16.8,
+        "max": 20.8
+      },
+      "Mg": {
+        "expected": 28.5,
+        "min": 26.5,
+        "max": 30.5
+      },
+      "Si": {
+        "expected": 52.7,
+        "min": 50.7,
+        "max": 54.7
+      }
+    }
+  },
+  {
+    "id": "actinolite",
+    "namePl": "Aktynolit (azbest aktynolitowy)",
+    "nameEn": "Actinolite",
+    "formula": "Ca₂(Mg,Fe)₅Si₈O₂₂(OH)₂",
+    "mineralGroup": "Krzemiany (amfibole)",
+    "stoichiometry": {
+      "Ca": 2,
+      "Mg": 3,
+      "Fe": 2,
+      "Si": 8,
+      "H": 2,
+      "O": 24
+    },
+    "diagnostics": {
+      "hardness": "5.5 - 6.0",
+      "streak": "biała",
+      "luster": "szklisty do jedwabistego",
+      "color": "trawiastozielona, ciemnozielona",
+      "cleavage": "doskonała pod kątem 124°",
+      "fracture": "zadziorowaty",
+      "density": "3.03 - 3.24 g/cm³",
+      "tests": "Promieniste igły, słońca aktynolitowe, charakterystyczna zieleń.",
+      "occurrence": "Łupki zieleńcowe, nefryt (zbita odmiana aktynolitu)."
+    },
+    "totalWeightPercent": {
+      "Ca": 9.16,
+      "Mg": 8.33,
+      "Fe": 12.76,
+      "Si": 25.67,
+      "H": 0.23,
+      "O": 43.86
+    },
+    "lightElementsPercent": 44.09,
+    "lightElementsBreakdown": {
+      "H": 0.23,
+      "O": 43.86
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 44.09,
+      "min": 42.09,
+      "max": 46.09
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 16.38,
+      "Mg": 14.9,
+      "Fe": 22.82,
+      "Si": 45.91
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 16.38,
+        "min": 14.38,
+        "max": 18.38
+      },
+      "Mg": {
+        "expected": 14.9,
+        "min": 12.9,
+        "max": 16.9
+      },
+      "Fe": {
+        "expected": 22.82,
+        "min": 20.82,
+        "max": 24.82
+      },
+      "Si": {
+        "expected": 45.91,
+        "min": 43.91,
+        "max": 47.91
+      }
+    }
+  },
+  {
+    "id": "zircon",
+    "namePl": "Cyrkon",
+    "nameEn": "Zircon",
+    "formula": "ZrSiO₄",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Zr": 1,
+      "Si": 1,
+      "O": 4
+    },
+    "keyMolarRatios": {
+      "Zr/Si": 1
+    },
+    "diagnostics": {
+      "hardness": "7.5",
+      "streak": "biała",
+      "luster": "diamentowy do tłustego",
+      "color": "brązowa, czerwonobrązowa, żółtawa, bezbarwna (hiacynt)",
+      "cleavage": "słaba",
+      "fracture": "muszlowy",
+      "density": "4.60 - 4.70 g/cm³",
+      "tests": "Diamentowy blask, wysoka twardość i gęstość. W XRF potężny pik cyrkonu (Zr) i krzemu (Si) 1:1 molowo.",
+      "occurrence": "Granity, sjenity, piaski cyrkonowe, najstarszy znany minerał Ziemi."
+    },
+    "totalWeightPercent": {
+      "Zr": 49.77,
+      "Si": 15.32,
+      "O": 34.91
+    },
+    "lightElementsPercent": 34.91,
+    "lightElementsBreakdown": {
+      "O": 34.91
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 34.91,
+      "min": 32.91,
+      "max": 36.91
+    },
+    "xrfVisibleWeightPercent": {
+      "Zr": 76.46,
+      "Si": 23.54
+    },
+    "toleranceWindows": {
+      "Zr": {
+        "expected": 76.46,
+        "min": 74.46,
+        "max": 78.46
+      },
+      "Si": {
+        "expected": 23.54,
+        "min": 21.54,
+        "max": 25.54
+      }
+    }
+  },
+  {
+    "id": "titanite",
+    "namePl": "Tytanit (sfen)",
+    "nameEn": "Titanite / Sphene",
+    "formula": "CaTiSiO₅",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Ca": 1,
+      "Ti": 1,
+      "Si": 1,
+      "O": 5
+    },
+    "keyMolarRatios": {
+      "Ca/Ti": 1,
+      "Ti/Si": 1
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 5.5",
+      "streak": "biała",
+      "luster": "diamentowy do żywicznego",
+      "color": "żółtawozielona, brązowa, miodowa",
+      "cleavage": "wyraźna",
+      "fracture": "podmuszlowy",
+      "density": "3.45 - 3.55 g/cm³",
+      "tests": "Kopertowate klinowe kryształy o silnym blasku. W XRF równy molowy udział Ca, Ti i Si (1:1:1).",
+      "occurrence": "Sjenity, pegmatyty, skarny, gnejsy."
+    },
+    "totalWeightPercent": {
+      "Ca": 20.45,
+      "Ti": 24.42,
+      "Si": 14.33,
+      "O": 40.81
+    },
+    "lightElementsPercent": 40.81,
+    "lightElementsBreakdown": {
+      "O": 40.81
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 40.81,
+      "min": 38.81,
+      "max": 42.81
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 34.54,
+      "Ti": 41.25,
+      "Si": 24.2
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 34.54,
+        "min": 32.54,
+        "max": 36.54
+      },
+      "Ti": {
+        "expected": 41.25,
+        "min": 39.25,
+        "max": 43.25
+      },
+      "Si": {
+        "expected": 24.2,
+        "min": 22.2,
+        "max": 26.2
+      }
+    }
+  },
+  {
+    "id": "epidote",
+    "namePl": "Epidot",
+    "nameEn": "Epidote",
+    "formula": "Ca₂Al₂Fe(Si₂O₇)(SiO₄)O(OH)",
+    "mineralGroup": "Krzemiany (soro)",
+    "stoichiometry": {
+      "Ca": 2,
+      "Al": 2,
+      "Fe": 1,
+      "Si": 3,
+      "H": 1,
+      "O": 13
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 7.0",
+      "streak": "szarobiała",
+      "luster": "szklisty",
+      "color": "pistacjowozielona, żółtawozielona",
+      "cleavage": "doskonała",
+      "fracture": "nierówny",
+      "density": "3.35 - 3.45 g/cm³",
+      "tests": "Unikalna pistacjowozielona barwa. W XRF jednoczesna obecność Ca, Al, Fe i Si.",
+      "occurrence": "Zieleńce, skarny, zmetamorfizowane bazalty."
+    },
+    "totalWeightPercent": {
+      "Ca": 16.59,
+      "Al": 11.17,
+      "Fe": 11.56,
+      "Si": 17.44,
+      "H": 0.21,
+      "O": 43.04
+    },
+    "lightElementsPercent": 43.25,
+    "lightElementsBreakdown": {
+      "H": 0.21,
+      "O": 43.04
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 43.25,
+      "min": 41.25,
+      "max": 45.25
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 29.23,
+      "Al": 19.68,
+      "Fe": 20.37,
+      "Si": 30.73
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 29.23,
+        "min": 27.23,
+        "max": 31.23
+      },
+      "Al": {
+        "expected": 19.68,
+        "min": 17.68,
+        "max": 21.68
+      },
+      "Fe": {
+        "expected": 20.37,
+        "min": 18.37,
+        "max": 22.37
+      },
+      "Si": {
+        "expected": 30.73,
+        "min": 28.73,
+        "max": 32.73
+      }
+    }
+  },
+  {
+    "id": "tourmaline",
+    "namePl": "Turmalin (szerl / drawit)",
+    "nameEn": "Tourmaline / Schorl",
+    "formula": "NaFe₃Al₆(BO₃)₃Si₆O₁₈(OH)₄",
+    "mineralGroup": "Krzemiany (cyklo)",
+    "stoichiometry": {
+      "Na": 1,
+      "Fe": 3,
+      "Al": 6,
+      "B": 3,
+      "Si": 6,
+      "H": 4,
+      "O": 31
+    },
+    "diagnostics": {
+      "hardness": "7.0 - 7.5",
+      "streak": "biała",
+      "luster": "szklisty do żywicznego",
+      "color": "czarna (szerl), brązowa (drawit), wielobarwna (elbait)",
+      "cleavage": "brak",
+      "fracture": "muszlowy do nierównego",
+      "density": "3.00 - 3.25 g/cm³",
+      "tests": "Słupkowe kryształy o przekroju zaokrąglonego trójkąta (sferyczny trójkąt Reuleaux) z wzdłużnym prążkowaniem.",
+      "occurrence": "Pegmatyty granitowe, grejzeny, łupki mikowe."
+    },
+    "totalWeightPercent": {
+      "Na": 2.18,
+      "Fe": 15.9,
+      "Al": 15.37,
+      "B": 3.08,
+      "Si": 16,
+      "H": 0.38,
+      "O": 47.08
+    },
+    "lightElementsPercent": 50.54,
+    "lightElementsBreakdown": {
+      "B": 3.08,
+      "H": 0.38,
+      "O": 47.08
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 50.54,
+      "min": 48.54,
+      "max": 52.54
+    },
+    "xrfVisibleWeightPercent": {
+      "Na": 4.41,
+      "Fe": 32.16,
+      "Al": 31.08,
+      "Si": 32.35
+    },
+    "toleranceWindows": {
+      "Na": {
+        "expected": 4.41,
+        "min": 2.41,
+        "max": 6.41
+      },
+      "Fe": {
+        "expected": 32.16,
+        "min": 30.16,
+        "max": 34.16
+      },
+      "Al": {
+        "expected": 31.08,
+        "min": 29.08,
+        "max": 33.08
+      },
+      "Si": {
+        "expected": 32.35,
+        "min": 30.35,
+        "max": 34.35
+      }
+    }
+  },
+  {
+    "id": "beryl",
+    "namePl": "Beryl (szmaragd / akwamaryn)",
+    "nameEn": "Beryl",
+    "formula": "Be₃Al₂Si₆O₁₈",
+    "mineralGroup": "Krzemiany (cyklo)",
+    "stoichiometry": {
+      "Be": 3,
+      "Al": 2,
+      "Si": 6,
+      "O": 18
+    },
+    "keyMolarRatios": {
+      "Si/Al": 3
+    },
+    "diagnostics": {
+      "hardness": "7.5 - 8.0",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "szmaragdowozielona (szmaragd), błękitna (akwamaryn), żółta (helidor)",
+      "cleavage": "niewyraźna",
+      "fracture": "muszlowy do nierównego",
+      "density": "2.63 - 2.80 g/cm³",
+      "tests": "Heksagonalne słupy. UWAGA: Beryl (Be, Z=4) jest niewidoczny dla XRF! XRF widzi wyłącznie Al i Si w stosunku molowym 1:3.",
+      "occurrence": "Pegmatyty granitowe, grejzeny (Strzegom)."
+    },
+    "totalWeightPercent": {
+      "Be": 5.03,
+      "Al": 10.04,
+      "Si": 31.35,
+      "O": 53.58
+    },
+    "lightElementsPercent": 58.61,
+    "lightElementsBreakdown": {
+      "Be": 5.03,
+      "O": 53.58
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 58.61,
+      "min": 56.61,
+      "max": 60.61
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 24.26,
+      "Si": 75.74
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 24.26,
+        "min": 22.26,
+        "max": 26.26
+      },
+      "Si": {
+        "expected": 75.74,
+        "min": 73.74,
+        "max": 77.74
+      }
+    }
+  },
+  {
+    "id": "topaz",
+    "namePl": "Topaz",
+    "nameEn": "Topaz",
+    "formula": "Al₂SiO₄(F,OH)₂",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Al": 2,
+      "Si": 1,
+      "O": 4,
+      "F": 2
+    },
+    "keyMolarRatios": {
+      "Al/Si": 2
+    },
+    "diagnostics": {
+      "hardness": "8.0 (wzorzec skali Mohsa)",
+      "streak": "biała",
+      "luster": "szklisty, silny",
+      "color": "bezbarwna, miodowożółta, błękitna, różowa",
+      "cleavage": "bardzo doskonała podstawowa (prostopadła do osi słupa)",
+      "fracture": "muszlowy",
+      "density": "3.49 - 3.57 g/cm³",
+      "tests": "Wysoka twardość (8.0, rysuje kwarc), doskonała łupliwość podstawowa. W XRF widoczne Al i Si w proporcji molowej 2:1 (F niewidoczny).",
+      "occurrence": "Grejzeny, pegmatyty granitowe (Krobica, Góry Izerskie)."
+    },
+    "totalWeightPercent": {
+      "Al": 29.32,
+      "Si": 15.26,
+      "O": 34.77,
+      "F": 20.65
+    },
+    "lightElementsPercent": 55.42,
+    "lightElementsBreakdown": {
+      "O": 34.77,
+      "F": 20.65
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 55.42,
+      "min": 53.42,
+      "max": 57.42
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 65.77,
+      "Si": 34.23
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 65.77,
+        "min": 63.77,
+        "max": 67.77
+      },
+      "Si": {
+        "expected": 34.23,
+        "min": 32.23,
+        "max": 36.23
+      }
+    }
+  },
+  {
+    "id": "kyanite",
+    "namePl": "Dysten (cyjanit)",
+    "nameEn": "Kyanite",
+    "formula": "Al₂SiO₅",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Al": 2,
+      "Si": 1,
+      "O": 5
+    },
+    "keyMolarRatios": {
+      "Al/Si": 2
+    },
+    "diagnostics": {
+      "hardness": "anizotropowa: 4.5 wzdłuż słupa, 7.0 w poprzek!",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "błękitna, szafirowa, szaroniebieska",
+      "cleavage": "doskonała wzdłuż słupów",
+      "fracture": "zadziorowaty",
+      "density": "3.53 - 3.65 g/cm³",
+      "tests": "Unikalna podwójna twardość (wzdłuż zarysujesz scyzorykiem, w poprzek nie!). Błękitna listewkowa barwa.",
+      "occurrence": "Wysokociśnieniowe skały metamorficzne (eklogity, łupki mikowe)."
+    },
+    "totalWeightPercent": {
+      "Al": 33.3,
+      "Si": 17.33,
+      "O": 49.37
+    },
+    "lightElementsPercent": 49.37,
+    "lightElementsBreakdown": {
+      "O": 49.37
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 49.37,
+      "min": 47.37,
+      "max": 51.37
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 65.77,
+      "Si": 34.23
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 65.77,
+        "min": 63.77,
+        "max": 67.77
+      },
+      "Si": {
+        "expected": 34.23,
+        "min": 32.23,
+        "max": 36.23
+      }
+    }
+  },
+  {
+    "id": "andalusite",
+    "namePl": "Andaluzyt / Chiastolit",
+    "nameEn": "Andalusite / Chiastolite",
+    "formula": "Al₂SiO₅ (ortorombowy)",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Al": 2,
+      "Si": 1,
+      "O": 5
+    },
+    "keyMolarRatios": {
+      "Al/Si": 2
+    },
+    "diagnostics": {
+      "hardness": "7.5",
+      "streak": "biała",
+      "luster": "szklisty do matowego",
+      "color": "czerwonobrązowa, szaroróżowa; chiastolit wykazuje czarny krzyż w przekroju",
+      "cleavage": "wyraźna",
+      "fracture": "nierówny",
+      "density": "3.13 - 3.16 g/cm³",
+      "tests": "Graniastosłupy o przekroju kwadratowym. Odmiana chiastolit zawiera wewnątrz czarny krzyż z węglistych wrostków.",
+      "occurrence": "Metamorfizm kontaktowy łupków ilastych wokół granitów."
+    },
+    "totalWeightPercent": {
+      "Al": 33.3,
+      "Si": 17.33,
+      "O": 49.37
+    },
+    "lightElementsPercent": 49.37,
+    "lightElementsBreakdown": {
+      "O": 49.37
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 49.37,
+      "min": 47.37,
+      "max": 51.37
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 65.77,
+      "Si": 34.23
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 65.77,
+        "min": 63.77,
+        "max": 67.77
+      },
+      "Si": {
+        "expected": 34.23,
+        "min": 32.23,
+        "max": 36.23
+      }
+    }
+  },
+  {
+    "id": "sillimanite",
+    "namePl": "Sylimanit (fibrolit)",
+    "nameEn": "Sillimanite",
+    "formula": "Al₂SiO₅ (wysokotemperaturowy)",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Al": 2,
+      "Si": 1,
+      "O": 5
+    },
+    "keyMolarRatios": {
+      "Al/Si": 2
+    },
+    "diagnostics": {
+      "hardness": "6.5 - 7.5",
+      "streak": "biała",
+      "luster": "szklisty, jedwabisty",
+      "color": "szarobiała, brunatnawa",
+      "cleavage": "doskonała",
+      "fracture": "włóknisty (odmiana fibrolit)",
+      "density": "3.23 - 3.27 g/cm³",
+      "tests": "Włókniste, pilśniowate skupienia. Wskaźnik najwyższych temperatur metamorfizmu regionalnego.",
+      "occurrence": "Gnejsy sylimanitowe, granulity."
+    },
+    "totalWeightPercent": {
+      "Al": 33.3,
+      "Si": 17.33,
+      "O": 49.37
+    },
+    "lightElementsPercent": 49.37,
+    "lightElementsBreakdown": {
+      "O": 49.37
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 49.37,
+      "min": 47.37,
+      "max": 51.37
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 65.77,
+      "Si": 34.23
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 65.77,
+        "min": 63.77,
+        "max": 67.77
+      },
+      "Si": {
+        "expected": 34.23,
+        "min": 32.23,
+        "max": 36.23
+      }
+    }
+  },
+  {
+    "id": "staurolite",
+    "namePl": "Staurolit",
+    "nameEn": "Staurolite",
+    "formula": "Fe₂Al₉O₆(SiO₄)₄(O,OH)₂",
+    "mineralGroup": "Krzemiany (neso)",
+    "stoichiometry": {
+      "Fe": 2,
+      "Al": 9,
+      "Si": 4,
+      "H": 2,
+      "O": 24
+    },
+    "diagnostics": {
+      "hardness": "7.0 - 7.5",
+      "streak": "biała do szarawej",
+      "luster": "szklisty do żywicznego",
+      "color": "czerwonobrunatna, ciemnobrązowa",
+      "cleavage": "wyraźna",
+      "fracture": "nierówny",
+      "density": "3.70 - 3.80 g/cm³",
+      "tests": "Charakterystyczne krzyżowe zbliźniaczenia pod kątem 90° lub 60° (\"krzyżacy\"). Bardzo twardy.",
+      "occurrence": "Łupki mikowe, paragnejsy."
+    },
+    "totalWeightPercent": {
+      "Fe": 13.1,
+      "Al": 28.47,
+      "Si": 13.17,
+      "H": 0.24,
+      "O": 45.02
+    },
+    "lightElementsPercent": 45.26,
+    "lightElementsBreakdown": {
+      "H": 0.24,
+      "O": 45.02
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 45.26,
+      "min": 43.26,
+      "max": 47.26
+    },
+    "xrfVisibleWeightPercent": {
+      "Fe": 23.92,
+      "Al": 52.01,
+      "Si": 24.06
+    },
+    "toleranceWindows": {
+      "Fe": {
+        "expected": 23.92,
+        "min": 21.92,
+        "max": 25.92
+      },
+      "Al": {
+        "expected": 52.01,
+        "min": 50.01,
+        "max": 54.01
+      },
+      "Si": {
+        "expected": 24.06,
+        "min": 22.06,
+        "max": 26.06
+      }
+    }
+  },
+  {
+    "id": "talc",
+    "namePl": "Talk",
+    "nameEn": "Talc",
+    "formula": "Mg₃Si₄O₁₀(OH)₂",
+    "mineralGroup": "Krzemiany (fyllokrzemiany)",
+    "stoichiometry": {
+      "Mg": 3,
+      "Si": 4,
+      "H": 2,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Mg/Si": 0.75
+    },
+    "diagnostics": {
+      "hardness": "1.0 (wzorzec skali Mohsa)",
+      "streak": "biała",
+      "luster": "perłowy do tłustego",
+      "color": "biała, srebrzystozielonkawa, szarobiała",
+      "cleavage": "doskonała w 1 kierunku",
+      "fracture": "nierówny",
+      "density": "2.70 - 2.80 g/cm³",
+      "tests": "Najbardziej miękki minerał na Ziemi (H=1) – zarysowuje się paznokciem bez oporu, niezwykle tłusty / mydlany w dotyku.",
+      "occurrence": "Łupki talkowe, przeobrażenia perydotytów i dolomitów."
+    },
+    "totalWeightPercent": {
+      "Mg": 19.23,
+      "Si": 29.62,
+      "H": 0.53,
+      "O": 50.62
+    },
+    "lightElementsPercent": 51.15,
+    "lightElementsBreakdown": {
+      "H": 0.53,
+      "O": 50.62
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 51.15,
+      "min": 49.15,
+      "max": 53.15
+    },
+    "xrfVisibleWeightPercent": {
+      "Mg": 39.36,
+      "Si": 60.64
+    },
+    "toleranceWindows": {
+      "Mg": {
+        "expected": 39.36,
+        "min": 37.36,
+        "max": 41.36
+      },
+      "Si": {
+        "expected": 60.64,
+        "min": 58.64,
+        "max": 62.64
+      }
+    }
+  },
+  {
+    "id": "serpentine",
+    "namePl": "Serpentyn (antygoryt / chryzotyl)",
+    "nameEn": "Serpentine",
+    "formula": "Mg₃Si₂O₅(OH)₄",
+    "mineralGroup": "Krzemiany (fyllokrzemiany)",
+    "stoichiometry": {
+      "Mg": 3,
+      "Si": 2,
+      "H": 4,
+      "O": 9
+    },
+    "keyMolarRatios": {
+      "Mg/Si": 1.5
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.5",
+      "streak": "biała",
+      "luster": "woskowy, tłusty lub jedwabisty (chryzotyl azbestowy)",
+      "color": "plamista zieleń (od jasnożółtawozielonej po czarnozieloną)",
+      "cleavage": "brak (masywny lub włóknisty)",
+      "fracture": "muszlowy do zadziorowatego",
+      "density": "2.50 - 2.60 g/cm³",
+      "tests": "Wężowy wzór i plamy barwne (stąd nazwa), woskowy połysk. W XRF widoczne tylko Mg i Si w stosunku molowym 3:2.",
+      "occurrence": "Serpentynity (przeobrażone perydotyty i dunity, np. Masyw Ślęży)."
+    },
+    "totalWeightPercent": {
+      "Mg": 26.31,
+      "Si": 20.27,
+      "H": 1.46,
+      "O": 51.96
+    },
+    "lightElementsPercent": 53.42,
+    "lightElementsBreakdown": {
+      "H": 1.46,
+      "O": 51.96
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 53.42,
+      "min": 51.42,
+      "max": 55.42
+    },
+    "xrfVisibleWeightPercent": {
+      "Mg": 56.49,
+      "Si": 43.51
+    },
+    "toleranceWindows": {
+      "Mg": {
+        "expected": 56.49,
+        "min": 54.49,
+        "max": 58.49
+      },
+      "Si": {
+        "expected": 43.51,
+        "min": 41.51,
+        "max": 45.51
+      }
+    }
+  },
+  {
+    "id": "kaolinite",
+    "namePl": "Kaolinit",
+    "nameEn": "Kaolinite",
+    "formula": "Al₂Si₂O₅(OH)₄",
+    "mineralGroup": "Krzemiany (minerały ilaste)",
+    "stoichiometry": {
+      "Al": 2,
+      "Si": 2,
+      "H": 4,
+      "O": 9
+    },
+    "keyMolarRatios": {
+      "Al/Si": 1
+    },
+    "diagnostics": {
+      "hardness": "2.0 - 2.5",
+      "streak": "biała",
+      "luster": "matowy, ziemisty",
+      "color": "czysto biała, kremowa",
+      "cleavage": "doskonała mikroskopowa",
+      "fracture": "ziemisty",
+      "density": "2.60 g/cm³",
+      "tests": "Plastyczny po zwilżeniu wodą, chłonie wilgoć (klei się do języka), zapach gliny. Równy molowy udział Al i Si (1:1).",
+      "occurrence": "Wietrzenie granitów i skaleni w ciepłym wilgotnym klimacie (Strzeblów)."
+    },
+    "totalWeightPercent": {
+      "Al": 20.9,
+      "Si": 21.76,
+      "H": 1.56,
+      "O": 55.78
+    },
+    "lightElementsPercent": 57.34,
+    "lightElementsBreakdown": {
+      "H": 1.56,
+      "O": 55.78
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 57.34,
+      "min": 55.34,
+      "max": 59.34
+    },
+    "xrfVisibleWeightPercent": {
+      "Al": 49,
+      "Si": 51
+    },
+    "toleranceWindows": {
+      "Al": {
+        "expected": 49,
+        "min": 47,
+        "max": 51
+      },
+      "Si": {
+        "expected": 51,
+        "min": 49,
+        "max": 53
+      }
+    }
+  },
+  {
+    "id": "chlorite",
+    "namePl": "Chloryt (klinochlor)",
+    "nameEn": "Chlorite / Clinochlore",
+    "formula": "(Mg,Fe)₅Al(AlSi₃O₁₀)(OH)₈",
+    "mineralGroup": "Krzemiany (fyllokrzemiany)",
+    "stoichiometry": {
+      "Mg": 3.5,
+      "Fe": 1.5,
+      "Al": 2,
+      "Si": 3,
+      "H": 8,
+      "O": 18
+    },
+    "diagnostics": {
+      "hardness": "2.0 - 2.5",
+      "streak": "zielonkawobiała",
+      "luster": "perłowy do tłustego",
+      "color": "butelkowozielona, trawiastozielona, szarozielona",
+      "cleavage": "wyjątkowo doskonała (blaszki giętkie, lecz NIESPRĘŻYSTE)",
+      "fracture": "nierówny",
+      "density": "2.60 - 3.30 g/cm³",
+      "tests": "Zielone łyszczykowate blaszki, które po zgięciu NIE wracają do stanu prostego (różnica z mikami!).",
+      "occurrence": "Łupki chlorytowe, zieleńce, hydrotermalne przeobrażenia minerałów maficznych."
+    },
+    "totalWeightPercent": {
+      "Mg": 14.11,
+      "Fe": 13.89,
+      "Al": 8.95,
+      "Si": 13.97,
+      "H": 1.34,
+      "O": 47.75
+    },
+    "lightElementsPercent": 49.09,
+    "lightElementsBreakdown": {
+      "H": 1.34,
+      "O": 47.75
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 49.09,
+      "min": 47.09,
+      "max": 51.09
+    },
+    "xrfVisibleWeightPercent": {
+      "Mg": 27.7,
+      "Fe": 27.28,
+      "Al": 17.57,
+      "Si": 27.44
+    },
+    "toleranceWindows": {
+      "Mg": {
+        "expected": 27.7,
+        "min": 25.7,
+        "max": 29.7
+      },
+      "Fe": {
+        "expected": 27.28,
+        "min": 25.28,
+        "max": 29.28
+      },
+      "Al": {
+        "expected": 17.57,
+        "min": 15.57,
+        "max": 19.57
+      },
+      "Si": {
+        "expected": 27.44,
+        "min": 25.44,
+        "max": 29.44
+      }
+    }
+  },
+  {
+    "id": "prehnite",
+    "namePl": "Prehnit",
+    "nameEn": "Prehnite",
+    "formula": "Ca₂Al₂Si₃O₁₀(OH)₂",
+    "mineralGroup": "Krzemiany (fyllokrzemiany)",
+    "stoichiometry": {
+      "Ca": 2,
+      "Al": 2,
+      "Si": 3,
+      "H": 2,
+      "O": 12
+    },
+    "diagnostics": {
+      "hardness": "6.0 - 6.5",
+      "streak": "biała",
+      "luster": "szklisty do perłowego",
+      "color": "jasnozielona, oliwkowa, jabłkowa",
+      "cleavage": "wyraźna",
+      "fracture": "nierówny",
+      "density": "2.80 - 2.95 g/cm³",
+      "tests": "Charakterystyczne nerkowate, kuliste i groniaste skupienia w migdałowcach bazaltowych.",
+      "occurrence": "Pęcherze pogazowe w wulkanitach, szczeliny w gabrach."
+    },
+    "totalWeightPercent": {
+      "Ca": 19.44,
+      "Al": 13.09,
+      "Si": 20.43,
+      "H": 0.49,
+      "O": 46.56
+    },
+    "lightElementsPercent": 47.05,
+    "lightElementsBreakdown": {
+      "H": 0.49,
+      "O": 46.56
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 47.05,
+      "min": 45.05,
+      "max": 49.05
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 36.71,
+      "Al": 24.71,
+      "Si": 38.58
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 36.71,
+        "min": 34.71,
+        "max": 38.71
+      },
+      "Al": {
+        "expected": 24.71,
+        "min": 22.71,
+        "max": 26.71
+      },
+      "Si": {
+        "expected": 38.58,
+        "min": 36.58,
+        "max": 40.58
+      }
+    }
+  },
+  {
+    "id": "apatite",
+    "namePl": "Apatyt",
+    "nameEn": "Apatite",
+    "formula": "Ca₅(PO₄)₃(F,Cl,OH)",
+    "mineralGroup": "Fosforany",
+    "stoichiometry": {
+      "Ca": 5,
+      "P": 3,
+      "O": 12,
+      "F": 1
+    },
+    "keyMolarRatios": {
+      "Ca/P": 1.667
+    },
+    "diagnostics": {
+      "hardness": "5.0 (wzorzec skali Mohsa)",
+      "streak": "biała",
+      "luster": "szklisty do tłustego",
+      "color": "morska zieleń, niebieskawa, żółtawa, fioletowa",
+      "cleavage": "niewyraźna",
+      "fracture": "muszlowy",
+      "density": "3.16 - 3.22 g/cm³",
+      "tests": "Daje się zarysować stalowym ostrzem noża (H=5). W XRF dominują Ca i P w stosunku molowym ~5:3.",
+      "occurrence": "Skały magmowe, pegmatyty, fosforyty osadowe, buduje kości i zęby kręgowców."
+    },
+    "totalWeightPercent": {
+      "Ca": 39.74,
+      "P": 18.43,
+      "O": 38.07,
+      "F": 3.77
+    },
+    "lightElementsPercent": 41.84,
+    "lightElementsBreakdown": {
+      "O": 38.07,
+      "F": 3.77
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 41.84,
+      "min": 39.84,
+      "max": 43.84
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 68.32,
+      "P": 31.68
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 68.32,
+        "min": 66.32,
+        "max": 70.32
+      },
+      "P": {
+        "expected": 31.68,
+        "min": 29.68,
+        "max": 33.68
+      }
+    }
+  },
+  {
+    "id": "pyromorphite",
+    "namePl": "Piromorfit",
+    "nameEn": "Pyromorphite",
+    "formula": "Pb₅(PO₄)₃Cl",
+    "mineralGroup": "Fosforany",
+    "stoichiometry": {
+      "Pb": 5,
+      "P": 3,
+      "Cl": 1,
+      "O": 12
+    },
+    "keyMolarRatios": {
+      "Pb/P": 1.667
+    },
+    "diagnostics": {
+      "hardness": "3.5 - 4.0",
+      "streak": "biała",
+      "luster": "diamentowy do żywicznego",
+      "color": "trawiastozielona, żółtozielona, miodowa, brązowa",
+      "cleavage": "niewyraźna",
+      "fracture": "nierówny",
+      "density": "6.70 - 7.10 g/cm³",
+      "tests": "Baryłkowate heksagonalne słupki o jaskrawozielonej barwie, niezwykle ciężki (Pb).",
+      "occurrence": "Strefy utlenienia złóż galeny."
+    },
+    "totalWeightPercent": {
+      "Pb": 76.38,
+      "P": 6.85,
+      "Cl": 2.61,
+      "O": 14.15
+    },
+    "lightElementsPercent": 14.15,
+    "lightElementsBreakdown": {
+      "O": 14.15
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 14.15,
+      "min": 12.15,
+      "max": 16.15
+    },
+    "xrfVisibleWeightPercent": {
+      "Pb": 88.98,
+      "P": 7.98,
+      "Cl": 3.04
+    },
+    "toleranceWindows": {
+      "Pb": {
+        "expected": 88.98,
+        "min": 86.98,
+        "max": 90.98
+      },
+      "P": {
+        "expected": 7.98,
+        "min": 5.98,
+        "max": 9.98
+      },
+      "Cl": {
+        "expected": 3.04,
+        "min": 1.04,
+        "max": 5.04
+      }
+    }
+  },
+  {
+    "id": "monazite",
+    "namePl": "Monacyt",
+    "nameEn": "Monazite",
+    "formula": "(Ce,La,Nd,Th)PO₄",
+    "mineralGroup": "Fosforany",
+    "stoichiometry": {
+      "Ce": 0.5,
+      "La": 0.3,
+      "Nd": 0.2,
+      "P": 1,
+      "O": 4
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 5.5",
+      "streak": "biała",
+      "luster": "diamentowy do żywicznego",
+      "color": "czerwonobrązowa, żółtobrunatna",
+      "cleavage": "wyraźna",
+      "fracture": "muszlowy",
+      "density": "5.00 - 5.30 g/cm³",
+      "tests": "Główna ruda pierwiastków ziem rzadkich (REE) i toru. W XRF potężne piki Ce, La, Nd, Th oraz P.",
+      "occurrence": "Pegmatyty granitowe, piaski plażowe (piaski monacytowe)."
+    },
+    "totalWeightPercent": {
+      "Ce": 29.74,
+      "La": 17.69,
+      "Nd": 12.25,
+      "P": 13.15,
+      "O": 27.17
+    },
+    "lightElementsPercent": 27.17,
+    "lightElementsBreakdown": {
+      "O": 27.17
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 27.17,
+      "min": 25.17,
+      "max": 29.17
+    },
+    "xrfVisibleWeightPercent": {
+      "Ce": 40.84,
+      "La": 24.29,
+      "Nd": 16.82,
+      "P": 18.06
+    },
+    "toleranceWindows": {
+      "Ce": {
+        "expected": 40.84,
+        "min": 38.84,
+        "max": 42.84
+      },
+      "La": {
+        "expected": 24.29,
+        "min": 22.29,
+        "max": 26.29
+      },
+      "Nd": {
+        "expected": 16.82,
+        "min": 14.82,
+        "max": 18.82
+      },
+      "P": {
+        "expected": 18.06,
+        "min": 16.06,
+        "max": 20.06
+      }
+    }
+  },
+  {
+    "id": "turquoise",
+    "namePl": "Turkus",
+    "nameEn": "Turquoise",
+    "formula": "CuAl₆(PO₄)₄(OH)₈ · 4H₂O",
+    "mineralGroup": "Fosforany",
+    "stoichiometry": {
+      "Cu": 1,
+      "Al": 6,
+      "P": 4,
+      "H": 16,
+      "O": 28
+    },
+    "keyMolarRatios": {
+      "Al/Cu": 6,
+      "P/Cu": 4
+    },
+    "diagnostics": {
+      "hardness": "5.0 - 6.0",
+      "streak": "biała do bladozielonkawej",
+      "luster": "woskowy do matowego",
+      "color": "turkusowoniebieska, błękitna, jabłkowozielona",
+      "cleavage": "brak (skrytokrystaliczny)",
+      "fracture": "muszlowy",
+      "density": "2.60 - 2.80 g/cm³",
+      "tests": "Charakterystyczna turkusowa barwa, woskowy blask. W XRF widoczne Al, P i Cu.",
+      "occurrence": "Wtórna mineralizacja w zwietrzałych skałach bogatych w glin i miedź."
+    },
+    "totalWeightPercent": {
+      "Cu": 7.81,
+      "Al": 19.9,
+      "P": 15.23,
+      "H": 1.98,
+      "O": 55.07
+    },
+    "lightElementsPercent": 57.05,
+    "lightElementsBreakdown": {
+      "H": 1.98,
+      "O": 55.07
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 57.05,
+      "min": 55.05,
+      "max": 59.05
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 18.19,
+      "Al": 46.34,
+      "P": 35.47
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 18.19,
+        "min": 16.19,
+        "max": 20.19
+      },
+      "Al": {
+        "expected": 46.34,
+        "min": 44.34,
+        "max": 48.34
+      },
+      "P": {
+        "expected": 35.47,
+        "min": 33.47,
+        "max": 37.47
+      }
+    }
+  },
+  {
+    "id": "fluorite",
+    "namePl": "Fluoryt",
+    "nameEn": "Fluorite",
+    "formula": "CaF₂",
+    "mineralGroup": "Halogenki",
+    "stoichiometry": {
+      "Ca": 1,
+      "F": 2
+    },
+    "diagnostics": {
+      "hardness": "4.0 (wzorzec skali Mohsa)",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "fioletowa, zielona, żółta, niebieska, bezbarwna (często pasowa)",
+      "cleavage": "doskonała, ośmiościenna (w 4 kierunkach!)",
+      "fracture": "podmuszlowy",
+      "density": "3.18 g/cm³",
+      "tests": "UWAGA: Fluor (F, Z=9) jest niewidoczny dla XRF! XRF widzi 100% Ca w widzialnej części, a ~48.7% stanowi niewidoczny fluor. Ośmiościenna łupliwość, fluorescencja UV.",
+      "occurrence": "Żyły hydrotermalne z barytem, galeną i sfalerytem (Kletno w Sudetach)."
+    },
+    "totalWeightPercent": {
+      "Ca": 51.33,
+      "F": 48.67
+    },
+    "lightElementsPercent": 48.67,
+    "lightElementsBreakdown": {
+      "F": 48.67
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 48.67,
+      "min": 46.67,
+      "max": 50.67
+    },
+    "xrfVisibleWeightPercent": {
+      "Ca": 100
+    },
+    "toleranceWindows": {
+      "Ca": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "halite",
+    "namePl": "Halit (sól kamienna)",
+    "nameEn": "Halite / Rock Salt",
+    "formula": "NaCl",
+    "mineralGroup": "Halogenki",
+    "stoichiometry": {
+      "Na": 1,
+      "Cl": 1
+    },
+    "keyMolarRatios": {
+      "Na/Cl": 1
+    },
+    "diagnostics": {
+      "hardness": "2.5",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "bezbarwna, biała, pomarańczowa, błękitna",
+      "cleavage": "doskonała, sześciana (kostkowa pod kątem 90°)",
+      "fracture": "muszlowy",
+      "density": "2.16 g/cm³",
+      "tests": "Charakterystyczny słony smak! Łatwo rozpuszcza się w wodzie. W XRF widoczne Na i Cl 1:1 molowo.",
+      "occurrence": "Złoża ewaporatów morskich (Wieliczka, Bochnia, Kłodawa)."
+    },
+    "totalWeightPercent": {
+      "Na": 39.34,
+      "Cl": 60.66
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Na": 39.34,
+      "Cl": 60.66
+    },
+    "toleranceWindows": {
+      "Na": {
+        "expected": 39.34,
+        "min": 37.34,
+        "max": 41.34
+      },
+      "Cl": {
+        "expected": 60.66,
+        "min": 58.66,
+        "max": 62.66
+      }
+    }
+  },
+  {
+    "id": "sylvite",
+    "namePl": "Sylwin (sól potasowa)",
+    "nameEn": "Sylvite",
+    "formula": "KCl",
+    "mineralGroup": "Halogenki",
+    "stoichiometry": {
+      "K": 1,
+      "Cl": 1
+    },
+    "keyMolarRatios": {
+      "K/Cl": 1
+    },
+    "diagnostics": {
+      "hardness": "2.0",
+      "streak": "biała",
+      "luster": "szklisty",
+      "color": "bezbarwna, mleczna, czerwonawa",
+      "cleavage": "doskonała, sześciana",
+      "fracture": "nierówny",
+      "density": "1.99 g/cm³",
+      "tests": "Gorzki i ostry słony smak. W XRF widoczne K i Cl w proporcji 1:1.",
+      "occurrence": "Ewaporaty soli potasowo-magnezowych."
+    },
+    "totalWeightPercent": {
+      "K": 52.45,
+      "Cl": 47.55
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "K": 52.45,
+      "Cl": 47.55
+    },
+    "toleranceWindows": {
+      "K": {
+        "expected": 52.45,
+        "min": 50.45,
+        "max": 54.45
+      },
+      "Cl": {
+        "expected": 47.55,
+        "min": 45.55,
+        "max": 49.55
+      }
+    }
+  },
+  {
+    "id": "gold",
+    "namePl": "Złoto rodzime",
+    "nameEn": "Native Gold",
+    "formula": "Au (często z Ag)",
+    "mineralGroup": "Pierwiastki rodzime",
+    "stoichiometry": {
+      "Au": 1
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.0",
+      "streak": "złocistożółta, lśniąca (nigdy czarna jak w pirycie!)",
+      "luster": "metaliczny, bardzo silny",
+      "color": "złotożółta",
+      "cleavage": "brak",
+      "fracture": "haczykowaty",
+      "density": "15.60 - 19.30 g/cm³ (ekstremalna)",
+      "tests": "Kowalne i ciągliwe – daje się spłaszczać ostrzem bez kruszenia. Ciężkie w misce płuczkarskiej. W XRF potężny pik Au.",
+      "occurrence": "Żyły hydrotermalne kwarcu, samorodki w aluwiach rzecznych (Złotoryja)."
+    },
+    "totalWeightPercent": {
+      "Au": 100
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Au": 100
+    },
+    "toleranceWindows": {
+      "Au": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "silver",
+    "namePl": "Srebro rodzime",
+    "nameEn": "Native Silver",
+    "formula": "Ag",
+    "mineralGroup": "Pierwiastki rodzime",
+    "stoichiometry": {
+      "Ag": 1
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.0",
+      "streak": "srebrzystobiała, lśniąca",
+      "luster": "metaliczny",
+      "color": "srebrzystobiała, na powietrzu czernieje od siarczków",
+      "cleavage": "brak",
+      "fracture": "haczykowaty",
+      "density": "10.10 - 11.10 g/cm³",
+      "tests": "Kowalne, drutowate i dendrytyczne agregaty. W XRF dominacja czystego Ag.",
+      "occurrence": "Strefy utlenienia złóż kruszców srebra i ołowiu."
+    },
+    "totalWeightPercent": {
+      "Ag": 100
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Ag": 100
+    },
+    "toleranceWindows": {
+      "Ag": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "copper",
+    "namePl": "Miedź rodzima",
+    "nameEn": "Native Copper",
+    "formula": "Cu",
+    "mineralGroup": "Pierwiastki rodzime",
+    "stoichiometry": {
+      "Cu": 1
+    },
+    "diagnostics": {
+      "hardness": "2.5 - 3.0",
+      "streak": "miedzianoczerwona, błyszcząca",
+      "luster": "metaliczny",
+      "color": "miedzianoczerwona, często z zielonym nalotem malachitowym",
+      "cleavage": "brak",
+      "fracture": "haczykowaty",
+      "density": "8.90 g/cm³",
+      "tests": "Kowalna, daje się ciąć nożem, charakterystyczna barwa miedzi. W XRF 100% Cu.",
+      "occurrence": "Strefy utlenienia złóż miedzi, migdałowce bazaltowe (Lake Superior)."
+    },
+    "totalWeightPercent": {
+      "Cu": 100
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "Cu": 100
+    },
+    "toleranceWindows": {
+      "Cu": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "sulfur",
+    "namePl": "Siarka rodzima",
+    "nameEn": "Native Sulfur",
+    "formula": "S",
+    "mineralGroup": "Pierwiastki rodzime",
+    "stoichiometry": {
+      "S": 1
+    },
+    "diagnostics": {
+      "hardness": "1.5 - 2.5",
+      "streak": "biała do jasnożółtej",
+      "luster": "żywiczny do tłustego",
+      "color": "siarkowożółta, cytrynowa, miodowa",
+      "cleavage": "niewyraźna",
+      "fracture": "muszlowy",
+      "density": "2.05 - 2.09 g/cm³",
+      "tests": "Pali się niebieskim płomieniem wydzielając gryzący SO₂. Pęka od ciepła dłoni przy uchu. W XRF 100% S.",
+      "occurrence": "Ewaporaty gipsowe (Tarnobrzeg, Grzybów), ekshalacje wulkaniczne."
+    },
+    "totalWeightPercent": {
+      "S": 100
+    },
+    "lightElementsPercent": 0,
+    "lightElementsBreakdown": {},
+    "lightElementsToleranceWindow": {
+      "expected": 0,
+      "min": 0,
+      "max": 2
+    },
+    "xrfVisibleWeightPercent": {
+      "S": 100
+    },
+    "toleranceWindows": {
+      "S": {
+        "expected": 100,
+        "min": 98,
+        "max": 100
+      }
+    }
+  },
+  {
+    "id": "graphite",
+    "namePl": "Grafit",
+    "nameEn": "Graphite",
+    "formula": "C",
+    "mineralGroup": "Pierwiastki rodzime",
+    "stoichiometry": {
+      "C": 1
+    },
+    "diagnostics": {
+      "hardness": "1.0 - 2.0",
+      "streak": "czarna, lśniąca",
+      "luster": "metaliczny do matowego",
+      "color": "żelazistoczarna, ciemnoszara",
+      "cleavage": "bardzo doskonała, blaszkowa",
+      "fracture": "nierówny",
+      "density": "2.09 - 2.23 g/cm³",
+      "tests": "UWAGA: Węgiel (C, Z=6) jest niewidoczny dla XRF! W XRF daje 0% sygnału (100% Light Element balance). Brudzi papier i palce, tłusty w dotyku.",
+      "occurrence": "Skały metamorficzne (łupki grafitowe, marmury)."
+    },
+    "totalWeightPercent": {
+      "C": 100
+    },
+    "lightElementsPercent": 100,
+    "lightElementsBreakdown": {
+      "C": 100
+    },
+    "lightElementsToleranceWindow": {
+      "expected": 100,
+      "min": 98,
+      "max": 100
+    },
+    "xrfVisibleWeightPercent": {},
+    "toleranceWindows": {}
+  }
+]

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X, CheckCircle, ShieldAlert, BookOpen, Atom, Activity } from 'lucide-react';
+import { X, CheckCircle2, AlertTriangle, BookOpen, Atom, Activity, Sparkles, Feather } from 'lucide-react';
 import { MatchScore } from '@/types';
 import { ELEMENTS } from '@/data/elements';
 
@@ -13,7 +13,7 @@ interface MineralDetailModalProps {
 export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, onClose }) => {
   if (!match) return null;
 
-  const { mineral, score, confidenceTier, molarRatioDetails, elementComparison, explanation } = match;
+  const { mineral, score, allElementsWithin2Percent, molarRatioDetails, elementComparison, lightElementInfo, explanation } = match;
   const d = mineral.diagnostics;
 
   return (
@@ -22,7 +22,7 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
         {/* Nagłówek modala */}
         <div className="sticky top-0 bg-slate-900/95 backdrop-blur-md px-6 py-4 border-b border-slate-800 flex items-center justify-between z-10">
           <div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <h2 className="text-xl font-bold text-white">{mineral.namePl}</h2>
               <span className="text-xs text-slate-400 font-mono italic">
                 ({mineral.nameEn})
@@ -30,6 +30,12 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
               <span className="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
                 {score}% dopasowania
               </span>
+              {allElementsWithin2Percent && (
+                <span className="text-[10px] bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-cyan-400" />
+                  W widełkach ±2%
+                </span>
+              )}
             </div>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950/50 px-2 py-0.5 rounded border border-cyan-800/40">
@@ -52,15 +58,33 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
 
         {/* Zawartość modala */}
         <div className="p-6 space-y-6">
-          {/* Wyjaśnienie algorytmu */}
+          {/* Wyjaśnienie algorytmu i widełek */}
           <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs">
             <span className="font-semibold text-emerald-400 block mb-1">
-              Ocena analityczna XRF:
+              Ocena analityczna XRF (Tolerancja ±2.0%):
             </span>
             <p className="text-slate-300 leading-relaxed">{explanation}</p>
 
+            {/* Bilans pierwiastków lekkich */}
+            <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-start gap-2 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+              <Feather className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold text-slate-300">
+                  Niewidoczne pierwiastki lekkie (Z &lt; 11):
+                </span>{' '}
+                <span className="font-mono text-amber-300 font-bold">
+                  {mineral.lightElementsPercent}%
+                </span>{' '}
+                wzoru stanowi masa pierwiastków lekkich (
+                {Object.entries(mineral.lightElementsBreakdown)
+                  .map(([s, p]) => `${s}: ${p}%`)
+                  .join(', ')}
+                ) z widełkami wzorca [{mineral.lightElementsToleranceWindow.min}% - {mineral.lightElementsToleranceWindow.max}%].
+              </div>
+            </div>
+
             {molarRatioDetails.length > 0 && (
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex flex-wrap gap-3">
+              <div className="mt-3 flex flex-wrap gap-2.5">
                 {molarRatioDetails.map((r, idx) => (
                   <div key={idx} className="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-[11px]">
                     <span className="text-slate-400">Stosunek {r.ratioName}: </span>
@@ -74,22 +98,38 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
             )}
           </div>
 
-          {/* Porównanie składu pierwiastkowego */}
+          {/* Porównanie składu pierwiastkowego z widełkami +-2% */}
           <div>
-            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Atom className="w-4 h-4 text-cyan-400" />
-              Porównanie widmowe (Widzialna matryca XRF)
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Atom className="w-4 h-4 text-cyan-400" />
+                Porównanie widmowe XRF (Widełki błędu ±2.0%)
+              </span>
+              <span className="text-[10px] text-slate-500 font-normal">
+                Zielony znacznik = w normie ±2%
+              </span>
             </h3>
             <div className="space-y-2.5">
               {elementComparison.map((ec) => (
-                <div key={ec.symbol} className="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="font-mono font-bold text-emerald-400">
-                      {ec.symbol} ({ELEMENTS[ec.symbol]?.namePl || ec.symbol})
-                    </span>
-                    <span className="text-slate-300 font-mono">
+                <div key={ec.symbol} className="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+                  <div className="flex justify-between items-center text-xs mb-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono font-bold text-emerald-400">
+                        {ec.symbol} ({ELEMENTS[ec.symbol]?.namePl || ec.symbol})
+                      </span>
+                      {ec.withinTolerance ? (
+                        <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.2 rounded flex items-center gap-0.5">
+                          <CheckCircle2 className="w-3 h-3" /> W normie (±2%)
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.2 rounded">
+                          Δ {ec.difference}%
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-slate-300 font-mono text-[11px]">
                       Próbka: <b className="text-white">{ec.samplePercent}%</b> | Wzorzec:{' '}
-                      <b className="text-cyan-400">{ec.theoreticalPercent}%</b> (Δ {ec.difference}%)
+                      <b className="text-cyan-400">{ec.theoreticalPercent}%</b> [Zakres: {ec.toleranceMin}% - {ec.toleranceMax}%]
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 h-2">
@@ -117,7 +157,7 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
           <div>
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-1.5">
               <Activity className="w-4 h-4 text-amber-400" />
-              Właściwości fizyczne i diagnostyczne
+              Właściwości fizyczne i makroskopowe
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
               <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
@@ -133,7 +173,7 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
                 <span className="font-semibold text-white mt-0.5 block">{d.luster}</span>
               </div>
               <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <span className="text-slate-500 block text-[10px] uppercase">Barwa minerału</span>
+                <span className="text-slate-500 block text-[10px] uppercase">Barwa makroskopowa</span>
                 <span className="font-semibold text-white mt-0.5 block">{d.color}</span>
               </div>
               <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
@@ -147,15 +187,15 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
             </div>
           </div>
 
-          {/* Próby terenowe i cechy rozpoznawcze */}
+          {/* Próby terenowe */}
           <div className="bg-amber-950/20 border border-amber-800/40 rounded-xl p-4 text-xs">
             <span className="font-bold text-amber-300 block mb-1">
-              Próby terenowe i cechy rozpoznawcze:
+              Próby terenowe i cechy rozpoznawcze w okazie:
             </span>
             <p className="text-amber-100/90 leading-relaxed">{d.tests}</p>
           </div>
 
-          {/* Występowanie geologiczne */}
+          {/* Występowanie */}
           <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs">
             <span className="font-bold text-slate-300 block mb-1 flex items-center gap-1.5">
               <BookOpen className="w-4 h-4 text-cyan-400" />
@@ -165,7 +205,7 @@ export const MineralDetailModal: React.FC<MineralDetailModalProps> = ({ match, o
           </div>
         </div>
 
-        {/* Stopka modala */}
+        {/* Stopka */}
         <div className="px-6 py-3.5 bg-slate-950 border-t border-slate-800 flex justify-end">
           <button
             type="button"

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Award, ChevronRight, CheckCircle2, AlertTriangle, Layers, Sparkles, Copy, Check, FileDown, ExternalLink } from 'lucide-react';
+import { Award, ChevronRight, CheckCircle2, AlertTriangle, Layers, Sparkles, Copy, Check, Feather } from 'lucide-react';
 import { MatchScore } from '@/types';
 import { MineralDetailModal } from './MineralDetailModal';
 
@@ -16,7 +16,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
   if (!results || results.length === 0) return null;
 
   const topMatch = results[0];
-  const otherMatches = results.slice(1, 10); // Kolejne 9 kandydatów
+  const otherMatches = results.slice(1, 10);
 
   const handleCopyReport = () => {
     let report = `### RAPORT IDENTYFIKACJI XRF - MINERALID\n`;
@@ -26,12 +26,14 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
     report += `- **Wzór chemiczny**: ${topMatch.mineral.formula}\n`;
     report += `- **Grupa**: ${topMatch.mineral.mineralGroup}\n`;
     report += `- **Dopasowanie**: ${topMatch.score}%\n`;
+    report += `- **Tolerancja błędu**: ${topMatch.allElementsWithin2Percent ? 'Wszystkie pierwiastki w widełkach ±2.0%' : 'Częściowe odchylenie'}\n`;
+    report += `- **Pierwiastki lekkie (niewidoczne w XRF)**: ${topMatch.mineral.lightElementsPercent}%\n`;
     report += `- **Twardość Mohsa**: ${topMatch.mineral.diagnostics.hardness}\n`;
     report += `- **Rysa**: ${topMatch.mineral.diagnostics.streak}\n`;
     report += `- **Gęstość**: ${topMatch.mineral.diagnostics.density}\n`;
     report += `- **Cechy diagnostyczne**: ${topMatch.mineral.diagnostics.tests}\n\n`;
 
-    report += `#### RANKING KANDYDATÓW:\n`;
+    report += `#### RANKING KANDYDATÓW (TOP 5):\n`;
     results.slice(0, 5).forEach((m, idx) => {
       report += `${idx + 1}. ${m.mineral.namePl} (${m.mineral.formula}) - ${m.score}%\n`;
     });
@@ -49,14 +51,14 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <Award className="w-5 h-5 text-amber-400" />
-              4. Wyniki identyfikacji minerałów
+              4. Wyniki identyfikacji minerałów makroskopowych
             </h2>
             <span className="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
-              Top 10 z 63 w bazie
+              Baza 104 minerałów (Tolerancja ±2%)
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-0.5">
-            Ranking dopasowania na podstawie stechiometrii, mas atomowych i matrycy XRF
+            Analiza stechiometryczna, bilans pierwiastków lekkich i dopasowanie w oknie ±2.0%
           </p>
         </div>
 
@@ -81,8 +83,9 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
 
       {/* KARTA GŁÓWNA - NAJLEPSZY KANDYDAT (#1) */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/40 border-2 border-emerald-500/50 p-6 shadow-2xl">
-        <div className="absolute top-0 right-0 bg-emerald-500 text-slate-950 text-xs font-extrabold uppercase px-4 py-1 rounded-bl-xl tracking-wider shadow">
-          Główny kandydat (Rank #1)
+        <div className="absolute top-0 right-0 bg-emerald-500 text-slate-950 text-xs font-extrabold uppercase px-4 py-1 rounded-bl-xl tracking-wider shadow flex items-center gap-1.5">
+          {topMatch.allElementsWithin2Percent && <Sparkles className="w-3.5 h-3.5" />}
+          <span>Główny kandydat</span>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mt-2">
@@ -103,9 +106,16 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
               <span className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700">
                 Grupa: <b className="text-white">{topMatch.mineral.mineralGroup}</b>
               </span>
-              <span className="text-xs bg-cyan-950/60 text-cyan-300 px-2.5 py-1 rounded-lg border border-cyan-800/60">
-                {topMatch.confidenceTier === 'high' ? 'Wysoka pewność' : 'Prawdopodobny'}
-              </span>
+              {topMatch.allElementsWithin2Percent ? (
+                <span className="text-xs bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+                  W widełkach ±2.0%
+                </span>
+              ) : (
+                <span className="text-xs bg-amber-950/60 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-800/60">
+                  {topMatch.confidenceTier === 'high' ? 'Wysoka pewność' : 'Prawdopodobny'}
+                </span>
+              )}
             </div>
           </div>
 
@@ -128,10 +138,28 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
           />
         </div>
 
-        {/* Analiza stechiometryczna / wyjaśnienie */}
-        <p className="text-xs text-slate-300 mt-3 leading-relaxed bg-slate-950/50 p-3 rounded-xl border border-slate-800/80">
-          {topMatch.explanation}
-        </p>
+        {/* Bilans pierwiastków lekkich i wyjaśnienie */}
+        <div className="mt-3.5 p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 text-xs space-y-2">
+          <p className="text-slate-300 leading-relaxed">
+            {topMatch.explanation}
+          </p>
+
+          <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-2 text-[11px]">
+            <div className="flex items-center gap-1.5 text-amber-300 font-medium">
+              <Feather className="w-3.5 h-3.5 text-amber-400" />
+              <span>
+                Wymagane pierwiastki lekkie (Z &lt; 11): <b>{topMatch.mineral.lightElementsPercent}%</b>
+              </span>
+              <span className="text-slate-500 font-mono">
+                [Tolerancja: {topMatch.mineral.lightElementsToleranceWindow.min}% - {topMatch.mineral.lightElementsToleranceWindow.max}%]
+              </span>
+            </div>
+
+            <span className="text-slate-400 text-[10px]">
+              Odrębna widełka błędu: ±2.0% na każdy pierwiastek
+            </span>
+          </div>
+        </div>
 
         {/* Wskaźniki diagnostyczne minerału #1 */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4 text-xs">
@@ -168,7 +196,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
             onClick={() => setSelectedMatch(topMatch)}
             className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors shadow"
           >
-            <span>Karta minerału i wykres widmowy</span>
+            <span>Karta minerału, widełki ±2% i wykres widmowy</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -178,7 +206,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
       {otherMatches.length > 0 && (
         <div className="space-y-3">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mt-2">
-            Pozostali kandydaci w rankingu dopasowania:
+            Pozostali kandydaci z bazy 104 minerałów makroskopowych:
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -215,6 +243,11 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                       <span className="text-[11px] text-slate-400">
                         {m.mineral.mineralGroup}
                       </span>
+                      {m.allElementsWithin2Percent && (
+                        <span className="text-[10px] text-cyan-400 bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-800/50">
+                          ±2%
+                        </span>
+                      )}
                     </div>
 
                     <p className="text-xs text-slate-400 line-clamp-2">
@@ -223,7 +256,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                   </div>
 
                   <div className="mt-3 pt-2.5 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
-                    <span>H: {m.mineral.diagnostics.hardness} | Rysa: {m.mineral.diagnostics.streak}</span>
+                    <span>Lekkie: {m.mineral.lightElementsPercent}% | H: {m.mineral.diagnostics.hardness}</span>
                     <span className="text-emerald-400 group-hover:translate-x-0.5 transition-transform font-medium flex items-center">
                       Szczegóły &rarr;
                     </span>

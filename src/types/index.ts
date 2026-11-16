@@ -4,27 +4,33 @@ export interface ChemicalElement {
   nameEn: string;
   atomicNumber: number; // Z
   atomicMass: number; // g/mol
-  isLightElement: boolean; // Z < 11 (invisible to standard handheld XRF: H, He, Li, Be, B, C, N, O, F, Ne)
+  isLightElement: boolean; // Z < 11 (niewidoczne dla XRF: H, He, Li, Be, B, C, N, O, F, Ne)
 }
 
 export interface DetectedElement {
   id: string;
   symbol: string;
-  value: number; // in weight %
-  errorMargin?: number; // +/- error if available
+  value: number; // w % wagowych
+  errorMargin?: number; // +/- niepewność pomiarowa
   rawDetectedSymbol?: string;
 }
 
 export interface MineralDiagnostic {
-  hardness: string; // Skala Mohsa (np. "6 - 6.5")
-  streak: string; // Rysa (np. "czarnozielona do czarnej")
+  hardness: string; // Skala Mohsa (np. "6.0 - 6.5")
+  streak: string; // Rysa (np. "wiśniowoczerwona")
   luster: string; // Połysk (np. "metaliczny")
   color: string; // Barwa (np. "mosiężnożółta, złocista")
-  cleavage: string; // Łupliwość (np. "wyraźna, kostkowa")
+  cleavage: string; // Łupliwość (np. "doskonała, kostkowa")
   fracture: string; // Przełam (np. "muszlowy, nierówny")
-  density: string; // Gęstość g/cm³ (np. "4.95 - 5.10")
-  tests: string; // Cechy diagnostyczne / próby terenowe (np. "Iszczy przy uderzeniu stalą, brak reakcji z zimnym HCl")
-  occurrence: string; // Występowanie i powiązania geologiczne
+  density: string; // Gęstość g/cm³ (np. "4.95 - 5.10 g/cm³")
+  tests: string; // Cechy diagnostyczne / próby terenowe (np. "Iskrzy przy uderzeniu, brak reakcji z zimnym HCl")
+  occurrence: string; // Występowanie i środowisko geologiczne
+}
+
+export interface ToleranceWindow {
+  expected: number; // Wartość wzorcowa %
+  min: number; // Wzorzec - 2.0%
+  max: number; // Wzorzec + 2.0%
 }
 
 export interface MineralDefinition {
@@ -33,34 +39,52 @@ export interface MineralDefinition {
   nameEn: string;
   formula: string;
   mineralGroup: string; // np. "Siarczki", "Krzemiany", "Węglany", "Tlenki", "Siarczany", "Pierwiastki rodzime"
-  // Pełny skład chemiczny (symbol pierwiastka -> liczba atomów we wzorze)
+  // Pełny skład stechiometryczny (symbol -> liczba atomów we wzorze)
   stoichiometry: Record<string, number>;
-  // Teoretyczny skład wagowy całkowity (%)
+  // Teoretyczny całkowity skład wagowy (%)
   totalWeightPercent: Record<string, number>;
-  // Teoretyczny skład wagowy pierwiastków widzialnych przez XRF (Z >= 11, znormalizowany do 100%)
+  // Udział pierwiastków lekkich (Z < 11: H, Li, Be, B, C, N, O, F) niewidocznych dla XRF
+  lightElementsPercent: number;
+  lightElementsBreakdown: Record<string, number>;
+  lightElementsToleranceWindow: ToleranceWindow;
+  // Teoretyczny udział pierwiastków widzialnych przez XRF (Z >= 11, znormalizowany do 100%)
   xrfVisibleWeightPercent: Record<string, number>;
-  // Kluczowe stosunki molowe (np. { "Fe/S": 0.5, "Cu/Fe": 1.0 })
+  // Widełki tolerancji +-2% dla każdego widzialnego pierwiastka w XRF
+  toleranceWindows: Record<string, ToleranceWindow>;
+  // Kluczowe stosunki molowe (np. Fe/S: 0.5)
   keyMolarRatios?: Record<string, number>;
   diagnostics: MineralDiagnostic;
   notes?: string;
+}
+
+export interface ElementComparisonResult {
+  symbol: string;
+  samplePercent: number; // Zmierzony udział w próbce (%)
+  theoreticalPercent: number; // Wzorzec teoretyczny (%)
+  difference: number; // Odchylenie bezwzględne (%)
+  withinTolerance: boolean; // Czy mieści się w widełkach +-2%
+  toleranceMin: number;
+  toleranceMax: number;
 }
 
 export interface MatchScore {
   mineral: MineralDefinition;
   score: number; // 0 - 100%
   confidenceTier: 'high' | 'medium' | 'low' | 'unlikely';
+  allElementsWithin2Percent: boolean; // Czy WSZYSTKIE pierwiastki mieszczą się w widełkach +-2%
   molarRatioDetails: {
     ratioName: string;
     sampleRatio: number;
     theoreticalRatio: number;
     differencePercent: number;
   }[];
-  elementComparison: {
-    symbol: string;
-    samplePercent: number;
-    theoreticalPercent: number;
+  elementComparison: ElementComparisonResult[];
+  lightElementInfo: {
+    sampleLightPercent: number; // Szacowany bilans pierwiastków lekkich w próbce
+    theoreticalLightPercent: number;
     difference: number;
-  }[];
+    withinTolerance: boolean; // Czy bilans lekkich mieści się w widełkach +-2%
+  };
   explanation: string;
 }
 

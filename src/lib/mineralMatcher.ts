@@ -1,35 +1,46 @@
-import { DetectedElement, MatchScore, MineralDefinition } from '@/types';
+import { DetectedElement, MatchScore, MineralDefinition, ElementComparisonResult } from '@/types';
 import { MINERALS_DATABASE } from '@/data/minerals';
-import { ELEMENTS, getAtomicMass, isLightElement } from '@/data/elements';
+import { getAtomicMass, isLightElement } from '@/data/elements';
+
+const TOLERANCE_WINDOW_PCT = 2.0; // Widełki błędu +-2.0%
 
 /**
  * Normalizuje wykryte pierwiastki do 100% widzialnej masy XRF
- * (odrzuca pierwiastki o Z < 11, bo nie są wiarygodnie mierzone przez XRF)
+ * Odrzuca pierwiastki lekkie (Z < 11: H, Li, Be, B, C, N, O, F)
  */
 export function normalizeSampleElements(
   elements: DetectedElement[]
-): { normalized: Record<string, number>; rawTotal: number; visibleTotal: number } {
-  // Filtrujemy tylko pierwiastki z wartością > 0 i nie będące pierwiastkami lekkimi
+): {
+  normalized: Record<string, number>;
+  rawTotal: number;
+  visibleTotal: number;
+  sampleLightPercent: number;
+} {
   const visibleElements = elements.filter(
     (e) => e.value > 0 && !isLightElement(e.symbol)
   );
 
-  const rawTotal = elements.reduce((sum, e) => sum + e.value, 0);
-  const visibleTotal = visibleElements.reduce((sum, e) => sum + e.value, 0);
+  const rawTotal = elements.reduce((sum, e) => sum + (Number(e.value) || 0), 0);
+  const visibleTotal = visibleElements.reduce((sum, e) => sum + (Number(e.value) || 0), 0);
+
+  // Szacowany bilans pierwiastków lekkich (jeśli suma surowa < 100%)
+  const sampleLightPercent = rawTotal > 0 && rawTotal < 99.0
+    ? Number((100 - rawTotal).toFixed(2))
+    : 0;
 
   const normalized: Record<string, number> = {};
 
   if (visibleTotal > 0) {
     visibleElements.forEach((e) => {
-      normalized[e.symbol] = (e.value / visibleTotal) * 100;
+      normalized[e.symbol] = Number(((e.value / visibleTotal) * 100).toFixed(2));
     });
   }
 
-  return { normalized, rawTotal, visibleTotal };
+  return { normalized, rawTotal, visibleTotal, sampleLightPercent };
 }
 
 /**
- * Oblicza liczby moli pierwiastków w próbce n = m / M
+ * Oblicza liczby moli n = m / M dla widzialnych pierwiastków
  */
 export function calculateMoles(
   normalizedWeights: Record<string, number>
@@ -47,13 +58,15 @@ export function calculateMoles(
 }
 
 /**
- * Porównuje profil próbki z bazą minerałów i generuje ranking dopasowania
+ * Główny algorytm porównujący próbkę ze wszystkimi minerałami w bazie
+ * Uwzględnia widełki tolerancji +-2.0% oraz bilans pierwiastków lekkich
  */
 export function identifyMinerals(
   detectedElements: DetectedElement[],
   database: MineralDefinition[] = MINERALS_DATABASE
 ): MatchScore[] {
-  const { normalized: sampleNorm, visibleTotal } = normalizeSampleElements(detectedElements);
+  const { normalized: sampleNorm, visibleTotal, sampleLightPercent } =
+    normalizeSampleElements(detectedElements);
 
   if (visibleTotal <= 0 || Object.keys(sampleNorm).length === 0) {
     return [];
@@ -67,13 +80,14 @@ export function identifyMinerals(
       new Set([...Object.keys(sampleNorm), ...Object.keys(minVisible)])
     );
 
-    // 1. Obliczenie odległości euklidesowej wag procentowych
     let sumSquaredDiff = 0;
     let dotProduct = 0;
     let normSample = 0;
     let normMineral = 0;
+    let elementsWithinToleranceCount = 0;
+    let totalComparedCount = 0;
 
-    const elementComparison: MatchScore['elementComparison'] = [];
+    const elementComparison: ElementComparisonResult[] = [];
 
     allSymbols.forEach((sym) => {
       const sVal = sampleNorm[sym] || 0;
@@ -85,15 +99,33 @@ export function identifyMinerals(
       normSample += Math.pow(sVal, 2);
       normMineral += Math.pow(mVal, 2);
 
+      const toleranceWindow = mineral.toleranceWindows[sym] || {
+        expected: mVal,
+        min: Math.max(0, mVal - TOLERANCE_WINDOW_PCT),
+        max: Math.min(100, mVal + TOLERANCE_WINDOW_PCT)
+      };
+
+      // Czy mieści się w widełkach +-2%
+      const withinTolerance = diff <= TOLERANCE_WINDOW_PCT;
+
       if (sVal > 0 || mVal > 0) {
+        totalComparedCount++;
+        if (withinTolerance) elementsWithinToleranceCount++;
+
         elementComparison.push({
           symbol: sym,
           samplePercent: Number(sVal.toFixed(2)),
           theoreticalPercent: Number(mVal.toFixed(2)),
-          difference: Number(diff.toFixed(2))
+          difference: Number(diff.toFixed(2)),
+          withinTolerance,
+          toleranceMin: toleranceWindow.min,
+          toleranceMax: toleranceWindow.max
         });
       }
     });
+
+    const allElementsWithin2Percent =
+      totalComparedCount > 0 && elementsWithinToleranceCount === totalComparedCount;
 
     // Podobieństwo cosinusowe
     const cosineSim =
@@ -101,28 +133,34 @@ export function identifyMinerals(
         ? dotProduct / (Math.sqrt(normSample) * Math.sqrt(normMineral))
         : 0;
 
-    // Odległość euklidesowa w procentach
     const euclideanDist = Math.sqrt(sumSquaredDiff);
 
-    // Wynik bazowy (połączenie podobieństwa kątowego i błędu bezwzględnego)
+    // Wynik bazowy
     let score = cosineSim * 100 * (1 - Math.min(1, euclideanDist / 120));
 
-    // 2. Kary za brakujące kluczowe pierwiastki minerału
+    // BONUS za idealne dopasowanie w widełkach +-2%:
+    if (allElementsWithin2Percent) {
+      score = Math.max(score, 94.0 + (1 - euclideanDist / 5) * 5.5);
+    } else if (elementsWithinToleranceCount > 0) {
+      // Częściowy bonus za pierwiastki mieszczące się w widełkach
+      score += (elementsWithinToleranceCount / totalComparedCount) * 8;
+    }
+
+    // Kary za brakujące kluczowe pierwiastki minerału (>15%)
     for (const [sym, theoWeight] of Object.entries(minVisible)) {
       if (theoWeight >= 15 && (!sampleNorm[sym] || sampleNorm[sym] < 2)) {
-        // Kluczowy pierwiastek minerału w ogóle nieobecny w próbce!
         score -= theoWeight * 0.7;
       }
     }
 
-    // 3. Kary za obecność dużych zanieczyszczeń niewchodzących w skład minerału
+    // Kary za nadmiarowe zanieczyszczenia obce dla minerału
     for (const [sym, sampleWeight] of Object.entries(sampleNorm)) {
-      if (!minVisible[sym] && sampleWeight > 5) {
+      if (!minVisible[sym] && sampleWeight > 4) {
         score -= sampleWeight * 0.5;
       }
     }
 
-    // 4. Analiza kluczowych stosunków molowych
+    // Weryfikacja stosunków molowych
     const molarRatioDetails: MatchScore['molarRatioDetails'] = [];
 
     if (mineral.keyMolarRatios) {
@@ -142,62 +180,71 @@ export function identifyMinerals(
             differencePercent: Number(diffPct.toFixed(1))
           });
 
-          // Jeśli stosunek molowy jest bardzo bliski teoretycznemu (<10% błędu), daj bonus
-          if (diffPct < 10) {
-            score += (10 - diffPct) * 0.5;
-          } else if (diffPct > 40) {
-            score -= Math.min(15, (diffPct - 40) * 0.3);
+          if (diffPct <= 5.0) {
+            score += 5; // Znakomita zgodność stechiometrii
+          } else if (diffPct > 35) {
+            score -= Math.min(15, (diffPct - 35) * 0.3);
           }
         }
       }
     }
 
-    // Normalizacja końcowego wyniku do zakresu [0, 99.9]
-    score = Math.max(0, Math.min(99.5, score));
+    // Weryfikacja bilansu pierwiastków lekkich (gdy podano surowy odczyt < 100%)
+    let lightDiff = Math.abs(sampleLightPercent - mineral.lightElementsPercent);
+    let lightWithinTolerance = sampleLightPercent > 0 && lightDiff <= TOLERANCE_WINDOW_PCT;
 
-    // Klasyfikacja poziomu pewności
-    let confidenceTier: MatchScore['confidenceTier'] = 'unlikely';
-    if (score >= 82) confidenceTier = 'high';
-    else if (score >= 60) confidenceTier = 'medium';
-    else if (score >= 35) confidenceTier = 'low';
-
-    // Przygotowanie wyjaśnienia
-    let explanation = '';
-    const mainSampleEl = Object.entries(sampleNorm).sort((a, b) => b[1] - a[1])[0];
-    const mainMineralEl = Object.entries(minVisible).sort((a, b) => b[1] - a[1])[0];
-
-    if (confidenceTier === 'high') {
-      if (molarRatioDetails.length > 0 && molarRatioDetails[0].differencePercent < 12) {
-        const r = molarRatioDetails[0];
-        explanation = `Bardzo wysoka zgodność składu pierwiastkowego. Zmierzony stosunek molowy ${r.ratioName} wynosi ${r.sampleRatio} (teoria dla ${mineral.namePl}: ${r.theoreticalRatio}, błąd zaledwie ${r.differencePercent}%).`;
-      } else {
-        explanation = `Wybitna zgodność widmowa XRF. Dominujący pierwiastek ${mainSampleEl?.[0]} pokrywa się z głównym składnikiem minerału.`;
+    if (sampleLightPercent > 0) {
+      if (lightWithinTolerance) {
+        score += 8; // Duży bonus gdy bilans lekkich pokrywa się z minerałem w widełkach +-2%
+      } else if (lightDiff > 20) {
+        score -= Math.min(20, (lightDiff - 20) * 0.4);
       }
-    } else if (confidenceTier === 'medium') {
-      explanation = `Zgodne główne pierwiastki (${mainMineralEl?.[0]}), jednak występują odchylenia stechiometryczne lub domieszki innych faz mineralnych.`;
-    } else if (confidenceTier === 'low') {
-      explanation = `Częściowe podobieństwo chemiczne. Wymaga weryfikacji cech fizycznych (twardość Mohsa, barwa rysy).`;
-    } else {
-      explanation = `Niskie prawdopodobieństwo. Profil pierwiastkowy znacząco odbiega od wzorca.`;
     }
 
-    // Specjalna adnotacja dla minerałów z niewidocznymi pierwiastkami lekkimi (np. kalcyt vs kwarc vs fluoryt)
-    const hasLight = Object.keys(mineral.stoichiometry).some((s) => isLightElement(s));
-    if (hasLight) {
-      const invisibleEls = Object.keys(mineral.stoichiometry).filter((s) => isLightElement(s));
-      explanation += ` (Uwaga: XRF nie wykrywa ${invisibleEls.join(', ')} – minerał zidentyfikowany na podstawie widzialnej matrycy).`;
+    // Normalizacja do zakresu [0, 99.8%]
+    score = Math.max(0, Math.min(99.8, score));
+
+    // Poziom pewności
+    let confidenceTier: MatchScore['confidenceTier'] = 'unlikely';
+    if (score >= 85 || allElementsWithin2Percent) confidenceTier = 'high';
+    else if (score >= 62) confidenceTier = 'medium';
+    else if (score >= 35) confidenceTier = 'low';
+
+    // Generowanie zwięzłego wyjaśnienia analitycznego
+    let explanation = '';
+    if (allElementsWithin2Percent) {
+      explanation = `Wszystkie wykryte pierwiastki mieszczą się w ścisłych widełkach błędu ±2.0% od teoretycznego wzorca ${mineral.namePl}!`;
+    } else if (confidenceTier === 'high') {
+      explanation = `Bardzo wysoka zgodność składu pierwiastkowego z wzorcem minerału ${mineral.namePl}.`;
+    } else if (confidenceTier === 'medium') {
+      explanation = `Zgodność głównych faz pierwiastkowych z umiarkowanymi odchyleniami stechiometrycznymi.`;
+    } else {
+      explanation = `Częściowe podobieństwo lub obecność obcych domieszek mineralnych.`;
+    }
+
+    if (mineral.lightElementsPercent > 0) {
+      const lightBreakdownStr = Object.entries(mineral.lightElementsBreakdown)
+        .map(([sym, pct]) => `${sym}: ${pct}%`)
+        .join(', ');
+      explanation += ` Wzór wymaga ${mineral.lightElementsPercent}% pierwiastków lekkich (${lightBreakdownStr}) niewidocznych dla XRF.`;
     }
 
     return {
       mineral,
       score: Number(score.toFixed(1)),
       confidenceTier,
+      allElementsWithin2Percent,
       molarRatioDetails,
       elementComparison: elementComparison.sort((a, b) => b.samplePercent - a.samplePercent),
+      lightElementInfo: {
+        sampleLightPercent,
+        theoreticalLightPercent: mineral.lightElementsPercent,
+        difference: Number(lightDiff.toFixed(2)),
+        withinTolerance: lightWithinTolerance
+      },
       explanation
     };
   });
 
-  // Sortowanie od najbardziej prawdopodobnego
   return results.sort((a, b) => b.score - a.score);
 }
