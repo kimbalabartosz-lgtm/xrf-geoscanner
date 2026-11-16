@@ -67,11 +67,32 @@ export interface ElementComparisonResult {
   toleranceMax: number;
 }
 
+export interface PolymorphMember {
+  id: string;
+  namePl: string;
+  nameEn: string;
+  hardness: string;
+  streak: string;
+  color: string;
+  cleavage: string;
+  tests: string;
+}
+
+export interface PolymorphInfo {
+  isPolymorph: boolean;
+  combinedNamePl: string; // np. "Piryt / Markasyt" lub "Kalcyt / Aragonit"
+  combinedNameEn: string; // np. "Pyrite / Marcasite"
+  formula: string;
+  members: PolymorphMember[];
+  distinctionTip: string;
+}
+
 export interface MatchScore {
   mineral: MineralDefinition;
   score: number; // 0 - 100%
   confidenceTier: 'high' | 'medium' | 'low' | 'unlikely';
   allElementsWithin2Percent: boolean; // Czy WSZYSTKIE pierwiastki mieszczą się w widełkach +-2%
+  polymorphInfo?: PolymorphInfo;
   molarRatioDetails: {
     ratioName: string;
     sampleRatio: number;

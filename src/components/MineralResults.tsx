@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Award, ChevronRight, CheckCircle2, AlertTriangle, Layers, Sparkles, Copy, Check, Feather } from 'lucide-react';
+import { Award, ChevronRight, CheckCircle2, AlertTriangle, Layers, Sparkles, Copy, Check, Feather, GitFork } from 'lucide-react';
 import { MatchScore } from '@/types';
 import { MineralDetailModal } from './MineralDetailModal';
 
@@ -19,10 +19,12 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
   const otherMatches = results.slice(1, 10);
 
   const handleCopyReport = () => {
-    let report = `### RAPORT IDENTYFIKACJI XRF - MINERALID\n`;
+    let report = `### RAPORT IDENTYFIKACJI XRF - GEOSCANNER\n`;
     report += `Data analizy: ${new Date().toLocaleString('pl-PL')}\n\n`;
     report += `#### NAJBARDZIEJ PRAWDOPODOBNY MINERAŁ:\n`;
-    report += `- **Nazwa**: ${topMatch.mineral.namePl} (${topMatch.mineral.nameEn})\n`;
+    const titlePl = topMatch.polymorphInfo?.isPolymorph ? topMatch.polymorphInfo.combinedNamePl : topMatch.mineral.namePl;
+    const titleEn = topMatch.polymorphInfo?.isPolymorph ? topMatch.polymorphInfo.combinedNameEn : topMatch.mineral.nameEn;
+    report += `- **Nazwa**: ${titlePl} (${titleEn})\n`;
     report += `- **Wzór chemiczny**: ${topMatch.mineral.formula}\n`;
     report += `- **Grupa**: ${topMatch.mineral.mineralGroup}\n`;
     report += `- **Dopasowanie**: ${topMatch.score}%\n`;
@@ -33,9 +35,14 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
     report += `- **Gęstość**: ${topMatch.mineral.diagnostics.density}\n`;
     report += `- **Cechy diagnostyczne**: ${topMatch.mineral.diagnostics.tests}\n\n`;
 
+    if (topMatch.polymorphInfo?.isPolymorph) {
+      report += `*Uwaga dotycząca polimorfów*: ${topMatch.polymorphInfo.distinctionTip}\n\n`;
+    }
+
     report += `#### RANKING KANDYDATÓW (TOP 5):\n`;
     results.slice(0, 5).forEach((m, idx) => {
-      report += `${idx + 1}. ${m.mineral.namePl} (${m.mineral.formula}) - ${m.score}%\n`;
+      const name = m.polymorphInfo?.isPolymorph ? m.polymorphInfo.combinedNamePl : m.mineral.namePl;
+      report += `${idx + 1}. ${name} (${m.mineral.formula}) - ${m.score}%\n`;
     });
 
     navigator.clipboard.writeText(report);
@@ -58,7 +65,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-0.5">
-            Analiza stechiometryczna, bilans pierwiastków lekkich i dopasowanie w oknie ±2.0%
+            Analiza stechiometryczna, bilans pierwiastków lekkich i automatyczne wykrywanie polimorfów
           </p>
         </div>
 
@@ -89,13 +96,17 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
         </div>
 
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mt-2">
-          <div>
-            <div className="flex items-center gap-3">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 flex-wrap">
               <h3 className="text-2xl font-black text-white tracking-tight">
-                {topMatch.mineral.namePl}
+                {topMatch.polymorphInfo?.isPolymorph
+                  ? topMatch.polymorphInfo.combinedNamePl
+                  : topMatch.mineral.namePl}
               </h3>
               <span className="text-sm text-slate-400 italic">
-                {topMatch.mineral.nameEn}
+                {topMatch.polymorphInfo?.isPolymorph
+                  ? topMatch.polymorphInfo.combinedNameEn
+                  : topMatch.mineral.nameEn}
               </span>
             </div>
 
@@ -106,7 +117,12 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
               <span className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700">
                 Grupa: <b className="text-white">{topMatch.mineral.mineralGroup}</b>
               </span>
-              {topMatch.allElementsWithin2Percent ? (
+              {topMatch.polymorphInfo?.isPolymorph ? (
+                <span className="text-xs bg-amber-950/80 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1.5">
+                  <GitFork className="w-3.5 h-3.5 text-amber-400" />
+                  Grupa polimorfów (Albo to, albo to)
+                </span>
+              ) : topMatch.allElementsWithin2Percent ? (
                 <span className="text-xs bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
                   W widełkach ±2.0%
@@ -117,10 +133,39 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                 </span>
               )}
             </div>
+
+            {/* SEKCJA SPECJALNA DLA POLIMORFÓW: ZESTAWIENIE "ALBO TO, ALBO TO" */}
+            {topMatch.polymorphInfo?.isPolymorph && (
+              <div className="mt-3.5 p-4 rounded-xl bg-amber-950/40 border border-amber-500/50 shadow-inner">
+                <div className="flex items-center gap-2 text-amber-300 font-bold text-xs mb-1.5">
+                  <span className="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/50 text-[10px] uppercase tracking-wider text-amber-300 font-extrabold">
+                    Identyczny profil w XRF
+                  </span>
+                  <span>Albo to, albo to! Porównanie cech makroskopowych:</span>
+                </div>
+                <p className="text-slate-300 text-xs leading-relaxed mb-3">
+                  Wzór chemiczny <b>{topMatch.mineral.formula}</b> jest wspólny dla minerałów: <b>{topMatch.polymorphInfo.combinedNamePl}</b>. W spektrometrii rentgenowskiej dają one identyczny sygnał atomowy. Aby ustalić, który z nich trzymasz w dłoni, porównaj poniższe cechy fizyczne:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  {topMatch.polymorphInfo.members.map((m) => (
+                    <div key={m.id} className="p-3 rounded-lg bg-slate-950/90 border border-amber-700/40 text-[11px] space-y-1 shadow">
+                      <div className="font-extrabold text-amber-200 text-xs flex items-center justify-between border-b border-slate-800 pb-1">
+                        <span>{m.namePl}</span>
+                        <span className="text-[10px] text-slate-400 font-normal italic">{m.nameEn}</span>
+                      </div>
+                      <div className="text-slate-300"><b className="text-slate-400">Twardość:</b> {m.hardness} Mohsa</div>
+                      <div className="text-slate-300"><b className="text-slate-400">Rysa:</b> {m.streak}</div>
+                      <div className="text-slate-300"><b className="text-slate-400">Barwa:</b> {m.color}</div>
+                      <div className="text-slate-400 italic text-[10px] line-clamp-2 pt-0.5">{m.tests}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Wynik procentowy */}
-          <div className="flex flex-col items-center justify-center bg-slate-950/80 border border-slate-800 rounded-2xl px-6 py-3 min-w-[140px]">
+          <div className="flex flex-col items-center justify-center bg-slate-950/80 border border-slate-800 rounded-2xl px-6 py-3 min-w-[140px] shrink-0">
             <span className="text-3xl font-black text-emerald-400 font-mono">
               {topMatch.score}%
             </span>
@@ -161,42 +206,80 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
           </div>
         </div>
 
-        {/* Wskaźniki diagnostyczne minerału #1 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4 text-xs">
-          <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-            <span className="text-slate-500 block text-[10px] uppercase font-semibold">Twardość Mohsa</span>
-            <span className="font-bold text-white mt-0.5 block">{topMatch.mineral.diagnostics.hardness}</span>
-          </div>
-          <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-            <span className="text-slate-500 block text-[10px] uppercase font-semibold">Barwa rysy</span>
-            <span className="font-bold text-white mt-0.5 block">{topMatch.mineral.diagnostics.streak}</span>
-          </div>
-          <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-            <span className="text-slate-500 block text-[10px] uppercase font-semibold">Połysk</span>
-            <span className="font-bold text-white mt-0.5 block">{topMatch.mineral.diagnostics.luster}</span>
-          </div>
-          <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-            <span className="text-slate-500 block text-[10px] uppercase font-semibold">Gęstość</span>
-            <span className="font-bold text-white mt-0.5 block">{topMatch.mineral.diagnostics.density}</span>
+        {/* Podgląd porównania pierwiastków w oknie tolerancji */}
+        <div className="mt-4">
+          <h4 className="text-xs font-semibold text-slate-300 mb-2 flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-emerald-400" />
+            Porównanie pierwiastków z wzorcem minerału (Widełki ±2.0%):
+          </h4>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            {topMatch.elementComparison.map((elem) => (
+              <div
+                key={elem.symbol}
+                className={`p-2 rounded-lg border text-xs flex flex-col justify-between ${
+                  elem.withinTolerance
+                    ? 'bg-emerald-950/40 border-emerald-800/60'
+                    : 'bg-slate-950/60 border-slate-800'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-white font-mono">{elem.symbol}</span>
+                  {elem.withinTolerance ? (
+                    <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-0.5">
+                      <CheckCircle2 className="w-3 h-3" /> OK
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-amber-400 flex items-center gap-0.5">
+                      <AlertTriangle className="w-3 h-3" /> &Delta; {elem.difference}%
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-1 flex items-baseline justify-between font-mono text-[11px]">
+                  <span className="text-slate-400">
+                    Próbka: <b className="text-slate-200">{elem.samplePercent}%</b>
+                  </span>
+                  <span className="text-slate-500 text-[10px]">
+                    Wzorzec: {elem.theoreticalPercent}%
+                  </span>
+                </div>
+
+                <div className="text-[10px] text-slate-500 mt-0.5 font-mono">
+                  Widełki: [{elem.toleranceMin}% - {elem.toleranceMax}%]
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Próby terenowe */}
-        <div className="mt-3.5 bg-amber-950/30 border border-amber-800/40 rounded-xl p-3 text-xs">
-          <span className="font-bold text-amber-300 block mb-0.5">
-            Cechy diagnostyczne / Próby terenowe:
-          </span>
-          <p className="text-amber-100/90">{topMatch.mineral.diagnostics.tests}</p>
-        </div>
+        {/* Właściwości diagnostyczne i przycisk pełnego profilu */}
+        <div className="mt-5 pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs flex-1">
+            <div>
+              <span className="text-slate-500 block text-[10px] uppercase font-semibold">Twardość</span>
+              <span className="text-slate-200 font-medium">{topMatch.mineral.diagnostics.hardness} Mohsa</span>
+            </div>
+            <div>
+              <span className="text-slate-500 block text-[10px] uppercase font-semibold">Rysa</span>
+              <span className="text-slate-200 font-medium">{topMatch.mineral.diagnostics.streak}</span>
+            </div>
+            <div>
+              <span className="text-slate-500 block text-[10px] uppercase font-semibold">Połysk</span>
+              <span className="text-slate-200 font-medium">{topMatch.mineral.diagnostics.luster}</span>
+            </div>
+            <div>
+              <span className="text-slate-500 block text-[10px] uppercase font-semibold">Gęstość</span>
+              <span className="text-slate-200 font-medium">{topMatch.mineral.diagnostics.density}</span>
+            </div>
+          </div>
 
-        {/* Przycisk pełnej karty minerału */}
-        <div className="mt-4 flex justify-end">
           <button
             type="button"
             onClick={() => setSelectedMatch(topMatch)}
-            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors shadow"
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 shrink-0"
           >
-            <span>Karta minerału, widełki ±2% i wykres widmowy</span>
+            <span>Karta diagnostyczna</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -206,12 +289,15 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
       {otherMatches.length > 0 && (
         <div className="space-y-3">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mt-2">
-            Pozostali kandydaci z bazy 104 minerałów makroskopowych:
+            Pozostali kandydaci z bazy 1022 minerałów makroskopowych:
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {otherMatches.map((m, idx) => {
               const rank = idx + 2;
+              const displayNamePl = m.polymorphInfo?.isPolymorph ? m.polymorphInfo.combinedNamePl : m.mineral.namePl;
+              const displayNameEn = m.polymorphInfo?.isPolymorph ? m.polymorphInfo.combinedNameEn : m.mineral.nameEn;
+
               return (
                 <div
                   key={m.mineral.id}
@@ -220,15 +306,15 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-bold text-slate-500 font-mono">
                           #{rank}
                         </span>
                         <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">
-                          {m.mineral.namePl}
+                          {displayNamePl}
                         </h4>
                         <span className="text-xs text-slate-500 italic">
-                          ({m.mineral.nameEn})
+                          ({displayNameEn})
                         </span>
                       </div>
                       <span className="font-mono font-bold text-sm text-emerald-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
@@ -236,18 +322,22 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
                       <span className="text-xs font-mono font-semibold text-cyan-300 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-800/40">
                         {m.mineral.formula}
                       </span>
                       <span className="text-[11px] text-slate-400">
                         {m.mineral.mineralGroup}
                       </span>
-                      {m.allElementsWithin2Percent && (
+                      {m.polymorphInfo?.isPolymorph ? (
+                        <span className="text-[10px] text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800/50 font-bold flex items-center gap-1">
+                          <GitFork className="w-3 h-3" /> Polimorfy (albo/albo)
+                        </span>
+                      ) : m.allElementsWithin2Percent ? (
                         <span className="text-[10px] text-cyan-400 bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-800/50">
                           ±2%
                         </span>
-                      )}
+                      ) : null}
                     </div>
 
                     <p className="text-xs text-slate-400 line-clamp-2">
@@ -258,7 +348,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                   <div className="mt-3 pt-2.5 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
                     <span>Lekkie: {m.mineral.lightElementsPercent}% | H: {m.mineral.diagnostics.hardness}</span>
                     <span className="text-emerald-400 group-hover:translate-x-0.5 transition-transform font-medium flex items-center">
-                      Szczegóły &rarr;
+                      Szczegóły <ChevronRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
@@ -268,11 +358,13 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
         </div>
       )}
 
-      {/* Modal ze szczegółami wybranego minerału */}
-      <MineralDetailModal
-        match={selectedMatch}
-        onClose={() => setSelectedMatch(null)}
-      />
+      {/* Modal z pełnymi szczegółami minerału */}
+      {selectedMatch && (
+        <MineralDetailModal
+          match={selectedMatch}
+          onClose={() => setSelectedMatch(null)}
+        />
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { DetectedElement, MatchScore, MineralDefinition, ElementComparisonResult } from '@/types';
+import { DetectedElement, MatchScore, MineralDefinition, ElementComparisonResult, PolymorphInfo } from '@/types';
 import { MINERALS_DATABASE } from '@/data/minerals';
 import { getAtomicMass, isLightElement } from '@/data/elements';
 
@@ -58,8 +58,22 @@ export function calculateMoles(
 }
 
 /**
- * Główny algorytm porównujący próbkę ze wszystkimi minerałami w bazie
- * Uwzględnia widełki tolerancji +-2.0% oraz bilans pierwiastków lekkich
+ * Generuje unikalny odcisk stechiometryczny minerału, aby wykrywać polimorfy
+ * (minerały o identycznym składzie chemicznym, np. Piryt i Markasyt, Kalcyt i Aragonit)
+ */
+function getStoichiometryFingerprint(min: MineralDefinition): string {
+  return Object.entries(min.totalWeightPercent)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([sym, pct]) => `${sym}:${Math.round(pct * 2) / 2}`)
+    .join('|');
+}
+
+/**
+ * Główny algorytm porównujący próbkę ze wszystkimi minerałami w bazie.
+ * Uwzględnia:
+ * - Widełki tolerancji +-2.0%
+ * - Bilans pierwiastków lekkich
+ * - Automatyczne wykrywanie polimorfów i łączenie ich w pary "Nazwa X / Nazwa Y (albo to, albo to)"
  */
 export function identifyMinerals(
   detectedElements: DetectedElement[],
@@ -74,7 +88,25 @@ export function identifyMinerals(
 
   const sampleMoles = calculateMoles(sampleNorm);
 
-  const results: MatchScore[] = database.map((mineral) => {
+  // 1. Zbuduj mapę polimorfów w bazie danych
+  const fingerprintGroups = new Map<string, MineralDefinition[]>();
+  database.forEach((min) => {
+    const fg = getStoichiometryFingerprint(min);
+    const existing = fingerprintGroups.get(fg) || [];
+
+    // Deduplikacja po rdzennej nazwie (np. unikaj dublowania "Markasyt / Markasyt")
+    const baseName = min.namePl.split('(')[0].trim().toLowerCase();
+    const alreadyPresent = existing.some(
+      (ex) => ex.namePl.split('(')[0].trim().toLowerCase() === baseName
+    );
+    if (!alreadyPresent) {
+      existing.push(min);
+      fingerprintGroups.set(fg, existing);
+    }
+  });
+
+  // 2. Oblicz dopasowanie dla każdego minerału
+  const rawResults: MatchScore[] = database.map((mineral) => {
     const minVisible = mineral.xrfVisibleWeightPercent;
     const allSymbols = Array.from(
       new Set([...Object.keys(sampleNorm), ...Object.keys(minVisible)])
@@ -142,7 +174,6 @@ export function identifyMinerals(
     if (allElementsWithin2Percent) {
       score = Math.max(score, 94.0 + (1 - euclideanDist / 5) * 5.5);
     } else if (elementsWithinToleranceCount > 0) {
-      // Częściowy bonus za pierwiastki mieszczące się w widełkach
       score += (elementsWithinToleranceCount / totalComparedCount) * 8;
     }
 
@@ -181,7 +212,7 @@ export function identifyMinerals(
           });
 
           if (diffPct <= 5.0) {
-            score += 5; // Znakomita zgodność stechiometrii
+            score += 5;
           } else if (diffPct > 35) {
             score -= Math.min(15, (diffPct - 35) * 0.3);
           }
@@ -189,13 +220,13 @@ export function identifyMinerals(
       }
     }
 
-    // Weryfikacja bilansu pierwiastków lekkich (gdy podano surowy odczyt < 100%)
-    let lightDiff = Math.abs(sampleLightPercent - mineral.lightElementsPercent);
-    let lightWithinTolerance = sampleLightPercent > 0 && lightDiff <= TOLERANCE_WINDOW_PCT;
+    // Weryfikacja bilansu pierwiastków lekkich
+    const lightDiff = Math.abs(sampleLightPercent - mineral.lightElementsPercent);
+    const lightWithinTolerance = sampleLightPercent > 0 && lightDiff <= TOLERANCE_WINDOW_PCT;
 
     if (sampleLightPercent > 0) {
       if (lightWithinTolerance) {
-        score += 8; // Duży bonus gdy bilans lekkich pokrywa się z minerałem w widełkach +-2%
+        score += 8;
       } else if (lightDiff > 20) {
         score -= Math.min(20, (lightDiff - 20) * 0.4);
       }
@@ -246,5 +277,41 @@ export function identifyMinerals(
     };
   });
 
-  return results.sort((a, b) => b.score - a.score);
+  // Sortuj od najwyższego dopasowania
+  const sorted = rawResults.sort((a, b) => b.score - a.score);
+
+  // 3. Przypisz informacje o polimorfach (np. "Piryt / Markasyt", "Kalcyt / Aragonit")
+  sorted.forEach((match) => {
+    const fg = getStoichiometryFingerprint(match.mineral);
+    const group = fingerprintGroups.get(fg);
+
+    if (group && group.length > 1) {
+      const combinedPl = group.map((m) => m.namePl.split('(')[0].trim()).join(' / ');
+      const combinedEn = group.map((m) => m.nameEn.split('(')[0].trim()).join(' / ');
+
+      const members = group.map((m) => ({
+        id: m.id,
+        namePl: m.namePl,
+        nameEn: m.nameEn,
+        hardness: m.diagnostics.hardness,
+        streak: m.diagnostics.streak,
+        color: m.diagnostics.color,
+        cleavage: m.diagnostics.cleavage || 'wyraźna',
+        tests: m.diagnostics.tests
+      }));
+
+      const polymorphInfo: PolymorphInfo = {
+        isPolymorph: true,
+        combinedNamePl: combinedPl,
+        combinedNameEn: combinedEn,
+        formula: match.mineral.formula,
+        members,
+        distinctionTip: `Minerały ${combinedPl} mają identyczny skład chemiczny dla spektrometru XRF (${match.mineral.formula}). Aby rozstrzygnąć, który z nich masz w dłoni, sprawdź pokrój kryształów, twardość lub łupliwość podane poniżej.`
+      };
+
+      match.polymorphInfo = polymorphInfo;
+    }
+  });
+
+  return sorted;
 }
