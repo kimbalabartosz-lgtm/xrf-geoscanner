@@ -1,8 +1,83 @@
-import { DetectedElement, MatchScore, MineralDefinition, ElementComparisonResult, PolymorphInfo } from '@/types';
+import { DetectedElement, MatchScore, MineralDefinition, ElementComparisonResult, PolymorphInfo, TechnicalAlloyMatch } from '@/types';
 import { MINERALS_DATABASE } from '@/data/minerals';
 import { getAtomicMass, isLightElement } from '@/data/elements';
 
-const TOLERANCE_WINDOW_PCT = 2.0; // Widełki błędu +-2.0%
+const TOLERANCE_WINDOW_PCT = 2.0; // Ścisłe widełki błędu +-2.0%
+
+/**
+ * Wykrywa powszechne stopy przemysłowe i próbki kalibracyjne XRF (np. stal SS-316),
+ * gdy próbka nie jest naturalnym minerałem.
+ */
+export function detectTechnicalAlloy(
+  sampleNorm: Record<string, number>
+): TechnicalAlloyMatch | null {
+  const fe = sampleNorm['Fe'] || 0;
+  const cr = sampleNorm['Cr'] || 0;
+  const ni = sampleNorm['Ni'] || 0;
+  const mo = sampleNorm['Mo'] || 0;
+  const cu = sampleNorm['Cu'] || 0;
+  const zn = sampleNorm['Zn'] || 0;
+  const sn = sampleNorm['Sn'] || 0;
+  const ti = sampleNorm['Ti'] || 0;
+  const al = sampleNorm['Al'] || 0;
+  const pb = sampleNorm['Pb'] || 0;
+
+  // Stal nierdzewna kwasoodporna AISI 316 / SS-316 (Fe ~60-74%, Cr ~16-19%, Ni ~9-14%, Mo ~2-3.5%)
+  if (fe >= 55 && fe <= 75 && cr >= 14 && cr <= 22 && ni >= 7 && ni <= 16 && mo >= 1.2) {
+    return {
+      name: 'Stal nierdzewna kwasoodporna AISI 316 (SS-316)',
+      grade: 'SS-316 / 1.4401 / 1.4404',
+      description: 'Austenityczna stal kwasoodporna Fe-Cr-Ni-Mo. Bardzo częsty wzorzec testowy i kalibracyjny spektrometrów XRF. Materiał metalurgiczny (stop przemysłowy), nie występuje w przyrodzie jako minerał naturalny.'
+    };
+  }
+
+  // Stal nierdzewna AISI 304 / SS-304 (Fe ~65-75%, Cr ~17-20%, Ni ~8-12%, bez Mo)
+  if (fe >= 58 && fe <= 76 && cr >= 15 && cr <= 22 && ni >= 7 && ni <= 14 && mo < 1.2) {
+    return {
+      name: 'Stal nierdzewna austenityczna AISI 304 (SS-304)',
+      grade: 'SS-304 / 1.4301',
+      description: 'Powszechna stal nierdzewna 18/8 (stop Fe-Cr-Ni). Stop techniczny, nie jest minerałem naturalnym.'
+    };
+  }
+
+  // Mosiądz przemysłowy (Cu-Zn)
+  if (cu >= 55 && cu <= 85 && zn >= 15 && zn <= 45 && (fe + cr + ni) < 5) {
+    return {
+      name: 'Mosiądz przemysłowy (stop Cu-Zn)',
+      grade: 'Mosiądz / Brass',
+      description: 'Stop techniczny miedzi i cynku. W naturze miedź i cynk tworzą odrębne fazy mineralne.'
+    };
+  }
+
+  // Brąz cynowy (Cu-Sn)
+  if (cu >= 75 && cu <= 95 && sn >= 4 && sn <= 20) {
+    return {
+      name: 'Brąz cynowy (stop Cu-Sn)',
+      grade: 'Brąz / Bronze',
+      description: 'Stop techniczny miedzi z cyną. Występuje jako wyrób metalurgiczny lub archeologiczny.'
+    };
+  }
+
+  // Stop tytanu lotniczego (Ti-6Al-4V)
+  if (ti >= 80 && al >= 3 && al <= 8) {
+    return {
+      name: 'Stop tytanu lotniczego (Ti-6Al-4V)',
+      grade: 'Grade 5',
+      description: 'Wysokowytrzymały stop tytanu z glinem i wanadem.'
+    };
+  }
+
+  // Lutowie Sn-Pb
+  if (sn >= 25 && sn <= 75 && pb >= 25 && pb <= 75) {
+    return {
+      name: 'Stop lutowniczy ołowiowo-cynowy (Sn-Pb)',
+      grade: 'Lutowie Sn-Pb',
+      description: 'Stop techniczny ołowiu i cyny używany w elektronice i hydraulice.'
+    };
+  }
+
+  return null;
+}
 
 /**
  * Normalizuje wykryte pierwiastki do 100% widzialnej masy XRF
@@ -159,42 +234,66 @@ export function identifyMinerals(
     const allElementsWithin2Percent =
       totalComparedCount > 0 && elementsWithinToleranceCount === totalComparedCount;
 
-    // Podobieństwo cosinusowe
-    const cosineSim =
-      normSample > 0 && normMineral > 0
-        ? dotProduct / (Math.sqrt(normSample) * Math.sqrt(normMineral))
-        : 0;
+    let maxElementDifference = 0;
+    let maxDiffSymbol = '';
+    let totalExcessError = 0;
+
+    elementComparison.forEach((ec) => {
+      if (ec.difference > maxElementDifference) {
+        maxElementDifference = ec.difference;
+        maxDiffSymbol = ec.symbol;
+      }
+      if (!ec.withinTolerance) {
+        totalExcessError += (ec.difference - TOLERANCE_WINDOW_PCT);
+      }
+    });
 
     const euclideanDist = Math.sqrt(sumSquaredDiff);
 
-    // Wynik bazowy
-    let score = cosineSim * 100 * (1 - Math.min(1, euclideanDist / 120));
-
-    // BONUS za idealne dopasowanie w widełkach +-2%:
-    if (allElementsWithin2Percent) {
-      score = Math.max(score, 94.0 + (1 - euclideanDist / 5) * 5.5);
-    } else if (elementsWithinToleranceCount > 0) {
-      score += (elementsWithinToleranceCount / totalComparedCount) * 8;
+    // Weryfikacja bilansu pierwiastków lekkich
+    const lightDiff = Math.abs(sampleLightPercent - mineral.lightElementsPercent);
+    const lightWithinTolerance = sampleLightPercent === 0 || lightDiff <= TOLERANCE_WINDOW_PCT;
+    if (sampleLightPercent > 0 && !lightWithinTolerance) {
+      const excessLight = lightDiff - TOLERANCE_WINDOW_PCT;
+      if (excessLight > maxElementDifference) {
+        maxElementDifference = lightDiff;
+        maxDiffSymbol = 'Lekkie (Z<11)';
+      }
+      totalExcessError += excessLight;
     }
 
-    // Kary za brakujące kluczowe pierwiastki minerału (>15%)
-    for (const [sym, theoWeight] of Object.entries(minVisible)) {
-      if (theoWeight >= 15 && (!sampleNorm[sym] || sampleNorm[sym] < 2)) {
-        score -= theoWeight * 0.7;
+    // Minerał jest zweryfikowany TYLKO wtedy, gdy żaden pierwiastek nie przekracza +-2.0%
+    const isVerified = allElementsWithin2Percent && lightWithinTolerance;
+
+    // Punktacja oparta na ścisłej tolerancji +-2.0%:
+    let score = 0;
+    let confidenceTier: MatchScore['confidenceTier'] = 'unlikely';
+
+    if (isVerified) {
+      // IDEALNA ZGODNOŚĆ: Wszystkie pierwiastki mieszczą się w widełkach +-2.0%
+      score = Math.max(92.0, 99.8 - euclideanDist * 2.0);
+      confidenceTier = 'high';
+    } else {
+      // Skład przekracza limit +-2.0% w którymkolwiek kierunku
+      if (maxElementDifference > 15 || totalExcessError > 20) {
+        // Drastyczna rozbieżność składu (np. Fe różni się o 21% lub Cr o 17%)
+        score = Math.max(5.0, Math.min(25.0, 35 - maxElementDifference * 0.8));
+        confidenceTier = 'unlikely';
+      } else if (maxElementDifference > 6 || totalExcessError > 10) {
+        // Istotna rozbieżność składu
+        score = Math.max(15.0, Math.min(42.0, 52 - maxElementDifference * 1.8));
+        confidenceTier = 'unlikely';
+      } else if (maxElementDifference > 2.0) {
+        // Niewielkie przekroczenie widełek (np. 2.1% - 5.0%)
+        score = Math.max(45.0, Math.min(65.0, 75 - maxElementDifference * 4.0));
+        confidenceTier = 'low';
       }
     }
 
-    // Kary za nadmiarowe zanieczyszczenia obce dla minerału
-    for (const [sym, sampleWeight] of Object.entries(sampleNorm)) {
-      if (!minVisible[sym] && sampleWeight > 4) {
-        score -= sampleWeight * 0.5;
-      }
-    }
-
-    // Weryfikacja stosunków molowych
+    // Weryfikacja stosunków molowych (obliczana jako dodatkowa informacja)
     const molarRatioDetails: MatchScore['molarRatioDetails'] = [];
 
-    if (mineral.keyMolarRatios) {
+    if (mineral.keyMolarRatios && isVerified) {
       for (const [ratioKey, theoRatio] of Object.entries(mineral.keyMolarRatios)) {
         const [elA, elB] = ratioKey.split('/');
         const molesA = sampleMoles[elA];
@@ -210,47 +309,19 @@ export function identifyMinerals(
             theoreticalRatio: Number(theoRatio.toFixed(3)),
             differencePercent: Number(diffPct.toFixed(1))
           });
-
-          if (diffPct <= 5.0) {
-            score += 5;
-          } else if (diffPct > 35) {
-            score -= Math.min(15, (diffPct - 35) * 0.3);
-          }
         }
-      }
-    }
-
-    // Weryfikacja bilansu pierwiastków lekkich
-    const lightDiff = Math.abs(sampleLightPercent - mineral.lightElementsPercent);
-    const lightWithinTolerance = sampleLightPercent > 0 && lightDiff <= TOLERANCE_WINDOW_PCT;
-
-    if (sampleLightPercent > 0) {
-      if (lightWithinTolerance) {
-        score += 8;
-      } else if (lightDiff > 20) {
-        score -= Math.min(20, (lightDiff - 20) * 0.4);
       }
     }
 
     // Normalizacja do zakresu [0, 99.8%]
     score = Math.max(0, Math.min(99.8, score));
 
-    // Poziom pewności
-    let confidenceTier: MatchScore['confidenceTier'] = 'unlikely';
-    if (score >= 85 || allElementsWithin2Percent) confidenceTier = 'high';
-    else if (score >= 62) confidenceTier = 'medium';
-    else if (score >= 35) confidenceTier = 'low';
-
     // Generowanie zwięzłego wyjaśnienia analitycznego
     let explanation = '';
-    if (allElementsWithin2Percent) {
-      explanation = `Wszystkie wykryte pierwiastki mieszczą się w ścisłych widełkach błędu ±2.0% od teoretycznego wzorca ${mineral.namePl}!`;
-    } else if (confidenceTier === 'high') {
-      explanation = `Bardzo wysoka zgodność składu pierwiastkowego z wzorcem minerału ${mineral.namePl}.`;
-    } else if (confidenceTier === 'medium') {
-      explanation = `Zgodność głównych faz pierwiastkowych z umiarkowanymi odchyleniami stechiometrycznymi.`;
+    if (isVerified) {
+      explanation = `Zweryfikowano! Wszystkie wykryte pierwiastki mieszczą się w ścisłych widełkach błędu ±2.0% od teoretycznego wzorca ${mineral.namePl}!`;
     } else {
-      explanation = `Częściowe podobieństwo lub obecność obcych domieszek mineralnych.`;
+      explanation = `Nie można zweryfikować jako ${mineral.namePl}: odchylenie składu przekracza dopuszczalny limit ±2.0% (największa różnica na ${maxDiffSymbol}: ${maxElementDifference.toFixed(1)}%). Minerał odrzucony.`;
     }
 
     if (mineral.lightElementsPercent > 0) {
@@ -265,6 +336,9 @@ export function identifyMinerals(
       score: Number(score.toFixed(1)),
       confidenceTier,
       allElementsWithin2Percent,
+      isVerified,
+      maxElementDifference: Number(maxElementDifference.toFixed(2)),
+      maxDiffSymbol,
       molarRatioDetails,
       elementComparison: elementComparison.sort((a, b) => b.samplePercent - a.samplePercent),
       lightElementInfo: {
@@ -277,11 +351,16 @@ export function identifyMinerals(
     };
   });
 
+  // Wykryj czy próbka odpowiada znanemu stopowi technicznemu (np. SS-316)
+  const technicalAlloyHint = detectTechnicalAlloy(sampleNorm);
+
   // Sortuj od najwyższego dopasowania
   const sorted = rawResults.sort((a, b) => b.score - a.score);
 
-  // 3. Przypisz informacje o polimorfach (np. "Piryt / Markasyt", "Kalcyt / Aragonit")
+  // 3. Przypisz informacje o polimorfach i stopach
   sorted.forEach((match) => {
+    match.technicalAlloyHint = technicalAlloyHint;
+
     const fg = getStoichiometryFingerprint(match.mineral);
     const group = fingerprintGroups.get(fg);
 

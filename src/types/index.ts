@@ -87,12 +87,22 @@ export interface PolymorphInfo {
   distinctionTip: string;
 }
 
+export interface TechnicalAlloyMatch {
+  name: string;
+  grade: string;
+  description: string;
+}
+
 export interface MatchScore {
   mineral: MineralDefinition;
   score: number; // 0 - 100%
   confidenceTier: 'high' | 'medium' | 'low' | 'unlikely';
   allElementsWithin2Percent: boolean; // Czy WSZYSTKIE pierwiastki mieszczą się w widełkach +-2%
+  isVerified: boolean; // Czy minerał jest zweryfikowany w oknie +-2.0% (wszystkie pierwiastki + bilans lekkich)
+  maxElementDifference: number; // Największe odchylenie w % spośród porównywanych pierwiastków
+  maxDiffSymbol: string; // Symbol pierwiastka z największym odchyleniem
   polymorphInfo?: PolymorphInfo;
+  technicalAlloyHint?: TechnicalAlloyMatch | null;
   molarRatioDetails: {
     ratioName: string;
     sampleRatio: number;
