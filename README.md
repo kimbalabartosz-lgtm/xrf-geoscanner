@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# XRF GeoScanner — Identyfikator Minerałów ze Spektrometru XRF
 
-## Getting Started
+Mobilna aplikacja webowa stworzona w **Next.js (App Router)** z **Tailwind CSS**, wykorzystująca bibliotekę **Tesseract.js** (uruchamianą w 100% po stronie klienta za pomocą WebAssembly) oraz wyspecjalizowany silnik stechiometryczny do identyfikacji minerałów na podstawie zdjęć ekranów spektrometrów rentgenowskich (XRF).
 
-First, run the development server:
+---
+
+## 🌟 Główne Funkcjonalności
+
+1. **Aparat i Wstępne Przetwarzanie Obrazu (Canvas HTML5)**:
+   - Bezpośrednie wywoływanie tylnego aparatu w smartfonie (`capture="environment"`).
+   - Obsługa wgrywania z pliku, przeciągania (Drag & Drop) oraz wklejania ze schowka (Ctrl+V).
+   - **Binarizacja i Kontrast (Thresholding)**: redukcja odblasków ze szklanej szybki spektrometru i wyostrzenie cyfrowej czcionki LCD wyświetlacza.
+   - Obrót zdjęcia o 90° w razie wykonania zdjęcia poziomo.
+
+2. **Lokalny Silnik OCR (Tesseract.js)**:
+   - Działa całkowicie po stronie przeglądarki użytkownika (brak kosztów serwerowych, brak limitów timeout na Vercel).
+   - **Ograniczenie znaków (Whitelist)**: `tessedit_char_whitelist` ograniczone do symboli, cyfr i znaku `%`, co drastycznie eliminuje szum i artefakty.
+   - Pasek postępu analizy w czasie rzeczywistym.
+
+3. **Parser Wyrażeń Regularnych (Regex)**:
+   - Wykrywanie symboli pierwiastków (np. `Fe`, `Cu`, `S`, `Si`, `Ca`, `Mg`, `Pb`, `Zn`, `Mn`, `Ti`) oraz przypisanych wartości procentowych.
+   - Inteligentna korekta typowych błędów OCR ekranów LCD (np. `5i` -> `Si`, `S1` -> `Si`, `A1` -> `Al`).
+   - Obsługa przeliczania wartości ppm (np. 10 000 ppm = 1.00%) oraz form tlenkowych (`SiO₂`, `Al₂O₃`, `Fe₂O₃`).
+
+4. **Edytowalna Tabela Pośrednia**:
+   - Możliwość natychmiastowej korekty odczytu jednym kliknięciem palca przed kalkulacją.
+   - Dodawanie i usuwanie pierwiastków, funkcja „Normalizuj do 100%”.
+   - Gotowe próbki wzorcowe (Piryt, Chalkopiryt, Dolomit, Galena, Sfalleryt, Skaleń, Baryt, Cyrkon) do błyskawicznych testów bez spektrometru pod ręką.
+
+5. **Silnik Identyfikacji Minerałów (Baza 63 Minerałów)**:
+   - **Fizyka XRF**: Uwzględnienie faktu, że spektrometry ręczne nie wykrywają pierwiastków o $Z < 11$ (H, Li, Be, B, C, N, O, F).
+   - Przeliczanie wag procentowych na liczby moli ($n = \frac{m}{M}$).
+   - Weryfikacja kluczowych stosunków molowych (np. Fe : S = 1 : 2 dla pirytu, Cu : Fe = 1 : 1 dla chalkopirytu, Ca : Mg = 1 : 1 dla dolomitu).
+   - Ranking dopasowania (%) wraz z cechami diagnostycznymi:
+     - Twardość w skali Mohsa
+     - Barwa rysy na porcelanie
+     - Połysk i barwa
+     - Gęstość ($g/cm³$)
+     - Próby terenowe (np. reakcja z HCl, magnetyzm, łupliwość, zapach)
+     - Występowanie geologiczne
+
+---
+
+## 🚀 Uruchomienie Lokalne
 
 ```bash
+# Wejdź do katalogu
+cd "c:\Users\Tymek\Desktop\projekty stronki\xrf"
+
+# Zainstaluj zależności (jeśli jeszcze nie zainstalowano)
+npm install
+
+# Uruchom serwer developerski
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aplikacja będzie dostępna pod adresem: [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Wdrożenie na GitHub i Vercel
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Wypchnięcie na GitHub**:
+   ```bash
+   git remote add origin https://github.com/TWOJA_NAZWA/xrf-geoscanner.git
+   git push -u origin main
+   ```
+2. **Vercel**:
+   - Zaloguj się na [vercel.com](https://vercel.com).
+   - Kliknij **Add New Project** i zaimportuj repozytorium `xrf-geoscanner`.
+   - Vercel automatycznie wykryje Next.js i wdroży aplikację pod darmową domeną `*.vercel.app` z aktywnym protokołem **HTTPS** (wymaganym na telefonach do uruchomienia kamery).
