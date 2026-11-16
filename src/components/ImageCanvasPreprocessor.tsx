@@ -19,9 +19,9 @@ export const ImageCanvasPreprocessor: React.FC<ImageCanvasPreprocessorProps> = (
   ocrProgress
 }) => {
   const [options, setOptions] = useState<PreprocessingOptions>({
-    contrast: 60, // Domyślne podbicie kontrastu LCD
-    brightness: 10,
-    threshold: 135, // Domyślny próg czerni i bieli
+    contrast: 45, // Optymalny kontrast dla cyfr i tekstu
+    brightness: 0,
+    threshold: 0, // 0 = płynny grayscale z zachowaniem kropek dziesiętnych
     grayscale: true,
     invert: false,
     rotation: 0
@@ -162,28 +162,45 @@ export const ImageCanvasPreprocessor: React.FC<ImageCanvasPreprocessorProps> = (
               Próg czerni i bieli (Threshold)
             </span>
             <span className="text-emerald-400 font-mono">
-              {options.threshold === 1 ? 'Auto (Otsu)' : options.threshold}
+              {options.threshold === 0
+                ? '0 (Grayscale)'
+                : options.threshold === 1
+                ? 'Auto (Otsu)'
+                : options.threshold}
             </span>
           </div>
           <input
             type="range"
-            min="10"
-            max="250"
+            min="0"
+            max="255"
             value={options.threshold === 1 ? 128 : options.threshold}
             onChange={(e) =>
               setOptions((prev) => ({ ...prev, threshold: Number(e.target.value) }))
             }
             className="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
           />
-          <div className="flex justify-between mt-1">
+          <div className="flex justify-between items-center mt-1">
+            <button
+              type="button"
+              onClick={() =>
+                setOptions((prev) => ({
+                  ...prev,
+                  threshold: 0,
+                  contrast: 45,
+                  grayscale: true
+                }))
+              }
+              className="text-[10px] text-emerald-400 hover:text-emerald-300 font-medium underline"
+            >
+              ✨ Grayscale (Kropki LCD)
+            </button>
             <button
               type="button"
               onClick={handleAutoThreshold}
               className="text-[10px] text-cyan-400 hover:text-cyan-300 font-medium underline"
             >
-              Włącz Auto Otsu
+              🏁 Auto Otsu B&W
             </button>
-            <span className="text-[10px] text-slate-500">0 - 255</span>
           </div>
         </div>
 

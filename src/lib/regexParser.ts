@@ -3,74 +3,175 @@ import { ELEMENTS } from '@/data/elements';
 
 // Typowe pomyłki OCR dla wyświetlaczy spektrometrów i LCD
 const OCR_TYPO_MAP: Record<string, string> = {
+  // Cr (Chrom) - 'Cr' często mylone z 'or', '0r', 'Gr', 'Dr', 'CR'
+  OR: 'Cr',
+  '0R': 'Cr',
+  CR: 'Cr',
+  'CR%': 'Cr',
+  'OR%': 'Cr',
+  GR: 'Cr',
+
+  // Mn (Mangan) - 'Mn' z nawiasem 'Mn(' mylone z 'M0', 'MO', 'MN'
+  M0: 'Mn',
+  'M0%': 'Mn',
+  MO0: 'Mn',
+  MN: 'Mn',
+  'MN%': 'Mn',
+
+  // Co (Kobalt) - 'Co(' mylone z 'Col', 'C0', 'COL'
+  COL: 'Co',
+  'COL%': 'Co',
+  C0: 'Co',
+  'C0%': 'Co',
+  CO: 'Co',
+  'CO%': 'Co',
+
+  // Si (Krzem) - 'Si' mylone z '5i', '5I', 'S1', 's1', 'SI'
   '5I': 'Si',
   '5i': 'Si',
-  'S1': 'Si',
-  's1': 'Si',
-  'SI': 'Si',
-  'FE': 'Fe',
-  'CA': 'Ca',
-  'MG': 'Mg',
-  'AL': 'Al',
-  'A1': 'Al',
-  'TI': 'Ti',
-  'T1': 'Ti',
-  'MN': 'Mn',
-  'CU': 'Cu',
-  'ZN': 'Zn',
-  'PB': 'Pb',
-  'Pb': 'Pb',
-  'AS': 'As',
-  'BA': 'Ba',
-  'SR': 'Sr',
-  'ZR': 'Zr',
-  'MO': 'Mo',
-  'AG': 'Ag',
-  'AU': 'Au',
-  'HG': 'Hg',
-  'SN': 'Sn',
-  'SB': 'Sb',
-  'CR': 'Cr',
-  'NI': 'Ni',
-  'CO': 'Co'
+  S1: 'Si',
+  s1: 'Si',
+  SI: 'Si',
+  'SI%': 'Si',
+
+  // Al (Glin) - 'Al' mylone z 'A1', 'a1', 'AI', 'AL'
+  A1: 'Al',
+  a1: 'Al',
+  AI: 'Al',
+  AL: 'Al',
+  'AL%': 'Al',
+
+  // Ti (Tytan) - 'Ti' mylone z 'T1', 't1', 'TI'
+  T1: 'Ti',
+  t1: 'Ti',
+  TI: 'Ti',
+  'TI%': 'Ti',
+
+  // Fe (Żelazo)
+  FE: 'Fe',
+  'FE%': 'Fe',
+
+  // Ni (Nikiel)
+  NI: 'Ni',
+  'NI%': 'Ni',
+
+  // Cu (Miedź)
+  CU: 'Cu',
+  'CU%': 'Cu',
+
+  // Zn (Cynk)
+  ZN: 'Zn',
+  'ZN%': 'Zn',
+
+  // Pb (Ołów)
+  PB: 'Pb',
+  'PB%': 'Pb',
+
+  // Mo (Molibden)
+  MO: 'Mo',
+  'MO%': 'Mo',
+
+  // Inne częste pierwiastki
+  CA: 'Ca',
+  'CA%': 'Ca',
+  MG: 'Mg',
+  'MG%': 'Mg',
+  BA: 'Ba',
+  SR: 'Sr',
+  ZR: 'Zr',
+  AS: 'As',
+  SB: 'Sb',
+  SN: 'Sn',
+  BI: 'Bi',
+  AU: 'Au',
+  AG: 'Ag',
+  PT: 'Pt',
+  PD: 'Pd',
+  W0: 'W',
+  WO: 'W',
+  V0: 'V',
+  CL: 'Cl',
+  C1: 'Cl',
+  NA: 'Na',
+  NB: 'Nb',
+  TA: 'Ta',
+  TH: 'Th',
+  U0: 'U'
 };
 
-// Masy molowe do ewentualnego przeliczenia tlenków na czysty pierwiastek
+// Masy molowe do przeliczenia tlenków na czysty pierwiastek metaliczny
 const OXIDE_FACTORS: Record<string, { element: string; factor: number }> = {
   SIO2: { element: 'Si', factor: 28.085 / 60.083 }, // ~0.4674
-  AL2O3: { element: 'Al', factor: (28.085 * 2) / 101.96 }, // ~0.5292
+  AL2O3: { element: 'Al', factor: (26.9815 * 2) / 101.96 }, // ~0.5292
   FE2O3: { element: 'Fe', factor: (55.845 * 2) / 159.69 }, // ~0.6994
   FEO: { element: 'Fe', factor: 55.845 / 71.844 }, // ~0.7773
   CAO: { element: 'Ca', factor: 40.078 / 56.077 }, // ~0.7147
   MGO: { element: 'Mg', factor: 24.305 / 40.304 }, // ~0.6030
   TIO2: { element: 'Ti', factor: 47.867 / 79.866 }, // ~0.5993
   MNO: { element: 'Mn', factor: 54.938 / 70.937 }, // ~0.7745
-  K2O: { element: 'K', factor: (39.098 * 2) / 94.2 }, // ~0.8301
-  NA2O: { element: 'Na', factor: (22.99 * 2) / 61.98 } // ~0.7419
+  K2O: { element: 'K', factor: (39.0983 * 2) / 94.2 }, // ~0.8301
+  NA2O: { element: 'Na', factor: (22.9897 * 2) / 61.98 } // ~0.7419
 };
 
+// Słowa kluczowe nagłówków i metadanych spektrometrów do odrzucenia
+const NOISE_WORDS = [
+  'ELEMENT',
+  'RESULT',
+  'TEST',
+  'COMPLETED',
+  'STATISTIC',
+  'STATISTICS',
+  'THETESTMAP',
+  'THE TEST',
+  'USER',
+  'SPECTRUM',
+  'LIVE TIME',
+  'REAL TIME',
+  'CPS',
+  '20KV',
+  '0UA',
+  'SETTING',
+  'SETTINGS',
+  'OPERATING',
+  'GRADE',
+  'MATCH',
+  'MODEL',
+  'CALIBRATION'
+];
+
 /**
- * Normalizuje symbol pierwiastka (koryguje wielkość liter oraz błędy OCR)
+ * Normalizuje surowy symbol pierwiastka:
+ * - usuwa nawiasy, procenty i separatory: "Fe(%)" -> "Fe", "or%" -> "Cr", "M0%" -> "Mn"
+ * - sprawdza tabelę typowych pomyłek OCR
+ * - weryfikuje istnienie w układzie okresowym (ELEMENTS)
  */
 export function normalizeElementSymbol(raw: string): string | null {
-  const clean = raw.trim().replace(/[^a-zA-Z0-9]/g, '');
-  if (!clean) return null;
+  // Usuń nawiasy, procenty, spacje i separatory
+  const clean = raw.trim().replace(/[\(\)\[\]%:|\-=_,\.]/g, '');
+  if (!clean || clean.length > 5) return null;
+
+  const upper = clean.toUpperCase();
+
+  // Sprawdź czy to nie słowo szumowe (np. "TEST", "USER")
+  if (NOISE_WORDS.includes(upper)) {
+    return null;
+  }
 
   // 1. Sprawdź mapę literówek OCR
   if (OCR_TYPO_MAP[clean]) {
     return OCR_TYPO_MAP[clean];
   }
-  if (OCR_TYPO_MAP[clean.toUpperCase()]) {
-    return OCR_TYPO_MAP[clean.toUpperCase()];
+  if (OCR_TYPO_MAP[upper]) {
+    return OCR_TYPO_MAP[upper];
   }
 
-  // 2. Normalna konwersja (Pierwsza wielka, druga mała: np. "fe" -> "Fe", "AL" -> "Al")
-  const standardSymbol = clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
-  if (ELEMENTS[standardSymbol]) {
-    return standardSymbol;
+  // 2. Standardowa wielkość (np. "fe" -> "Fe", "AL" -> "Al", "CR" -> "Cr")
+  const titleCase = clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+  if (ELEMENTS[titleCase]) {
+    return titleCase;
   }
 
-  // 3. Sprawdź pojedynczą wielką literę (np. "K", "S", "P", "W")
+  // 3. Pojedyncza wielka litera (np. "K", "S", "P", "W", "V", "U", "Y", "B", "C", "N", "O", "F")
   const singleUpper = clean.charAt(0).toUpperCase();
   if (clean.length === 1 && ELEMENTS[singleUpper]) {
     return singleUpper;
@@ -80,100 +181,143 @@ export function normalizeElementSymbol(raw: string): string | null {
 }
 
 /**
- * Główna funkcja wyciągająca pierwiastki i ich zawartości procentowe ze skanu OCR
+ * Inteligentna rekonstrukcja brakującej kropki dziesiętnej.
+ * Na wyświetlaczach LCD i po binaryzacji miniaturowa 1-pikselowa kropka często znika w OCR:
+ * Np. "1038" -> 10.38, "245" -> 2.45, "115" -> 1.15, "6787" -> 67.87
+ */
+export function reconstructMissingDecimal(valStr: string, numVal: number, hasPpm: boolean): number {
+  if (hasPpm) {
+    // W ppm wartości tysięczne są w 100% poprawne (np. 1038 ppm = 0.1038%)
+    return parseFloat((numVal / 10000).toFixed(4));
+  }
+
+  // Jeśli wartość zawiera już kropkę lub przecinek, nic nie modyfikuj
+  if (valStr.includes('.') || valStr.includes(',')) {
+    return numVal;
+  }
+
+  // Jeśli brak kropki i wartość jest > 100% (co jest niemożliwe dla udziału pojedynczego pierwiastka):
+  // Spektrometry wyświetlają niemal zawsze 2 miejsca po przecinku (xx.yy% lub x.yy%)
+  if (numVal >= 100 && numVal <= 9999) {
+    const fixed = numVal / 100.0;
+    if (fixed <= 100.0) {
+      return parseFloat(fixed.toFixed(2));
+    }
+  } else if (numVal >= 10000 && numVal <= 99999) {
+    // 3 miejsca po przecinku (np. 10385 -> 10.385%)
+    const fixed = numVal / 1000.0;
+    if (fixed <= 100.0) {
+      return parseFloat(fixed.toFixed(3));
+    }
+  }
+
+  return numVal;
+}
+
+/**
+ * Główna funkcja wyciągająca pierwiastki i ich zawartości procentowe ze skanu OCR.
+ * Odporna na:
+ * 1. Zlepione znaki procentu i nawiasów: "Fe(%) 67.87", "or% 17.08", "M0% 115"
+ * 2. Zjedzone kropki dziesiętne: "Ni% 1038" -> Ni 10.38%, "Mo% 245" -> Mo 2.45%
+ * 3. Zamiany liter przez OCR: "or%" -> Cr, "M0%" -> Mn, "Col%" -> Co, "5i" -> Si, "A1" -> Al
+ * 4. Pomiary w ppm oraz tlenki (np. SiO2)
  */
 export function parseXrfOcrText(rawText: string): DetectedElement[] {
   const resultsMap = new Map<string, DetectedElement>();
-
-  // Dzielimy tekst na linie dla analizy wierszowej
   const lines = rawText.split(/\r?\n/);
 
-  // Wzorce regex:
-  // Wzorzec 1: [Symbol lub Tlenek] ... [wartość liczbowa]% (+/- błąd)
-  // Np. "Fe 45.2 % +/- 0.3" lub "Fe: 45,2%" lub "5i 28.1%"
-  const regexStandard = /([A-Za-z0-9]{1,5})\s*[:\t\-|=]?\s*([0-9]+[.,][0-9]+|[0-9]+)\s*(?:%|pct)?(?:\s*(?:\+\/-|±)\s*([0-9]+[.,][0-9]+))?/gi;
+  // Wzorzec 1 (Standardowy wiersz tabeli):
+  // [Symbol/Token np. Fe(%) lub or% lub Si:] ... [Wartość liczbowa np. 67.87 lub 1038] ... [opcjonalny błąd +/-]
+  // Grupa 1: Token pierwiastka (może zawierać nawiasy, procent, dwukropek)
+  // Grupa 2: Liczba (z kropką/przecinkiem lub bez)
+  // Grupa 3: Opcjonalny błąd +/-
+  const regexRow = /^([A-Za-z0-9\(\)\[\]%:_|\-]{1,10})\s*[:\t\-|=]?\s*([0-9]+[.,][0-9]+|[0-9]+)\s*(?:%|pct|ppm)?(?:\s*(?:\+\/-|±)\s*([0-9]+[.,][0-9]+))?/i;
 
-  // Wzorzec 2: Liczba z % na początku, potem symbol: "45.2% Fe"
-  const regexInverted = /([0-9]+[.,][0-9]+|[0-9]+)\s*%\s*(?:of\s+)?([A-Za-z0-9]{1,4})/gi;
-
-  // Wzorzec 3: Wartości w ppm: "Fe 45200 ppm"
-  const regexPpm = /([A-Za-z0-9]{1,4})\s*[:\t\-|=]?\s*([0-9]+(?:[.,][0-9]+)?)\s*ppm/gi;
+  // Wzorzec 2 (Wartość przed symbolem): "67.87% Fe" lub "1038 ppm Ni"
+  const regexInverted = /^([0-9]+[.,][0-9]+|[0-9]+)\s*(?:%|pct|ppm)?\s*(?:of\s+)?([A-Za-z0-9\(\)\[\]%]{1,10})/i;
 
   lines.forEach((line, lineIdx) => {
     const trimmed = line.trim();
     if (!trimmed) return;
 
-    // Najpierw sprawdzamy ppm
-    let matchPpm: RegExpExecArray | null;
-    while ((matchPpm = regexPpm.exec(trimmed)) !== null) {
-      const rawSym = matchPpm[1];
-      const ppmVal = parseFloat(matchPpm[2].replace(',', '.'));
-      const normSym = normalizeElementSymbol(rawSym);
-      if (normSym && !isNaN(ppmVal) && ppmVal > 0) {
-        const percentVal = parseFloat((ppmVal / 10000).toFixed(4));
-        resultsMap.set(normSym, {
-          id: `elem-${normSym}-${lineIdx}`,
-          symbol: normSym,
-          value: percentVal,
-          rawDetectedSymbol: rawSym
-        });
+    // Sprawdź czy linia nie jest nagłówkiem
+    const upperLine = trimmed.toUpperCase();
+    if (upperLine.startsWith('ELEMENT') && upperLine.includes('RESULT')) return;
+    if (upperLine.includes('TEST COMPLETED') || upperLine.includes('THE TEST STATISTIC')) return;
+
+    const hasPpm = /\bppm\b/i.test(trimmed);
+
+    // Próba dopasowania Wzorca 1 (Symbol -> Wartość)
+    let match = regexRow.exec(trimmed);
+    let rawSym = '';
+    let valStr = '';
+    let errStr: string | undefined = undefined;
+
+    if (match) {
+      rawSym = match[1];
+      valStr = match[2];
+      errStr = match[3];
+    } else {
+      // Próba dopasowania Wzorca 2 (Wartość -> Symbol)
+      const matchInv = regexInverted.exec(trimmed);
+      if (matchInv) {
+        valStr = matchInv[1];
+        rawSym = matchInv[2];
       }
     }
 
-    // Wzorzec 1: Symbol -> Wartość
-    let matchStd: RegExpExecArray | null;
-    while ((matchStd = regexStandard.exec(trimmed)) !== null) {
-      const rawSym = matchStd[1];
-      const valStr = matchStd[2].replace(',', '.');
-      const errStr = matchStd[3] ? matchStd[3].replace(',', '.') : undefined;
-      const numVal = parseFloat(valStr);
-
-      if (isNaN(numVal) || numVal < 0) continue;
-
-      // Sprawdź czy to nie tlenek (np. SiO2)
-      const upperSym = rawSym.toUpperCase();
-      if (OXIDE_FACTORS[upperSym]) {
-        const oxide = OXIDE_FACTORS[upperSym];
-        const converted = parseFloat((numVal * oxide.factor).toFixed(2));
-        resultsMap.set(oxide.element, {
-          id: `elem-${oxide.element}-${lineIdx}`,
-          symbol: oxide.element,
-          value: converted,
-          errorMargin: errStr ? parseFloat(errStr) : undefined,
-          rawDetectedSymbol: rawSym
-        });
-        continue;
-      }
-
-      const normSym = normalizeElementSymbol(rawSym);
-      if (normSym) {
-        resultsMap.set(normSym, {
-          id: `elem-${normSym}-${lineIdx}`,
-          symbol: normSym,
-          value: numVal,
-          errorMargin: errStr ? parseFloat(errStr) : undefined,
-          rawDetectedSymbol: rawSym
-        });
+    // Jeśli regex na początku linii nie złapał, przeszukaj linię token po tokenie
+    if (!rawSym || !valStr) {
+      const tokens = trimmed.split(/[\s\t|]+/);
+      if (tokens.length >= 2) {
+        // Sprawdź czy pierwszy token wygląda jak pierwiastek, a drugi jak liczba
+        const cleanFirst = tokens[0].replace(/[\(\)\[\]%:|\-=_,\.]/g, '');
+        if (cleanFirst.length >= 1 && cleanFirst.length <= 5 && /^[0-9]+[.,]?[0-9]*$/.test(tokens[1])) {
+          rawSym = tokens[0];
+          valStr = tokens[1];
+          if (tokens[2] && /^[0-9]+[.,]?[0-9]*$/.test(tokens[2])) {
+            errStr = tokens[2];
+          }
+        }
       }
     }
 
-    // Wzorzec 2: Wartość -> Symbol
-    let matchInv: RegExpExecArray | null;
-    while ((matchInv = regexInverted.exec(trimmed)) !== null) {
-      const valStr = matchInv[1].replace(',', '.');
-      const rawSym = matchInv[2];
-      const numVal = parseFloat(valStr);
-      if (isNaN(numVal) || numVal < 0) continue;
+    if (!rawSym || !valStr) return;
 
-      const normSym = normalizeElementSymbol(rawSym);
-      if (normSym) {
-        resultsMap.set(normSym, {
-          id: `elem-${normSym}-${lineIdx}`,
-          symbol: normSym,
-          value: numVal,
-          rawDetectedSymbol: rawSym
-        });
-      }
+    const rawNum = parseFloat(valStr.replace(',', '.'));
+    if (isNaN(rawNum) || rawNum < 0) return;
+
+    // Rekonstrukcja brakującej kropki dziesiętnej
+    const finalValue = reconstructMissingDecimal(valStr, rawNum, hasPpm);
+
+    // Sprawdź czy to nie tlenek (np. SiO2)
+    const cleanSymUpper = rawSym.replace(/[\(\)\[\]%:|\-=_,\.]/g, '').toUpperCase();
+    if (OXIDE_FACTORS[cleanSymUpper]) {
+      const oxide = OXIDE_FACTORS[cleanSymUpper];
+      const converted = parseFloat((finalValue * oxide.factor).toFixed(2));
+      resultsMap.set(oxide.element, {
+        id: `elem-${oxide.element}-${lineIdx}`,
+        symbol: oxide.element,
+        value: converted,
+        errorMargin: errStr ? parseFloat(errStr.replace(',', '.')) : undefined,
+        rawDetectedSymbol: rawSym
+      });
+      return;
+    }
+
+    // Normalizacja symbolu pierwiastka
+    const normSym = normalizeElementSymbol(rawSym);
+    if (normSym) {
+      // Ignorujemy nierealne wartości > 100%
+      if (finalValue > 100.0) return;
+
+      resultsMap.set(normSym, {
+        id: `elem-${normSym}-${lineIdx}`,
+        symbol: normSym,
+        value: finalValue,
+        errorMargin: errStr ? parseFloat(errStr.replace(',', '.')) : undefined,
+        rawDetectedSymbol: rawSym
+      });
     }
   });
 

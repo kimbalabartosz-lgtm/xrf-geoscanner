@@ -45,10 +45,11 @@ function calculateOtsuThreshold(grayData: Uint8ClampedArray): number {
 
 /**
  * Przetwarza obraz w Canvasie:
+ * - Inteligentne przeskalowanie (Super-Resolution x1.5-x2.5 dla małych zdjęć, by nie gubić kropek dziesiętnych)
  * - Obrót (90, 180, 270 deg)
- * - Skala szarości
+ * - Skala szarości (luminancja ITU-R BT.601)
  * - Podbicie kontrastu i jasności
- * - Thresholding (czarno-białe o wysokim kontraście do OCR)
+ * - Opcjonalny thresholding (binaryzacja czarno-biała)
  */
 export function preprocessImage(
   imageSource: HTMLImageElement | HTMLCanvasElement,
@@ -60,18 +61,33 @@ export function preprocessImage(
 
   const { rotation, contrast, brightness, threshold, grayscale, invert } = options;
 
-  // Ustaw wymiary z uwzględnieniem obrotu
   const isRotated = rotation === 90 || rotation === 270;
   const originalWidth = imageSource.width;
   const originalHeight = imageSource.height;
 
-  canvas.width = isRotated ? originalHeight : originalWidth;
-  canvas.height = isRotated ? originalWidth : originalHeight;
+  // Przeskalowanie rozdzielczości (Super-Resolution dla małych zrzutów ekranu i zdjęć z telefonu):
+  // Gdy obraz ma mniej niż 1600px na dłuższym boku, kropki w ułamkach (np. 10.38) mają zaledwie 1px
+  // i giną w OCR. Skalowanie dwuliniowe x1.5-x2.5 powiększa kropki do stabilnych plamek 4-9px.
+  let scale = 1;
+  const maxDim = Math.max(originalWidth, originalHeight);
+  if (maxDim < 1600 && maxDim > 0) {
+    scale = Math.min(2.5, 1600 / maxDim);
+  }
 
-  // Transformacja obrotu
+  const targetWidth = Math.round((isRotated ? originalHeight : originalWidth) * scale);
+  const targetHeight = Math.round((isRotated ? originalWidth : originalHeight) * scale);
+
+  canvas.width = targetWidth;
+  canvas.height = targetHeight;
+
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+
+  // Transformacja obrotu i skali
   ctx.save();
   ctx.translate(canvas.width / 2, canvas.height / 2);
   ctx.rotate((rotation * Math.PI) / 180);
+  ctx.scale(scale, scale);
   ctx.drawImage(
     imageSource,
     -originalWidth / 2,
@@ -86,7 +102,6 @@ export function preprocessImage(
   const data = imageData.data;
 
   // Współczynnik kontrastu
-  // contrast factor = (259 * (contrast + 255)) / (255 * (259 - contrast))
   const c = Math.max(-100, Math.min(100, contrast));
   const contrastFactor = (259 * (c + 255)) / (255 * (259 - c));
   const b = Math.max(-100, Math.min(100, brightness));
@@ -121,7 +136,8 @@ export function preprocessImage(
     data[i + 2] = Math.max(0, Math.min(255, bVal));
   }
 
-  // Krok 2: Thresholding (Binaryzacja czarno-biała)
+  // Krok 2: Thresholding (opcjonalna binaryzacja czarno-biała)
+  // Gdy threshold === 0, zachowujemy gładki grayscale z podbitym kontrastem (idealny dla LSTM OCR)
   if (threshold > 0) {
     const finalThreshold = threshold === 1 ? calculateOtsuThreshold(data) : threshold;
 

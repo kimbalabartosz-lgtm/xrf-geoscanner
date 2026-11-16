@@ -9,7 +9,8 @@ export interface OcrProgress {
 
 /**
  * Uruchamia OCR za pomocą Tesseract.js po stronie klienta (WebAssembly).
- * Używa whitelist znaków, by przyspieszyć rozpoznawanie i wyeliminować szum.
+ * Używa rozszerzonego whitelist znaków (z uwzględnieniem nawiasów pierwiastków np. Fe(%), dwukropków i plus/minus)
+ * oraz zachowuje odstępy kolumnowe w tabelach spektrometru.
  */
 export async function recognizeTextFromImage(
   imageSource: string | HTMLCanvasElement,
@@ -35,9 +36,10 @@ export async function recognizeTextFromImage(
   });
 
   try {
-    // Whitelist znaków: tylko litery, cyfry, kropka, przecinek, procent, dwukropek, plus/minus
+    // Whitelist znaków: litery, cyfry, nawiasy okrągłe i kwadratowe dla Fe(%), kropka, przecinek, procent, dwukropek, plus/minus
     await worker.setParameters({
-      tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.%:+- ,'
+      tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.%:+- ,()[]/<>=',
+      preserve_interword_spaces: '1'
     });
 
     const ret = await worker.recognize(imageSource);
