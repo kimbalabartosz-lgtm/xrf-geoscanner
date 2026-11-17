@@ -551,5 +551,26 @@ export function identifyMinerals(
     }
   });
 
-  return sorted;
+  // 4. Inteligentna deduplikacja minerałów:
+  // W bazie danych IMA/RRUFF występują warianty lub duble o tej samej nazwie polskiej
+  // (np. turkus i turkus_748, wawellit, piroksen itd.).
+  // Użytkownik nie może widzieć tego samego minerału na 1. i 2. miejscu!
+  const deduplicated: MatchScore[] = [];
+  const seenMineralNames = new Set<string>();
+
+  sorted.forEach((match) => {
+    // Normalizowana nazwa główna minerału (bez nawiasów odmianowych)
+    const baseName = (match.polymorphInfo?.combinedNamePl || match.mineral.namePl)
+      .split('(')[0]
+      .trim()
+      .toLowerCase();
+
+    // Klucz deduplikacji uniemożliwia wielokrotne powtórzenie tej samej nazwy w rankingu
+    if (!seenMineralNames.has(baseName)) {
+      seenMineralNames.add(baseName);
+      deduplicated.push(match);
+    }
+  });
+
+  return deduplicated;
 }

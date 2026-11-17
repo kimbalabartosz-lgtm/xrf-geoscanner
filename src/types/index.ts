@@ -152,8 +152,10 @@ export interface MatchScore {
 export interface PreprocessingOptions {
   contrast: number; // -100 to 100
   brightness: number; // -100 to 100
-  threshold: number; // 0 to 255 (0 = off/auto)
+  threshold: number; // 0 to 255 (0 = off/grayscale, 1 = Otsu, >1 = manual, -1 = Sauvola adaptive)
   grayscale: boolean;
   invert: boolean;
   rotation: number; // 0, 90, 180, 270
+  deskewAngle?: number; // Precyzyjny kąt prostowania -15 do +15 stopni
+  flattenShadows?: boolean; // Kompensacja cieni i odblasków (Background Division)
 }

@@ -19,12 +19,14 @@ export const ImageCanvasPreprocessor: React.FC<ImageCanvasPreprocessorProps> = (
   ocrProgress
 }) => {
   const [options, setOptions] = useState<PreprocessingOptions>({
-    contrast: 45,
+    contrast: 35,
     brightness: 0,
     threshold: 0,
     grayscale: true,
     invert: false,
-    rotation: 0
+    rotation: 0,
+    deskewAngle: 0,
+    flattenShadows: true
   });
 
   const [activeTab, setActiveTab] = useState<'processed' | 'original'>('processed');
@@ -114,27 +116,122 @@ export const ImageCanvasPreprocessor: React.FC<ImageCanvasPreprocessorProps> = (
           <div>
             <div className="flex justify-between font-bold text-stone-800 mb-1">
               <span>Próg czerni i bieli (Threshold)</span>
-              <span className="text-stone-900">{options.threshold === 0 ? 'Płynny Grayscale' : options.threshold}</span>
+              <span className="text-stone-900">
+                {options.threshold === 0
+                  ? 'Płynny Grayscale'
+                  : options.threshold === -1
+                  ? 'Sauvola (Lokalna)'
+                  : options.threshold === 1
+                  ? 'Auto Otsu'
+                  : options.threshold}
+              </span>
             </div>
             <input
               type="range"
               min="0"
               max="255"
-              value={options.threshold}
+              value={options.threshold === -1 ? 128 : options.threshold}
               onChange={(e) =>
                 setOptions((prev) => ({ ...prev, threshold: parseInt(e.target.value) }))
               }
               className="w-full h-2 bg-stone-300 rounded cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-stone-500 mt-0.5">
-              <button
-                type="button"
-                onClick={handleAutoThreshold}
-                className="underline hover:text-stone-900 font-bold"
-              >
-                Włącz Auto Otsu
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleAutoThreshold}
+                  className="underline hover:text-stone-900 font-bold"
+                >
+                  Auto Otsu
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOptions((prev) => ({ ...prev, threshold: -1 }))}
+                  className="underline hover:text-amber-900 font-bold text-stone-700"
+                  title="Adaptacyjny próg lokalny Sauvola - skuteczny na odblaski i cienie"
+                >
+                  Sauvola (Odblaski)
+                </button>
+              </div>
               <span>0 - 255</span>
+            </div>
+          </div>
+
+          {/* Kompensacja cieni i odblasków */}
+          <div className="flex items-center justify-between p-2 rounded bg-[#f5f4ee] border border-stone-300">
+            <div>
+              <span className="font-bold text-stone-900 block text-[11px]">Usuwanie cieni i odblasków</span>
+              <span className="text-[10px] text-stone-500 font-serif italic">
+                Wyrównuje oświetlenie (Background Division)
+              </span>
+            </div>
+            <input
+              type="checkbox"
+              checked={options.flattenShadows ?? true}
+              onChange={(e) =>
+                setOptions((prev) => ({ ...prev, flattenShadows: e.target.checked }))
+              }
+              className="w-4 h-4 rounded border-stone-400 text-stone-900 focus:ring-0 cursor-pointer"
+            />
+          </div>
+
+          {/* Prostowanie kąta ujęcia (Deskew) */}
+          <div>
+            <div className="flex justify-between font-bold text-stone-800 mb-1">
+              <span>Prostowanie kąta (Deskew)</span>
+              <span className="text-stone-900 font-bold">
+                {(options.deskewAngle ?? 0) > 0 ? `+${options.deskewAngle}°` : `${options.deskewAngle ?? 0}°`}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <input
+                type="range"
+                min="-15"
+                max="15"
+                step="0.5"
+                value={options.deskewAngle ?? 0}
+                onChange={(e) =>
+                  setOptions((prev) => ({ ...prev, deskewAngle: parseFloat(e.target.value) }))
+                }
+                className="w-full h-2 bg-stone-300 rounded cursor-pointer"
+              />
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      deskewAngle: Math.max(-15, parseFloat(((prev.deskewAngle ?? 0) - 1).toFixed(1)))
+                    }))
+                  }
+                  className="px-1.5 py-0.5 bg-white border border-stone-400 rounded text-[11px] font-bold hover:bg-stone-100"
+                  title="Obróć o -1° w lewo"
+                >
+                  -1°
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      deskewAngle: Math.min(15, parseFloat(((prev.deskewAngle ?? 0) + 1).toFixed(1)))
+                    }))
+                  }
+                  className="px-1.5 py-0.5 bg-white border border-stone-400 rounded text-[11px] font-bold hover:bg-stone-100"
+                  title="Obróć o +1° w prawo"
+                >
+                  +1°
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOptions((prev) => ({ ...prev, deskewAngle: 0 }))}
+                  className="px-1.5 py-0.5 bg-white border border-stone-400 rounded text-[10px] text-stone-500 hover:text-stone-900"
+                  title="Resetuj kąt"
+                >
+                  0°
+                </button>
+              </div>
             </div>
           </div>
 

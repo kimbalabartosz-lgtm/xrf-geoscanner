@@ -161,49 +161,51 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
           <button
             type="button"
             onClick={() => onToleranceConfigChange({ mode: 'field', fixedValue: 4.0 })}
-            className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border-2 ${
+            className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border-2 w-full sm:w-auto text-left sm:text-center ${
               toleranceConfig.mode === 'field'
                 ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-[2px_2px_0px_rgba(0,0,0,0.3)]'
                 : 'bg-[#ffffff] text-stone-800 border-stone-400 hover:border-stone-800'
             }`}
             title="Uwzględnia naturalne domieszki skały macierzystej (Si z kwarcu, Ca z kalcytu, Fe) oraz podstawienia izomorficzne (np. Fe za Al w turkusie)"
           >
-            ★ Terenowy geologiczny (Matryca & Podstawienia)
+            <span className="hidden sm:inline">★ Terenowy geologiczny (Matryca & Podstawienia)</span>
+            <span className="sm:hidden">★ Terenowy (Matryca & Podstawienia)</span>
           </button>
 
           <button
             type="button"
             onClick={() => onToleranceConfigChange({ mode: 'adaptive', fixedValue: 2.0 })}
-            className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border-2 ${
+            className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border-2 w-full sm:w-auto text-left sm:text-center ${
               toleranceConfig.mode === 'adaptive'
                 ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-[2px_2px_0px_rgba(0,0,0,0.3)]'
                 : 'bg-[#ffffff] text-stone-800 border-stone-400 hover:border-stone-800'
             }`}
             title="Dla czystych minerałów syntetycznych lub monokryształów bez skały macierzystej"
           >
-            Laboratoryjny: &gt;40% (±3%), 5–40% (±2%), &lt;5% (±1%)
+            <span className="hidden sm:inline">Laboratoryjny: &gt;40% (±3%), 5–40% (±2%), &lt;5% (±1%)</span>
+            <span className="sm:hidden">Laboratoryjny (Ścisły monokryształ)</span>
           </button>
 
-          <span className="text-stone-400 font-mono text-xs hidden sm:inline">|</span>
+          <div className="flex items-center gap-1.5 flex-wrap w-full sm:w-auto pt-1 sm:pt-0">
+            <span className="text-xs font-mono text-stone-600 font-semibold mr-1">
+              Stałe:
+            </span>
 
-          <span className="text-xs font-mono text-stone-600 font-semibold mr-1">
-            Stałe:
-          </span>
-
-          {[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0].map((val) => (
-            <button
-              key={val}
-              type="button"
-              onClick={() => onToleranceConfigChange({ mode: 'fixed', fixedValue: val })}
-              className={`px-2 py-1 rounded text-xs font-mono font-bold transition-all border-2 ${
-                toleranceConfig.mode === 'fixed' && toleranceConfig.fixedValue === val
-                  ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-[1px_1px_0px_rgba(0,0,0,0.3)]'
-                  : 'bg-[#ffffff] text-stone-700 border-stone-300 hover:border-stone-800'
-              }`}
-            >
-              ±{val}%
-            </button>
-          ))}
+            {[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0].map((val) => (
+              <button
+                key={val}
+                type="button"
+                onClick={() => onToleranceConfigChange({ mode: 'fixed', fixedValue: val })}
+                className={`px-2 py-1 rounded text-xs font-mono font-bold transition-all border-2 ${
+                  toleranceConfig.mode === 'fixed' && toleranceConfig.fixedValue === val
+                    ? 'bg-stone-900 text-stone-100 border-stone-900 shadow-[1px_1px_0px_rgba(0,0,0,0.3)]'
+                    : 'bg-[#ffffff] text-stone-700 border-stone-300 hover:border-stone-800'
+                }`}
+              >
+                ±{val}%
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Płynny suwak tolerancji dla trybu fixed */}
@@ -388,31 +390,34 @@ export const EditableElementsTable: React.FC<EditableElementsTableProps> = ({
 
       {/* RĘCZNE DODAWANIE KOLEJNEGO PIERWIASTKA */}
       <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-        <input
-          type="text"
-          value={newSymbol}
-          onChange={(e) => setNewSymbol(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleAddElement();
-          }}
-          placeholder="Symbol (np. Cr)"
-          className="px-3 py-1.5 bg-[#ffffff] border-2 border-stone-400 rounded text-xs font-mono font-bold text-stone-900 focus:outline-none focus:border-stone-900 sm:w-36"
-        />
-        <input
-          type="number"
-          step="0.01"
-          value={newValue}
-          onChange={(e) => setNewValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleAddElement();
-          }}
-          placeholder="Wartość % (np. 17.08)"
-          className="px-3 py-1.5 bg-[#ffffff] border-2 border-stone-400 rounded text-xs font-mono font-bold text-stone-900 focus:outline-none focus:border-stone-900 sm:w-44"
-        />
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+          <input
+            type="text"
+            value={newSymbol}
+            onChange={(e) => setNewSymbol(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleAddElement();
+            }}
+            placeholder="Symbol (np. Cr)"
+            className="w-full sm:w-32 px-3 py-2 sm:py-1.5 bg-[#ffffff] border-2 border-stone-400 rounded text-xs font-mono font-bold text-stone-900 focus:outline-none focus:border-stone-900"
+          />
+          <input
+            type="number"
+            step="0.01"
+            value={newValue}
+            onChange={(e) => setNewValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleAddElement();
+            }}
+            placeholder="Wartość % (np. 17.08)"
+            className="w-full sm:w-40 px-3 py-2 sm:py-1.5 bg-[#ffffff] border-2 border-stone-400 rounded text-xs font-mono font-bold text-stone-900 focus:outline-none focus:border-stone-900 font-mono"
+          />
+        </div>
+
         <button
           type="button"
           onClick={handleAddElement}
-          className="px-4 py-1.5 bg-[#ffffff] hover:bg-stone-100 text-stone-900 border-2 border-stone-800 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm"
+          className="px-4 py-2 sm:py-1.5 bg-[#ffffff] hover:bg-stone-100 text-stone-900 border-2 border-stone-800 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm w-full sm:w-auto"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Dodaj wiersz</span>

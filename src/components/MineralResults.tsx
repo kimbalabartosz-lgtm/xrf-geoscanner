@@ -216,7 +216,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
               {topMatch.elementComparison.map((elem) => (
                 <div
                   key={elem.symbol}
-                  className={`p-2.5 rounded border-2 text-xs flex flex-col justify-between ${
+                  className={`p-2 sm:p-2.5 rounded border-2 text-xs flex flex-col justify-between min-h-[96px] ${
                     elem.withinTolerance
                       ? 'bg-[#ffffff] border-stone-300 text-stone-800'
                       : 'bg-rose-50 border-rose-800 text-rose-950'
@@ -235,17 +235,17 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                     )}
                   </div>
 
-                  <div className="mt-1 flex items-baseline justify-between font-mono text-[11px]">
-                    <span className="text-stone-600">
+                  <div className="mt-1 flex items-baseline justify-between font-mono text-[11px] gap-1">
+                    <span className="text-stone-600 truncate">
                       Próbka: <b className="text-stone-900">{elem.samplePercent}%</b>
                     </span>
-                    <span className="text-stone-500 text-[10px]">
-                      Wzorzec: {elem.theoreticalPercent}%
+                    <span className="text-stone-500 text-[10px] shrink-0">
+                      Wzór: {elem.theoreticalPercent}%
                     </span>
                   </div>
 
-                  <div className="text-[10px] text-stone-500 mt-1 font-mono pt-1 border-t border-stone-200">
-                    Limit: [{elem.toleranceMin}% - {elem.toleranceMax}%] ({elem.tierLabel})
+                  <div className="text-[10px] text-stone-500 mt-1 font-mono pt-1 border-t border-stone-200 truncate">
+                    Limit: [{elem.toleranceMin}% - {elem.toleranceMax}%]
                   </div>
                 </div>
               ))}
@@ -273,9 +273,9 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
         /* STAN B: MINERAŁ ZWERYFIKOWANY (WSZYSTKIE PIERWIASTKI W TOLERANCJI)        */
         /* ========================================================================= */
         <div className="notebook-sheet rounded-lg p-6 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b-2 border-stone-800 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b-2 border-stone-800 pb-4">
             <div className="flex-1">
-              <div className="flex items-center gap-2.5 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="stamp-green text-xs py-0.5">
                   ✓ Potwierdzony minerał
                 </span>
@@ -286,20 +286,32 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                 )}
               </div>
 
-              <div className="mt-2">
-                <h3 className="text-2xl font-black text-stone-900 font-mono tracking-tight">
-                  {topMatch.polymorphInfo?.isPolymorph
-                    ? topMatch.polymorphInfo.combinedNamePl
-                    : topMatch.mineral.namePl}
-                </h3>
-                <span className="text-xs text-stone-500 font-mono italic">
-                  {topMatch.polymorphInfo?.isPolymorph
-                    ? topMatch.polymorphInfo.combinedNameEn
-                    : topMatch.mineral.nameEn}
-                </span>
+              <div className="mt-2 flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-black text-stone-900 font-mono tracking-tight">
+                    {topMatch.polymorphInfo?.isPolymorph
+                      ? topMatch.polymorphInfo.combinedNamePl
+                      : topMatch.mineral.namePl}
+                  </h3>
+                  <span className="text-xs text-stone-500 font-mono italic">
+                    {topMatch.polymorphInfo?.isPolymorph
+                      ? topMatch.polymorphInfo.combinedNameEn
+                      : topMatch.mineral.nameEn}
+                  </span>
+                </div>
+
+                {/* Na mobile: wskaźnik dopasowania obok nazwy */}
+                <div className="sm:hidden flex flex-col items-center justify-center p-2 rounded border-2 border-stone-800 bg-[#faf8f3] shrink-0 text-center min-w-[76px]">
+                  <span className="text-xl font-black font-mono text-stone-900 leading-tight">
+                    {topMatch.score}%
+                  </span>
+                  <span className="text-[9px] uppercase font-mono font-bold text-stone-600">
+                    Dopasowanie
+                  </span>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2 mt-2 flex-wrap text-xs font-mono">
+              <div className="flex items-center gap-1.5 sm:gap-2 mt-2 flex-wrap text-xs font-mono">
                 <span className="px-2 py-0.5 bg-stone-900 text-stone-100 rounded font-bold">
                   {topMatch.mineral.formula}
                 </span>
@@ -309,8 +321,8 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
               </div>
             </div>
 
-            {/* Wskaźnik dopasowania */}
-            <div className="flex flex-col items-center justify-center p-3 rounded border-2 border-stone-800 bg-[#faf8f3] min-w-[130px] shrink-0 text-center">
+            {/* Wskaźnik dopasowania na desktop/tablet */}
+            <div className="hidden sm:flex flex-col items-center justify-center p-3 rounded border-2 border-stone-800 bg-[#faf8f3] min-w-[130px] shrink-0 text-center">
               <span className="text-2xl font-black font-mono text-stone-900">
                 {topMatch.score}%
               </span>
@@ -390,7 +402,7 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
               {topMatch.elementComparison.map((elem) => (
                 <div
                   key={elem.symbol}
-                  className={`p-2.5 rounded border-2 text-xs flex flex-col justify-between ${
+                  className={`p-2 sm:p-2.5 rounded border-2 text-xs flex flex-col justify-between min-h-[96px] ${
                     elem.withinTolerance
                       ? 'bg-[#ffffff] border-stone-800 text-stone-900'
                       : 'bg-rose-50 border-rose-700 text-rose-950'
@@ -405,17 +417,17 @@ export const MineralResults: React.FC<MineralResultsProps> = ({ results }) => {
                     )}
                   </div>
 
-                  <div className="mt-1 flex items-baseline justify-between font-mono text-[11px]">
-                    <span className="text-stone-600">
+                  <div className="mt-1 flex items-baseline justify-between font-mono text-[11px] gap-1">
+                    <span className="text-stone-600 truncate">
                       Próbka: <b className="text-stone-900">{elem.samplePercent}%</b>
                     </span>
-                    <span className="text-stone-500 text-[10px]">
-                      Wzorzec: {elem.theoreticalPercent}%
+                    <span className="text-stone-500 text-[10px] shrink-0">
+                      Wzór: {elem.theoreticalPercent}%
                     </span>
                   </div>
 
-                  <div className="text-[10px] text-stone-500 mt-1 font-mono pt-1 border-t border-stone-200">
-                    Limit: [{elem.toleranceMin}% - {elem.toleranceMax}%] ({elem.tierLabel})
+                  <div className="text-[10px] text-stone-500 mt-1 font-mono pt-1 border-t border-stone-200 truncate">
+                    Limit: [{elem.toleranceMin}% - {elem.toleranceMax}%]
                   </div>
                 </div>
               ))}

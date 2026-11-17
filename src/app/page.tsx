@@ -64,12 +64,15 @@ export default function Home() {
   };
 
   /**
-   * AUTOMATYCZNY PIPELINE EKSTRAKCJI (Auto-Levels + Super-Resolution + Multi-Pass OCR)
+   * AUTOMATYCZNY PIPELINE EKSTRAKCJI:
+   * 1. Auto-Deskew (wykrycie i wyprostowanie pochylenia ekranu)
+   * 2. Kompensacja cieni i odblasków (Shadow & Glare Flattening)
+   * 3. Multi-Pass OCR: Przebieg 1 (Auto-Levels) -> Przebieg 2 (Sauvola Adaptive) -> Przebieg 3 (Otsu)
    */
   const runAutoScanPipeline = async (imageSrc: string, tolCfg: ToleranceConfig = toleranceConfig) => {
     setIsOcrRunning(true);
     setResults([]);
-    setOcrProgress({ status: 'Automatyczna optymalizacja histogramu (Auto-Levels)...', progress: 10 });
+    setOcrProgress({ status: 'Prostowanie kąta ujęcia i usuwanie cieni...', progress: 10 });
 
     try {
       const img = new Image();
@@ -80,34 +83,55 @@ export default function Home() {
         img.src = imageSrc;
       });
 
-      // Przebieg 1: Auto-Levels Grayscale z Super-Resolution
-      setOcrProgress({ status: 'Skanowanie spektrogramu XRF (Przebieg 1: Auto-Grayscale)...', progress: 30 });
-      const pass1 = autoPreprocessImage(img, 'auto-levels', 0);
+      // Przebieg 1: Auto-Deskew + Kompensacja cieni i odblasków + Auto-Levels
+      const pass1 = autoPreprocessImage(img, 'auto-levels', 0, true);
+      const deskewMsg = Math.abs(pass1.detectedDeskewAngle) >= 1.0
+        ? ` (wyprostowano nachylenie o ${pass1.detectedDeskewAngle}°)`
+        : '';
+
+      setOcrProgress({ status: `Skanowanie OCR (Przebieg 1: Wyrównane oświetlenie)${deskewMsg}...`, progress: 25 });
 
       const textPass1 = await recognizeTextFromImage(pass1.canvas, (p) => {
         setOcrProgress({
           status: `Rozpoznawanie tekstu Tesseract OCR: ${p.progress}%`,
-          progress: 30 + Math.round(p.progress * 0.45)
+          progress: 25 + Math.round(p.progress * 0.4)
         });
       });
 
       let parsed = parseXrfOcrText(textPass1);
       let finalText = textPass1;
 
-      // Przebieg 2 fallback w razie trudnych warunków
+      // Przebieg 2: Adaptacyjna binaryzacja lokalna Sauvola (gdy odblaski/cienie utrudniły odczyt)
       if (parsed.length < 2) {
-        setOcrProgress({ status: 'Przebieg 2: Adaptacyjna binaryzacja Otsu...', progress: 75 });
-        const pass2 = autoPreprocessImage(img, 'auto-otsu', 0);
+        setOcrProgress({ status: 'Przebieg 2: Adaptacyjna binaryzacja lokalna Sauvola (odblaski)...', progress: 65 });
+        const pass2 = autoPreprocessImage(img, 'auto-sauvola', 0, true);
         const textPass2 = await recognizeTextFromImage(pass2.canvas, (p) => {
           setOcrProgress({
             status: `Skanowanie OCR (Przebieg 2): ${p.progress}%`,
-            progress: 75 + Math.round(p.progress * 0.2)
+            progress: 65 + Math.round(p.progress * 0.2)
           });
         });
         const parsed2 = parseXrfOcrText(textPass2);
         if (parsed2.length > parsed.length) {
           parsed = parsed2;
           finalText = textPass2;
+        }
+      }
+
+      // Przebieg 3 fallback: Binaryzacja Otsu
+      if (parsed.length < 2) {
+        setOcrProgress({ status: 'Przebieg 3: Kontrastowa binaryzacja Otsu...', progress: 85 });
+        const pass3 = autoPreprocessImage(img, 'auto-otsu', 0, true);
+        const textPass3 = await recognizeTextFromImage(pass3.canvas, (p) => {
+          setOcrProgress({
+            status: `Skanowanie OCR (Przebieg 3): ${p.progress}%`,
+            progress: 85 + Math.round(p.progress * 0.12)
+          });
+        });
+        const parsed3 = parseXrfOcrText(textPass3);
+        if (parsed3.length > parsed.length) {
+          parsed = parsed3;
+          finalText = textPass3;
         }
       }
 
@@ -123,7 +147,7 @@ export default function Home() {
         setResults(matches);
       } else {
         showNotification(
-          'OCR nie wykrył pierwiastków automatycznie. Sprawdź ręczny panel regulacji poniżej.',
+          'OCR nie wykrył tabeli automatycznie. Możesz użyć suwaków w panelu optycznym poniżej.',
           'info'
         );
         setShowAdvancedManual(true);

@@ -147,23 +147,23 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             </div>
 
             {/* Przyciski operacyjne pod zdjęciem */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-4 w-full">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center gap-2 mt-4 w-full">
               <button
                 type="button"
                 onClick={() => cameraInputRef.current?.click()}
-                className="px-3.5 py-1.5 bg-stone-900 hover:bg-stone-800 text-stone-100 rounded text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.3)] active:translate-x-0.5 active:translate-y-0.5"
+                className="px-3 py-2 sm:py-1.5 bg-stone-900 hover:bg-stone-800 text-stone-100 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.3)] active:translate-x-0.5 active:translate-y-0.5 text-center"
               >
-                <Camera className="w-3.5 h-3.5" />
-                <span>Zrób inne zdjęcie (aparat)</span>
+                <Camera className="w-3.5 h-3.5 shrink-0" />
+                <span>Zrób zdjęcie</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="px-3.5 py-1.5 bg-[#ffffff] hover:bg-stone-100 text-stone-900 border-2 border-stone-800 rounded text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.15)] active:translate-x-0.5 active:translate-y-0.5"
+                className="px-3 py-2 sm:py-1.5 bg-[#ffffff] hover:bg-stone-100 text-stone-900 border-2 border-stone-800 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.15)] active:translate-x-0.5 active:translate-y-0.5 text-center"
               >
-                <Upload className="w-3.5 h-3.5" />
-                <span>Wybierz inny plik</span>
+                <Upload className="w-3.5 h-3.5 shrink-0" />
+                <span>Wybierz plik</span>
               </button>
 
               {onRescan && (
@@ -171,10 +171,10 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                   type="button"
                   onClick={onRescan}
                   disabled={isScanning}
-                  className="px-3.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border-2 border-stone-700 rounded text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-sm disabled:opacity-40"
+                  className="px-3 py-2 sm:py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border-2 border-stone-700 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm disabled:opacity-40 text-center"
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${isScanning ? 'animate-spin' : ''}`} />
-                  <span>Przeskanuj ponownie</span>
+                  <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${isScanning ? 'animate-spin' : ''}`} />
+                  <span>Przeskanuj</span>
                 </button>
               )}
 
@@ -182,10 +182,10 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                 <button
                   type="button"
                   onClick={onClearImage}
-                  className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border-2 border-rose-800 rounded text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-sm"
+                  className="px-3 py-2 sm:py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border-2 border-rose-800 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm text-center"
                   title="Wyczyść zdjęcie"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-3.5 h-3.5 shrink-0" />
                   <span>Usuń</span>
                 </button>
               )}
