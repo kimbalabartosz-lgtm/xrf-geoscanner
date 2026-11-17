@@ -524,6 +524,17 @@ export function identifyMinerals(
     const group = fingerprintGroups.get(fg);
 
     if (group && group.length > 1) {
+      const currentBaseName = match.mineral.namePl.split('(')[0].trim().toLowerCase();
+      const currentBaseEn = match.mineral.nameEn.split('(')[0].trim().toLowerCase();
+
+      const partnerNamesPl = group
+        .filter((m) => m.namePl.split('(')[0].trim().toLowerCase() !== currentBaseName)
+        .map((m) => m.namePl.split('(')[0].trim());
+
+      const partnerNamesEn = group
+        .filter((m) => m.nameEn.split('(')[0].trim().toLowerCase() !== currentBaseEn)
+        .map((m) => m.nameEn.split('(')[0].trim());
+
       const combinedPl = group.map((m) => m.namePl.split('(')[0].trim()).join(' / ');
       const combinedEn = group.map((m) => m.nameEn.split('(')[0].trim()).join(' / ');
 
@@ -542,9 +553,11 @@ export function identifyMinerals(
         isPolymorph: true,
         combinedNamePl: combinedPl,
         combinedNameEn: combinedEn,
+        partnerNamesPl,
+        partnerNamesEn,
         formula: match.mineral.formula,
         members,
-        distinctionTip: `Minerały ${combinedPl} mają identyczny skład chemiczny dla spektrometru XRF (${match.mineral.formula}). Aby rozstrzygnąć, który z nich masz w dłoni, sprawdź pokrój kryształów, twardość lub łupliwość podane poniżej.`
+        distinctionTip: `Minerał ${match.mineral.namePl} posiada polimorfa o identycznym składzie chemicznym w XRF (${match.mineral.formula}): ${partnerNamesPl.join(', ')}. Aby ustalić, który z nich masz w dłoni, sprawdź pokrój kryształów, twardość lub rysę.`
       };
 
       match.polymorphInfo = polymorphInfo;
@@ -553,24 +566,64 @@ export function identifyMinerals(
 
   // 4. Inteligentna deduplikacja minerałów:
   // W bazie danych IMA/RRUFF występują warianty lub duble o tej samej nazwie polskiej
-  // (np. turkus i turkus_748, wawellit, piroksen itd.).
-  // Użytkownik nie może widzieć tego samego minerału na 1. i 2. miejscu!
+  // (np. pyroxmangite i pyroxmangite_759).
+  // Usuwamy TYLKO techniczne duble tego samego minerału.
+  // POLIMORFY O RÓŻNYCH NAZWACH (np. Piryt i Markasyt, Rodonit i Piroksmangit, Kalcyt i Aragonit)
+  // SĄ ZACHOWYWANE I PREZENTOWANE JEDEN PO DRUGIM (EX-AEQUO)!
   const deduplicated: MatchScore[] = [];
   const seenMineralNames = new Set<string>();
 
   sorted.forEach((match) => {
     // Normalizowana nazwa główna minerału (bez nawiasów odmianowych)
-    const baseName = (match.polymorphInfo?.combinedNamePl || match.mineral.namePl)
+    const baseName = match.mineral.namePl
       .split('(')[0]
       .trim()
       .toLowerCase();
 
-    // Klucz deduplikacji uniemożliwia wielokrotne powtórzenie tej samej nazwy w rankingu
+    // Klucz deduplikacji uniemożliwia powtórzenie tego samego minerału (np. Piroksmangit dwukrotnie)
     if (!seenMineralNames.has(baseName)) {
       seenMineralNames.add(baseName);
       deduplicated.push(match);
     }
   });
+
+  // 5. Przypisanie pozycji rankingowych oraz oznaczenie miejsc ex-aequo:
+  // Jeśli dwa minerały mają ten sam skład chemiczny (polimorfy) lub identyczny wynik w tolerancji,
+  // pojawiają się jeden po drugim z tą samą pozycją ex-aequo!
+  let currentRank = 1;
+  for (let i = 0; i < deduplicated.length; i++) {
+    const current = deduplicated[i];
+    const prev = i > 0 ? deduplicated[i - 1] : null;
+    const next = i < deduplicated.length - 1 ? deduplicated[i + 1] : null;
+
+    const sameScoreAsPrev = prev && Math.abs(prev.score - current.score) < 0.05;
+    const isPolymorphWithPrev = prev && Boolean(
+      current.polymorphInfo?.isPolymorph &&
+      prev.polymorphInfo?.isPolymorph &&
+      prev.polymorphInfo?.formula === current.polymorphInfo?.formula
+    );
+
+    const sameScoreAsNext = next && Math.abs(next.score - current.score) < 0.05;
+    const isPolymorphWithNext = next && Boolean(
+      current.polymorphInfo?.isPolymorph &&
+      next.polymorphInfo?.isPolymorph &&
+      next.polymorphInfo?.formula === current.polymorphInfo?.formula
+    );
+
+    const isExAequoWithPrev = sameScoreAsPrev || isPolymorphWithPrev;
+    const isExAequoWithNext = sameScoreAsNext || isPolymorphWithNext;
+
+    if (isExAequoWithPrev && prev) {
+      current.rank = prev.rank;
+      current.isExAequo = true;
+      prev.isExAequo = true;
+    } else {
+      current.rank = currentRank;
+      current.isExAequo = Boolean(isExAequoWithNext);
+    }
+
+    currentRank++;
+  }
 
   return deduplicated;
 }

@@ -94,6 +94,8 @@ export interface PolymorphInfo {
   isPolymorph: boolean;
   combinedNamePl: string; // np. "Piryt / Markasyt" lub "Kalcyt / Aragonit"
   combinedNameEn: string; // np. "Pyrite / Marcasite"
+  partnerNamesPl: string[]; // Nazwy polskie pozostałych polimorfów w grupie
+  partnerNamesEn: string[]; // Nazwy angielskie pozostałych polimorfów w grupie
   formula: string;
   members: PolymorphMember[];
   distinctionTip: string;
@@ -121,6 +123,8 @@ export interface IsomorphicSubstitution {
 export interface MatchScore {
   mineral: MineralDefinition;
   score: number; // 0 - 100%
+  rank?: number; // Pozycja w rankingu (1, 2, 3...)
+  isExAequo?: boolean; // Czy minerał dzieli pozycję ex-aequo z innym minerałem o tym samym składzie/wyniku
   confidenceTier: 'high' | 'medium' | 'low' | 'unlikely';
   allElementsWithin2Percent: boolean; // Czy WSZYSTKIE pierwiastki mieszczą się w widełkach +-2%
   isVerified: boolean; // Czy minerał jest zweryfikowany w wyznaczonym oknie tolerancji (wszystkie pierwiastki + bilans lekkich)
